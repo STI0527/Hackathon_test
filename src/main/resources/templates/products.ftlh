@@ -1,8 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>SHOP</title>
+    <title>AutoBought</title>
     <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/png" href="/icon.png">
 </head>
 <body>
 <header class="header_advanced">
@@ -11,7 +12,7 @@
         <button class="burger_menu-btn">
 <!--            <span class="burger_span"></span>-->
         </button>
-        <h1 class="header_title">SHOP</h1>
+        <h1 class="header_title">AutoBought</h1>
 
         <#if user.email??>
         <a href="/profile/${user.id}">
@@ -57,48 +58,51 @@
 
 <h3>Інтернет-магазин |</h3>
 
-<#if user.email??>
-<h3>Ім'я користувача: <i>${user.name}</i></h3>
-<form action="/logout" method="post">
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-<input type="submit" value="Вийти з акаунта"/>
-</form>
+<!--<#if user.email??>-->
+<!--<h3>Ім'я користувача: <i>${user.name}</i></h3>-->
+<!--<form action="/logout" method="post">-->
+<!--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+<!--<input type="submit" value="Вийти з акаунта"/>-->
+<!--</form>-->
 
-<form action="/profile/${user.id}" method="post">
-<input type="submit" name="profile" value="Особистий кабінет"/>
-<input type="hidden" name="_csrf" value="${_csrf.token}"/>
-</form>
+<!--<form action="/profile/${user.id}" method="post">-->
+<!--<input type="submit" name="profile" value="Особистий кабінет"/>-->
+<!--<input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
+<!--</form>-->
+
+<div>
 <form action="/" method="get"/>
         Пошук за назвою оголошення: <input type="text" name="title"/>
 
 <input type="submit" value="Пошук"/>
         </form>
-
-<#if user.isAdmin()>
-<br>
-<a href="/admin">Панель адміністратора</a>
-</#if>
-
-<#else>
-<a href="/login">Авторизуватися</h3></a>
-        </#if>
-
-
-<#list products as product>
-<div>
-<p>${product.title} ${product.price} USD| <a href="/products/${product.id}">Додатково</a></p>
-
 </div>
+<!--<#if user.isAdmin()>-->
+<!--<br>-->
+<!--<a href="/admin">Панель адміністратора</a>-->
+<!--</#if>-->
+
+<!--<#else>-->
+<!--<a href="/login">Авторизуватися</h3></a>-->
+<!--        </#if>-->
+
+<div class="product_list">
+<#list products as product>
+<p><img src="/images/${product.images[0].id}" height="150px" width="150px"/> ${product.title} ${product.price} USD| <a href="/products/${product.id}">Додатково</a></p>
+
 
 <#else>
 <h3><i>Оголошень немає</i></h3>
 
         </#list>
+        </div>
 
 <hr></hr>
+
 <#if user.email??>
 <center>
-<h3>Створити новий товар</h3>
+<button onclick="toggleForm()">Додати оголошення</button>
+<div id="productForm" style="display: none; margin-top: 20px;">
 <form action="/products/create" method="post" enctype="multipart/form-data">
     Назва товару: <input type="text" name="title" placeholder="..." required><br><br>
     Опис: <input type="text" name="description" placeholder="..." style="width: 200px; height: 50px;"
@@ -113,6 +117,7 @@
     <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="Додати товар"/>
 </form>
+</div>
 </center>
         </#if>
 

@@ -1,5 +1,6 @@
 package com.example.shop.controller;
 
+import com.example.shop.models.Image;
 import com.example.shop.models.Product;
 import com.example.shop.services.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,6 +34,13 @@ public class ProductController {
     public String products(@RequestParam(name = "title", required = false) String title, Model model, Principal principal) {
         model.addAttribute("products", productService.productList(title));
         model.addAttribute("user", productService.getUserByPrincipal(principal));
+
+        List<Image> images = new ArrayList<>();
+        for (int i = 0; i < productService.productList(title).size(); i++) {
+            images.add(productService.productList(title).get(i).getImages().getFirst());
+        }
+        model.addAttribute("images", images);
+
         return "products";
     }
 

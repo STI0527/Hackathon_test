@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <head>
-    <title>SHOP</title>
+    <title>AutoBought</title>
     <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/png" href="/icon.png">
 </head>
-<body>
+<body >
 
 <header class="header">
 <h1 class="header_title">
-    SHOP
+    AutoBought
 </h1>
 </header>
 <main class="main">

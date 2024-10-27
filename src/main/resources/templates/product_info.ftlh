@@ -1,12 +1,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>SHOP</title>
+    <title>AutoBought</title>
     <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/png" href="/icon.png">
 </head>
 
 <body>
-<h1>SHOP</h1>
+<h1>AutoBought</h1>
 <h4>Детальна інформація про товар</h4>
 <!--<img src="/images/${product.images[0]?if_exists}" height="60px"/><br><br>-->
 <!--<img src="/images/${product.images[1]?if_exists}" height="60px"/><br><br>-->

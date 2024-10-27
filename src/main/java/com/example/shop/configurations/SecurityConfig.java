@@ -43,11 +43,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/","/product/", "/images/**", "/registration", "/user/**", "/style.css")
+                        .requestMatchers("/","/product/", "/images/**", "/registration", "/user/**", "/static/**", "/style.css", "/script.js", "/background_gif.gif", "/default_avatar.png", "/img.png")
                         .permitAll()
                         .anyRequest()
                         .authenticated()).
-                formLogin((form) -> form.loginPage("/login").permitAll() )
+                formLogin((form) -> form.loginPage("/login").permitAll().defaultSuccessUrl("/", true))
                 .logout((logout) -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
