@@ -13,3 +13,5 @@ function toggleForm() {
         const form = document.getElementById("productForm");
         form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
     }
+
+

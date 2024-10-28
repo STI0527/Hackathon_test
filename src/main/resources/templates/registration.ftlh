@@ -6,7 +6,7 @@
     <link rel="icon" type="image/png" href="/icon.png">
 </head>
 
-<body>
+<body class="body_animated">
 <header class="header">
         <h1 class="header_title">AutoBought</h1>
 </header>

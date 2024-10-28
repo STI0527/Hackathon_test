@@ -7,14 +7,25 @@
 </head>
 
 <body>
-<h1>AutoBought</h1>
+
+
+<header class="header_advanced">
+    <div class="container">
+       <center>
+            <h1 class="header_title">AutoBought</h1>
+       </center>
+
+</div>
+</header>
+
 <h4>Детальна інформація про товар</h4>
 <!--<img src="/images/${product.images[0]?if_exists}" height="60px"/><br><br>-->
 <!--<img src="/images/${product.images[1]?if_exists}" height="60px"/><br><br>-->
 <!--<img src="/images/${product.images[2]?if_exists}" height="60px"/><br><br>-->
 
+<br><br><br><br>
 <#list images as img>
-    <img src="/images/${img.id}" height="60px"/><br><br>
+<img src="/images/${img.id}" height="60px"/><br><br>
 </#list>
 
 
@@ -33,7 +44,7 @@
         <center>
         <form action="/" method="post">
             <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-            <input type="submit" value="На головну"/>
+            <input class="home_button" type="submit" value="На головну"/>
         </form>
         </center>
 </body>

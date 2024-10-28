@@ -12,7 +12,7 @@
 </h1>
 </header>
 <main class="main">
-<table>Інтернет-магазин |
+<table class="admin_table">Інтернет-магазин |
 
 
     <form action="/logout" method="post">

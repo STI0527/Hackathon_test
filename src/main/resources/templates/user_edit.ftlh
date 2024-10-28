@@ -21,7 +21,7 @@
 <form action="/admin/user/edit" method="post">
 
     <#list roles as role>
-            <input type="radio" name="role" value="${role}" ${user.roles?seq_contains(role)?string("checked", "")}/> ${role}
+            <input type="radio" name="role" value="${role}" ${user.roles?seq_contains(role)?string("checked", "")}/> ${role}<hr><br><br>
     </#list>
 
 

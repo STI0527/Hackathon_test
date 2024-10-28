@@ -65,18 +65,29 @@
 <!--<input type="submit" value="Вийти з акаунта"/>-->
 <!--</form>-->
 
-<!--<form action="/profile/${user.id}" method="post">-->
-<!--<input type="submit" name="profile" value="Особистий кабінет"/>-->
-<!--<input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
-<!--</form>-->
+<form action="/profile/${user.id}" method="post">
+<input type="submit" name="profile" value="Особистий кабінет"/>
+<input type="hidden" name="_csrf" value="${_csrf.token}"/>
+</form>
 
-<div>
+<div class="search">
 <form action="/" method="get"/>
         Пошук за назвою оголошення: <input type="text" name="title"/>
 
 <input type="submit" value="Пошук"/>
         </form>
 </div>
+
+<!--<div class="search">-->
+<!--<div class="form-outline" data-mdb-input-init>-->
+<!--    <input id="search-focus" type="search" id="form1" class="form-control" />-->
+<!--&lt;!&ndash;    <label class="form-label" for="form1">Search</label>&ndash;&gt;-->
+<!--</div>-->
+<!--<button type="button" class="btn btn-primary" data-mdb-ripple-init>-->
+<!--    <i class="fas fa-search">Пошук</i>-->
+<!--</button>-->
+<!--</div>-->
+
 <!--<#if user.isAdmin()>-->
 <!--<br>-->
 <!--<a href="/admin">Панель адміністратора</a>-->
