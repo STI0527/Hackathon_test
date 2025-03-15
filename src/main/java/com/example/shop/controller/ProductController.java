@@ -6,6 +6,8 @@ import com.example.shop.models.Product;
 import com.example.shop.models.User;
 import com.example.shop.services.ProductService;
 import com.example.shop.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -73,10 +75,42 @@ public class ProductController {
     }
 
     @GetMapping("/products/{id}")
-    public String productInfo(@PathVariable Long id, Model model) {
-        Product product = productService.getProductById(id);
+    public String productInfo(@PathVariable String id, Model model, Principal principal,
+                              HttpServletRequest request,
+                              HttpSession session) {
+        Long iD = Long.parseLong(id.replace("\u00A0", ""));
+        Product product = productService.getProductById(iD);
+
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        if(product == null){
+            model.addAttribute("productNotFound", "Товар було вилучено адміністратором");
+            return "product_info";
+        }
+
         model.addAttribute("product", product);
         model.addAttribute("images", product.getImages());
+
+        String data = liqPayService.generateData(
+                productService.getProductById(iD).getPrice(),
+                "UAH",
+                "Оплата замовлення " + productService.getProductById(iD).getTitle(),
+                "https://f68b-89-209-136-227.ngrok-free.app/payment/result",
+                "https://f68b-89-209-136-227.ngrok-free.app/payment/result"
+        );
+
+        String signature = liqPayService.generateSignature(data);
+
+        String userAgent = request.getHeader("User-Agent");
+        String os = orderService.getOperationalSystem(userAgent);
+
+        session.setAttribute("user_id", productService.getUserByPrincipal(principal).getId());
+        session.setAttribute("product_id", iD);
+        session.setAttribute("os", os);
+
+        // Передача форми для LiqPay
+        model.addAttribute("liqPayData", data);
+        model.addAttribute("liqPaySignature", signature);
+        model.addAttribute("user_id", productService.getUserByPrincipal(principal).getId());
         return "product_info";
     }
 
