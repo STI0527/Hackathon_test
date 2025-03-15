@@ -103,10 +103,10 @@
 <br><br>
 
     <form action="/marketplace" method="get">
+        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <button type="submit">
             Маркетплейс
         </button>
-        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     </form>
 
     <br><br>
