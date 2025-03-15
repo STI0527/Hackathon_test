@@ -159,7 +159,7 @@
                     .mode-container {
                     display: grid;
                     grid-template-columns: 1fr 1fr 1fr 1fr;
-                    column-gap: 42px;
+                    column-gap: 24px;
                     padding-top: 30px;
                     }
 
@@ -179,11 +179,12 @@
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    background-color: #4CAF50;
+                    background-color: #E5E5E5;
                     border-radius: 15%;
                     color: white;
                     font-size: 20px;
                     padding: 25px 45px;
+                    cursor: pointer;
 
                     }
 
@@ -191,10 +192,21 @@
                     width: 120px;
                     height: 120px;
                     margin-bottom: 16px;
+                    object-fit: cover;
                     }
 
                     .mode-button {
+                    color: white;
+                    font-weight: 700;
                     font-size: 20px;
+                    background-color: rgba(141, 141, 141, 0.4);
+                    padding: 20px 40px;
+                    border-radius: 16px;
+                    cursor: pointer;
+                    }
+
+                    .mode-button:hover {
+                    background-color: rgba(141, 141, 141, 1);
                     }
 
 

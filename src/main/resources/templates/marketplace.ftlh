@@ -119,16 +119,51 @@
         <!--<a href="/login">Авторизуватися</h3></a>-->
         <!--        </#if>-->
 
+<div class="product-section">
 <div class="product_list">
-<#list products as product>
-<p><img src="/images/${product.images[0].id}" height="150px" width="150px"/> ${product.title} ${product.price} USD| <a href="/products/${product.id}">Додатково</a></p>
+    <#list products as product>
 
+    <div class="product-container">
 
-<#else>
-<h3><i>Оголошень немає</i></h3>
-
-</#list>
+        <div class="product-title">
+            ${product.title}
         </div>
+
+        <a href="/products/${product.id}">
+            <div class="product-image-container">
+
+                <img class="product-image" src="/images/${product.images[0].id}"/>
+            </div>
+        </a>
+
+        <div class="product-price">
+            ${product.price} ₴
+        </div>
+
+        <div class="product-description">
+            ${product.description}
+        </div>
+
+        <div class="buy-button-container">
+            <a href="/products/${product.id}">
+                <button class="buy-button">
+                    ЗАМОВИТИ
+                </button>
+            </a>
+        </div>
+
+
+    </div>
+    <#else>
+    <div class="no-products-container">
+        Оголошень немає
+    </div>
+</#list>
+
+</div>
+
+        </div>
+
 
 <hr></hr>
 

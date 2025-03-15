@@ -44,7 +44,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/","/product/", "/images/**", "/registration", "/user/**", "/static/**", "/style.css", "/script.js", "/background_gif_cars.gif", "/default_avatar.png", "/img_cars_background.png",
-                                "/marketplace", "/exchange", "/repair", "/referal","/confirm", "/confirmation")
+                                "/marketplace", "/exchange", "/repair", "/referal","/confirm", "/confirmation", "marketplace.png",
+                                "exchange.png", "recycle.png", "repair.png", "authorization_picture.jpg", "background.jpg")
                         .permitAll()
                         .anyRequest()
                         .authenticated()).

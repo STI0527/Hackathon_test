@@ -90,7 +90,7 @@
                         </form>
                     </div>
                     <div class="authorization-image-div">
-                        <img class="authorization-image" src="/yuki/images/Fireflycreatedetailphoto64687.jpg" alt=""></img>
+                        <img class="authorization-image" src="authorization_picture.jpg" alt=""></img>
                     </div>
 
                 </div>

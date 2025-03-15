@@ -18,7 +18,7 @@ body {
 position: relative;
 font-family: 'Montserrat', sans-serif !important;
 background-attachment: fixed;
-        background-image: url("yuki_background.jpg");
+        background-image: url("background.jpg");
         background-size: cover; /* Зображення розтягується, щоб покрити весь екран */
     background-repeat: no-repeat;
     height: 100%;
