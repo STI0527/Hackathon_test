@@ -6,6 +6,9 @@ import com.example.shop.models.User;
 import com.example.shop.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -24,8 +28,13 @@ public class AdminController {
     private final UserService userService;
 
     @GetMapping("/admin")
-    public String admin(Model model){
+    public String admin(Model model, Authentication authentication, Principal principal){
         model.addAttribute("users", userService.list());
+
+        if (authentication instanceof OAuth2AuthenticationToken token)
+            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+        else if (authentication instanceof UsernamePasswordAuthenticationToken)
+            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
             return "admin";
     }
 
@@ -48,6 +57,11 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-
+    @PostMapping("admin/user/delete/{userId}")
+    public String deleteUser(@PathVariable("userId") String id){
+        Long iD = Long.parseLong(id.replace("\u00A0", ""));
+        userService.deleteUser(iD);
+        return "redirect:/admin";
+    }
 
 }

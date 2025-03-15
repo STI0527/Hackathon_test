@@ -4,6 +4,9 @@
     <title>Hackathon Test</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.1">
 
     <style>
         .login-with-google-btn {
@@ -56,51 +59,95 @@
 </head>
 
 <body class="body_animated">
-<header class="header">
-        <h1 class="header_title">Hackathon</h1>
+<header>
+    <a href="/work">YUKI — СМАК МАЙБУТНЬОГО</a>
 </header>
-<main class="main">
-    <div class="authorization_block">
-        <h4 class="form_title">Авторизація</h4>
+<div class="body-flex">
 
-        <form class="authorization_form" action="/login" method="post">
-            <input type="email" name="username" placeholder="Електронна пошта" required/>
-            <input type="password" name="password" placeholder="Пароль" required/>
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <input class="authorization_form_submit" type="submit" value="Вхід"/>
+    <div class="main-flex">
+
+        <main class="authorization-main">
+            <div class="authorization_block">
+                <div class="form_title">Авторизація</div>
+                <div class="authorization-two-sides">
+                    <div class="authorization-left-side">
+                        <form class="authorization_form" action="/login" method="post" onsubmit="return validatePassword()">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="floatingInput" name="username" placeholder="name@example.com" required>
+                                <label for="floatingInput">Електронна адреса</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required minlength="0">
+                                <label for="floatingPassword">Пароль</label>
+                            </div>
+
+                            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                            <input class="authorization_form_submit" type="submit" value="Вхід" />
+                            <br/><br/>
+                            <span>Ще не маєте акаунта?</span>
+                            <a class="registration_link" href="/registration">Зареєструватися</a>
+                        </form>
+                    </div>
+                    <div class="authorization-image-div">
+                        <img class="authorization-image" src="/yuki/images/Fireflycreatedetailphoto64687.jpg" alt=""></img>
+                    </div>
+
+                </div>
+
+                <form action="/oauth2/authorization/google" method="GET">
+                    <button type="submit" class="login-with-google-btn">
+                        Sign in with Google
+                    </button>
+                </form>
+                <!-- Повідомлення про успішну авторизацію -->
+                <#if message_confirmed??>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ${message_confirmed}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </#if>
+
+
+            <#if message_already_confirmed??>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                ${message_already_confirmed}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </#if>
+
+                <!-- Повідомлення про термін дії токену -->
+        <#if message_expired??>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            ${message_expired}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <form action="/registration" method="post">
+            <input class="home_button" type="submit" value="Зареєструватися знову" />
+            <input type="hidden" name="_csrf" value="${_csrf.token}" />
         </form>
-
-        <#if message_confirmed??>
-        ${message_confirmed}
     </#if>
 
-
-    <#if message_already_confirmed??>
-    ${message_already_confirmed}
-</#if>
-
-        <!-- Повідомлення про термін дії токену -->
-<#if message_expired??>
-${message_expired}
-
-</#if>
+            <!-- Повідомлення про помилки -->
+    <#if message??>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+</#if>
+
+<#if confirmMessage??>
+<div class="confirm-message">${confirmMessage}</div>
+</#if>
+</div>
 
 
-    <form action="/oauth2/authorization/google" method="GET">
-        <button type="submit" class="login-with-google-btn">
-            Sign in with Google
-        </button>
-    </form>
 
-    <a class="registration_link" href="/registration">Зареєструватися</a>
-
-
-    <form action="/" method="post">
-        <input class="home_button" type="submit" value="Пропустити"/>
-        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-    </form>
-
-</main>
+<form action="/work" method="post">
+<input class="skip-button" type="submit" value="Пропустити" />
+<input type="hidden" name="_csrf" value="${_csrf.token}" />
+</form>
+        </main>
+        </div>
 </body>
 </html>

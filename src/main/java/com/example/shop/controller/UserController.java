@@ -118,9 +118,15 @@ public class UserController {
 
 
     @GetMapping("/user/{user}")
-    public String userInfo(@PathVariable("user") User user, Model model){
+    public String userInfo(@PathVariable("user") User user, Model model,
+                           Principal principal, OAuth2AuthenticationToken token){
         model.addAttribute("user", user);
         model.addAttribute("products", user.getProducts());
+        if (token==null)
+            model.addAttribute("viewer", userService.findUserByPrincipal(principal.getName()));
+        else
+            model.addAttribute("viewer", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+
         return "user_info";
     }
 
@@ -183,6 +189,11 @@ public class UserController {
         }
         model.addAttribute("products", productService.findAll());
         return "referal";
+    }
+
+    @GetMapping("/reuse")
+    public String toReuse(Model model, Principal principal){
+        return "reuse";
     }
 
 

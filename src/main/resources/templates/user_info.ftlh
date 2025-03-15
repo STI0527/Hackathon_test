@@ -3,34 +3,58 @@
     <title>Hackathon Test</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.1">
 </head>
 
 <body>
-<h1>Hackathon</h1>
-<h4>Товари користувача ${user.name}</h4><br>
-    <#list products as product>
-    <p>${product.title} ${product.price} USD| <a href="/products/${product.id}">Додатково</a></p>
-    <#else><h3>Оголошень немає</h3>
+<header>
+    <a href="/work">YUKI — СМАК МАЙБУТНЬОГО</a>
+</header>
 
-</#list>
+<div class="body-flex">
 
-    <hr>
-    <h3>Детальна інформація про користувача</h3>
-    <b>Номер телефона:</b> ${user.phoneNumber}<br>
-    <b>Email:</b> ${user.email}<br>
-    <hr>
+    <main class="main-flex">
 
-        <center>
-            <form action="/" method="post">
-                <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-                <input type="submit" value="На головну"/>
-            </form>
-        </center>
+        <div class="user-info-container">
+            <#if user.isAdmin()>
+            <div class="user-info-title">Пропозиції адміністратора ${user.name}</div>
+
+
+            <div class="user-info-list">
+
+
+                <#list products as product>
+                <div class="user-info-product-container">
+
+                    <a href="/products/${product.id}">
+                        <div class="user-info-product-title"> ${product.title}</div>
+
+                    </a><div class="user-info-product-price"><span class="user-info-span"> — </span> ${product.price} &#8372;
+                </div>
+                </div>
+
+            </#list>
+
+        </div>
+    </#if>
+
+    <#if viewer.isAdmin()>
+    <div class="user-info-additional-container">
+        <div class="user-info-admin-title">Детальна інформація про користувача (тільки для адміністраторів)</div>
+        <div class="user-info-admin-number">Номер телефона: <span class="user-info-admin-number-span">${user.phoneNumber}</span> </div>
+        <div class="user-info-admin-email">Email: <span class="user-info-admin-email-span">${user.email}</span></div>
+    </div>
+</#if>
+
+
 
 <#if errorMessage??>
 <h2>${errorMessage}</h2>
 </#if>
 
+        </div>
+
+        </main>
 </body>
 
 </html>
