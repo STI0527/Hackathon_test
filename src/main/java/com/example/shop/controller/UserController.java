@@ -10,6 +10,9 @@ import com.example.shop.services.ProductService;
 import com.example.shop.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -100,30 +103,48 @@ public class UserController {
 
 
     @GetMapping("/marketplace")
-    public String toMarketplace(Model model, Principal principal){
-        model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+    public String toMarketplace(Model model, Principal principal, Authentication authentication){
+
+        if (authentication instanceof OAuth2AuthenticationToken token) {
+            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        }
+
         model.addAttribute("products", productService.findAll());
         return "marketplace";
     }
 
 
     @GetMapping("/exchange")
-    public String toExchange(Model model, Principal principal){
-        model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+    public String toExchange(Model model, Principal principal, Authentication authentication){
+        if (authentication instanceof OAuth2AuthenticationToken token) {
+            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        }
         model.addAttribute("products", productService.findAll());
         return "exchange";
     }
 
     @GetMapping("/repair")
-    public String toRepair(Model model, Principal principal){
+    public String toRepair(Model model, Principal principal, Authentication authentication){
+        if (authentication instanceof OAuth2AuthenticationToken token) {
+        model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+    } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
         model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+    }
         model.addAttribute("products", productService.findAll());
         return "repair";
     }
 
     @GetMapping("/referal")
-    public String toReferal(Model model, Principal principal){
-        model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+    public String toReferal(Model model, Principal principal, Authentication authentication){
+        if (authentication instanceof OAuth2AuthenticationToken token) {
+            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        }
         model.addAttribute("products", productService.findAll());
         return "referal";
     }
