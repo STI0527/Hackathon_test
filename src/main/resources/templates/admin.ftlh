@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <head>
-    <title>AutoBought</title>
+    <title>Hackathon Test</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
 </head>
@@ -8,7 +8,7 @@
 
 <header class="header">
 <h1 class="header_title">
-    AutoBought
+    Hackathon
 </h1>
 </header>
 <main class="main">

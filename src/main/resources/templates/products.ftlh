@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>AutoBought</title>
+    <title>Hackathon Test</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
 </head>
@@ -12,7 +12,7 @@
         <button class="burger_menu-btn">
 <!--            <span class="burger_span"></span>-->
         </button>
-        <h1 class="header_title">AutoBought</h1>
+        <h1 class="header_title">Hackathon</h1>
 
         <#if user.email??>
         <a href="/profile/${user.id}">

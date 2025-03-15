@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AutoBought</title>
+    <title>Hackathon Test</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
 </head>
 
 <body class="body_animated">
 <header class="header">
-        <h1 class="header_title">AutoBought</h1>
+        <h1 class="header_title">Hackathon</h1>
 </header>
 <main class="main">
     <div class="authorization_block">

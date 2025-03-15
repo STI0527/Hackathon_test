@@ -1,13 +1,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>AutoBought</title>
+    <title>Hackathon Test</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
 <header class="header">
-    <h1 class="header_title">AutoBought</h1>
+    <h1 class="header_title">Hackathon</h1>
     <link rel="icon" type="image/png" href="/icon.png">
 </header>
 <center>

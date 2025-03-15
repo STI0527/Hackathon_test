@@ -52,6 +52,7 @@ public class UserController {
     public String changeAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws IOException {
         User user = userRepository.findById(id).orElse(null);
 
+        
 
        if(user.getAvatar() != null) {
             //if(user.getAvatar() != null) {

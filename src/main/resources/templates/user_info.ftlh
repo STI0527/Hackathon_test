@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
 <head>
-    <title>AutoBought</title>
+    <title>Hackathon Test</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
 </head>
 
 <body>
-<h1>AutoBought</h1>
+<h1>Hackathon</h1>
 <h4>Товари користувача ${user.name}</h4><br>
     <#list products as product>
     <p>${product.title} ${product.price} USD| <a href="/products/${product.id}">Додатково</a></p>
