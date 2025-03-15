@@ -25,6 +25,7 @@
                        required/>
                 <input class="registration_form_avatar" type="file" name="fileAvatar"
                        required/>
+                <input type="hidden" value="100" name="coins"/>
                 <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
                 <input class="registration_form_submit" type="submit" value="Зареєструватися"/>
             </form>
