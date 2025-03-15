@@ -1,5 +1,6 @@
 package com.example.shop.controller;
 
+import com.example.shop.enums.AdvertType;
 import com.example.shop.models.Image;
 import com.example.shop.models.Product;
 import com.example.shop.models.User;
@@ -56,9 +57,11 @@ public class ProductController {
 
     @PostMapping("/products/create")
     public String createProduct(@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2,
-                                @RequestParam("file3") MultipartFile file3, Product product, Principal principal) throws IOException {
+                                @RequestParam("file3") MultipartFile file3,
+                                @RequestParam("type") AdvertType type,
+                                Product product, Principal principal) throws IOException {
 
-
+        product.setType(type);
         productService.saveProduct(principal, product, file1, file2, file3);
         return "redirect:/";
     }
