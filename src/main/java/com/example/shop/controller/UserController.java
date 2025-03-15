@@ -135,12 +135,15 @@ public class UserController {
 
 
     @GetMapping("/marketplace")
-    public String toMarketplace(Model model, Principal principal, Authentication authentication){
+    public String toMarketplace(Model model, Principal principal, Authentication authentication, User user){
 
-        if (authentication instanceof OAuth2AuthenticationToken token) {
-            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
-        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        if (authentication != null) {
+            if (authentication instanceof OAuth2AuthenticationToken token) {
+                model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+            } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+                model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+            }
+
         }
 
         model.addAttribute("products", productService.findAll());
@@ -149,7 +152,8 @@ public class UserController {
 
 
     @GetMapping("/exchange")
-    public String toExchange(Model model, Principal principal, Authentication authentication){
+    public String toExchange(Model model, Principal principal, Authentication authentication, User user){
+
         if (authentication instanceof OAuth2AuthenticationToken token) {
             model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
         } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
@@ -160,7 +164,7 @@ public class UserController {
     }
 
     @GetMapping("/repair")
-    public String toRepair(Model model, Principal principal, Authentication authentication){
+    public String toRepair(Model model, Principal principal, Authentication authentication, User user){
         if (authentication instanceof OAuth2AuthenticationToken token) {
         model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
     } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
@@ -171,7 +175,7 @@ public class UserController {
     }
 
     @GetMapping("/referal")
-    public String toReferal(Model model, Principal principal, Authentication authentication){
+    public String toReferal(Model model, Principal principal, Authentication authentication, User user){
         if (authentication instanceof OAuth2AuthenticationToken token) {
             model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
         } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
