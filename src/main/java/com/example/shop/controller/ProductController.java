@@ -81,11 +81,15 @@ public class ProductController {
     @GetMapping("/products/{id}")
     public String productInfo(@PathVariable String id, Model model, Principal principal,
                               HttpServletRequest request,
-                              HttpSession session) {
+                              HttpSession session,Authentication authentication) {
         Long iD = Long.parseLong(id.replace("\u00A0", ""));
         Product product = productService.getProductById(iD);
 
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        if (authentication instanceof UsernamePasswordAuthenticationToken)
+            model.addAttribute("user", userService.getUserByPrincipal(principal));
+        else if (authentication instanceof OAuth2AuthenticationToken token)
+            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+
         if(product == null){
             model.addAttribute("productNotFound", "Товар було вилучено адміністратором");
             return "product_info";
@@ -107,14 +111,21 @@ public class ProductController {
         String userAgent = request.getHeader("User-Agent");
         String os = orderService.getOperationalSystem(userAgent);
 
-        session.setAttribute("user_id", productService.getUserByPrincipal(principal).getId());
+        if (authentication instanceof UsernamePasswordAuthenticationToken)
+            session.setAttribute("user_id", productService.getUserByPrincipal(principal).getId());
+        else if(authentication instanceof OAuth2AuthenticationToken token)
+            session.setAttribute("user_id", userService.getUserByEmail(token.getPrincipal().getAttribute("email")).getId());
+
         session.setAttribute("product_id", iD);
         session.setAttribute("os", os);
 
         // Передача форми для LiqPay
         model.addAttribute("liqPayData", data);
         model.addAttribute("liqPaySignature", signature);
-        model.addAttribute("user_id", productService.getUserByPrincipal(principal).getId());
+        if (authentication instanceof UsernamePasswordAuthenticationToken)
+            model.addAttribute("user_id", productService.getUserByPrincipal(principal).getId());
+        else if (authentication instanceof OAuth2AuthenticationToken token)
+            model.addAttribute("user_id", userService.getUserByEmail(token.getPrincipal().getAttribute("email")).getId());
         return "product_info";
     }
 

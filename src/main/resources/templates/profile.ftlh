@@ -175,6 +175,10 @@ padding: 6px 12px;">
 
         </div>
 
+        <div class="form-add-container">
+            <form id="productFormToast" action="/products/create" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <input type="hidden" name="type" value="SELL" required/>
         <div class="form-floating mb-3">
             <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Назва..." required>
                 <label for="floatingDescription">Назва :</label>

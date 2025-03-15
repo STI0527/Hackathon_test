@@ -2264,7 +2264,9 @@ background-color: lightpink !important;
                     box-shadow: 2px 2px 3px rgba(0, 0, 0, 0);
                 }
 
-
+                input[type="file"] {
+                    display: none;
+                }
 
                 .form-title {
                     margin-bottom: 20px;
