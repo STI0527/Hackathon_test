@@ -4,6 +4,8 @@ import com.example.shop.enums.AdvertType;
 import com.example.shop.models.Image;
 import com.example.shop.models.Product;
 import com.example.shop.models.User;
+import com.example.shop.services.LiqPayService;
+import com.example.shop.services.OrderService;
 import com.example.shop.services.ProductService;
 import com.example.shop.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +33,8 @@ public class ProductController {
 
     private final ProductService productService;
     private final UserService userService;
+    private final LiqPayService liqPayService;
+    private final OrderService orderService;
 
 //Через анотацію @RequiredArgsConstructor ці рядки не потрібні;
     //____________________________________________________________

@@ -100,59 +100,34 @@
 
     </div> <!-- Закриваючий тег для left-container -->
 
+<b>Назва товару:</b> ${product.title}<br>
+<b>Ціна:</b> ${product.price} $<br>
+<b>Опис:</b> ${product.description}<br>
+<b>Місто:</b> ${product.city}<br>
+<b>Автор:</b> <a href="/user/${product.user.id}">${product.user.name}</a><br>
+<!--<b>Номер телефона:</b>${product.user.phoneNumber}<br>-->
+<hr>
+<!--<form action = "/products/delete/${product.id}" method = "post">-->
+<!--<input type = "submit" value = "Видалити товар"/>-->
+<!--</form>-->
 
+    <form method="post" accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
+        <input type="hidden" name="data" value="${liqPayData}" />
+        <input type="hidden" name="signature" value="${liqPaySignature}" />
 
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script>
-        const swiper = new Swiper('.swiper', {
-            loop: true,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-        });
-    </script>
-
-
-
-
-    <div class="right-container">
-
-        <div class="product-info-title">${product.title}</div>
-        <div class="product-info-price">${product.price} ₴</div>
-        <div class="product-info-description"> ${product.description}</div>
-        <div class="pink-container">
-            <div class="product-info-city"> ${product.city}</div>
-            <!--    <div class="product-info-author"> Автор: <a href="/user/${product.user.id}">${product.user.name}</a></div>-->
-        </div>
-        <!--<b>Номер телефона:</b>${product.user.phoneNumber}<br>-->
-
-        <div class="product-info-buy">
-            <form method="post" accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
-                <input type="hidden" name="data" value="${liqPayData}" />
-                <input type="hidden" name="signature" value="${liqPaySignature}" />
-
-                <button class="liqpay-button">
-                    BUY NOW
-                </button>
-            </form>
-        </div>
-
-
-    </div>
+        <button class="liqpay-button">
+            BUY NOW
+        </button>
+    </form>
 </div>
-
-
-<#if message??>
 <br>
-    <h3>${message}</h3>
-</#if>
-
-</div>
+<br>
+        <center>
+        <form action="/" method="post">
+            <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
+            <input class="home_button" type="submit" value="На головну"/>
+        </form>
+        </center>
 </body>
 
 </html>

@@ -90,38 +90,115 @@
 <br><br>
 <br><br>
 
+    <div class="general-modes-container">
+
+    <div class="empty-container">
+
+    </div>
+
+    <div class="mode-container">
+        <div class="mode">
+            <div class="img-container">
+                <img class="img-mode" src="marketplace.png">
+            </div>
     <form action="/marketplace" method="get">
-        <button type="submit">
+        <button class="mode-button" type="submit">
             Маркетплейс
         </button>
     </form>
+        </div>
 
-    <br><br>
 
+        <div class="mode">
+            <div class="img-container">
+                <img class="img-mode" src="exchange.png">
+            </div>
         <form action="/exchange" method="get">
-            <button type="submit">
+            <button class="mode-button" type="submit">
                 Обмін
             </button>
         </form>
+        </div>
 
-        <br><br>
-
+        <div class="mode">
+            <div class="img-container">
+                <img class="img-mode" src="repair.png">
+            </div>
             <form action="/repair" method="get">
-                <button type="submit">
+                <button class="mode-button" type="submit">
                     Ремонт
                 </button>
             </form>
+        </div>
 
-            <br><br>
 
+        <div class="mode">
+            <div class="img-container">
+                <img class="img-mode" src="recycle.png">
+            </div>
                 <form action="/referal" method="get">
-                    <button type="submit">
+                    <button class="mode-button" type="submit">
                         Реферальна система
                     </button>
                 </form>
+        </div>
+
+    </div>
+
+    <div class="empty-container">
+
+    </div>
+
+    </div>
 
 <script src="/script.js"></script>
 
         </body>
+
+                <style>
+                    .mode-container {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr 1fr;
+                    column-gap: 42px;
+                    padding-top: 30px;
+                    }
+
+                    .general-modes-container {
+                    display: flex;
+                    align-items: center;
+                    justify-center: center;
+                    }
+
+                    .empty-container{
+                    display: flex;
+                    flex: 1;
+                    }
+
+                    .mode{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: #4CAF50;
+                    border-radius: 15%;
+                    color: white;
+                    font-size: 20px;
+                    padding: 25px 45px;
+
+                    }
+
+                    .img-mode {
+                    width: 120px;
+                    height: 120px;
+                    margin-bottom: 16px;
+                    }
+
+                    .mode-button {
+                    font-size: 20px;
+                    }
+
+
+
+                </style>
 
         </html>

@@ -24,6 +24,7 @@ import java.net.URL;
 import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -222,6 +223,13 @@ public class UserService {
         user.getRoles().add(Role.valueOf(role));
 
         userRepository.save(user);
+    }
+
+    public User getUserByPrincipal(Principal principal) {
+        if(principal == null)
+            return new User();
+
+        return userRepository.findByEmail(principal.getName());
     }
     public void enableUser(String email) {
         userRepository.enableUser(email);
