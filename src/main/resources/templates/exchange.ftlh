@@ -113,7 +113,7 @@
                 <img class="product-image" src="/images/${product.images[0].id}"/>
             </div>
         </a>
-        
+
         <div class="product-description">
             ${product.description}
         </div>
@@ -160,6 +160,41 @@
 </div>
 </center>
         </#if>
+
+<footer>
+<div class="empty-container">
+
+</div>
+<div class="footer-container">
+    <div class="footer-element">
+        <a href="https://robotcoffees.com/oferta.html" target="_blank">
+            Публічна оферта
+        </a>
+    </div>
+    <div class="footer-element">
+        <a href="/#carousel_0b16" data-page-id="65053303">
+            Контакти
+        </a>
+    </div>
+
+    <div class="footer-element">
+        <a href="/#carousel_840a" data-page-id="65053303">
+            Відгуки
+        </a>
+    </div>
+    <div class="footer-element">
+        <a  href="/#carousel_acb2" data-page-id="65053303">
+            Зворотній зв'язок
+        </a>
+    </div>
+</div>
+<div class="footer-bottom-element">
+    <a class="footer-link" href="/">ReUse Hub &#xa9 2025</a>
+</div>
+<div class="empty-container">
+
+</div>
+</footer>
 
 <script src="/script.js"></script>
 

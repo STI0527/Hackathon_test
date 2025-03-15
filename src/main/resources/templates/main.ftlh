@@ -49,7 +49,6 @@
     </div>
 </div>
 
-<h3>Інтернет-магазин |</h3>
 
 <!--<#if user.email??>-->
 <!--<h3>Ім'я користувача: <i>${user.name}</i></h3>-->
@@ -138,7 +137,7 @@
             </div>
                 <form action="/referal" method="get">
                     <button class="mode-button" type="submit">
-                        Реферальна система
+                        Переробка
                     </button>
                 </form>
         </div>
@@ -150,6 +149,41 @@
     </div>
 
     </div>
+
+    <footer>
+        <div class="empty-container">
+
+        </div>
+        <div class="footer-container">
+            <div class="footer-element">
+                <a href="https://robotcoffees.com/oferta.html" target="_blank">
+                    Публічна оферта
+                </a>
+            </div>
+            <div class="footer-element">
+                <a href="/#carousel_0b16" data-page-id="65053303">
+                    Контакти
+                </a>
+            </div>
+
+            <div class="footer-element">
+                <a href="/#carousel_840a" data-page-id="65053303">
+                    Відгуки
+                </a>
+            </div>
+            <div class="footer-element">
+                <a  href="/#carousel_acb2" data-page-id="65053303">
+                    Зворотній зв'язок
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom-element">
+            <a class="footer-link" href="/">ReUse Hub &#xa9 2025</a>
+        </div>
+        <div class="empty-container">
+
+        </div>
+    </footer>
 
 <script src="/script.js"></script>
 
@@ -179,7 +213,7 @@
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    background-color: #E5E5E5;
+                    background-color: rgba(255, 255, 255, 0.85);
                     border-radius: 15%;
                     color: white;
                     font-size: 20px;
@@ -199,7 +233,7 @@
                     color: white;
                     font-weight: 700;
                     font-size: 20px;
-                    background-color: rgba(141, 141, 141, 0.4);
+                    background-color: rgba(141, 141, 141, 0.7);
                     padding: 20px 40px;
                     border-radius: 16px;
                     cursor: pointer;

@@ -143,7 +143,7 @@
 
 
 
-<form action="/work" method="post">
+<form action="/" method="post">
 <input class="skip-button" type="submit" value="Пропустити" />
 <input type="hidden" name="_csrf" value="${_csrf.token}" />
 </form>

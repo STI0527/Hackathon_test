@@ -34,5 +34,40 @@
 <body>
 <h2>Google Maps with Chart API</h2>
 <div id="chart_div" style="width: 800px; height: 500px;"></div>
+
+<footer>
+    <div class="empty-container">
+
+    </div>
+    <div class="footer-container">
+        <div class="footer-element">
+            <a href="https://robotcoffees.com/oferta.html" target="_blank">
+                Публічна оферта
+            </a>
+        </div>
+        <div class="footer-element">
+            <a href="/#carousel_0b16" data-page-id="65053303">
+                Контакти
+            </a>
+        </div>
+
+        <div class="footer-element">
+            <a href="/#carousel_840a" data-page-id="65053303">
+                Відгуки
+            </a>
+        </div>
+        <div class="footer-element">
+            <a  href="/#carousel_acb2" data-page-id="65053303">
+                Зворотній зв'язок
+            </a>
+        </div>
+    </div>
+    <div class="footer-bottom-element">
+        <a class="footer-link" href="/">ReUse Hub &#xa9 2025</a>
+    </div>
+    <div class="empty-container">
+
+    </div>
+</footer>
 </body>
 </html>
