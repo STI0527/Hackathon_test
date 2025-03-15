@@ -56,7 +56,7 @@ public class SecurityConfig {
                         .permitAll()
                         ).oauth2Login(oauth2Login->{
                     oauth2Login.loginPage("/login")
-                            .successHandler(((request, response, authentication) -> response.sendRedirect("/work")));})
+                            .successHandler(((request, response, authentication) -> response.sendRedirect("/")));})
                 .csrf(withDefaults());
         return http.build();
     }
