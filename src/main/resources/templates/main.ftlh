@@ -70,13 +70,6 @@
 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
 </form>
 
-<div class="search">
-<form action="/" method="get"/>
-        Пошук за назвою оголошення: <input type="text" name="title"/>
-
-<input type="submit" value="Пошук"/>
-        </form>
-</div>
 
 <!--<div class="search">-->
 <!--<div class="form-outline" data-mdb-input-init>-->
@@ -97,40 +90,51 @@
 <!--<a href="/login">Авторизуватися</h3></a>-->
 <!--        </#if>-->
 
-<div class="product_list">
-<#list products as product>
-<p><img src="/images/${product.images[0].id}" height="150px" width="150px"/> ${product.title} ${product.price} USD| <a href="/products/${product.id}">Додатково</a></p>
-
-
-<#else>
-<h3><i>Оголошень немає</i></h3>
-
-        </#list>
-        </div>
 
 <hr></hr>
 
-<#if user.email??>
-<center>
-<button onclick="toggleForm()">Додати оголошення</button>
-<div id="productForm" style="display: none; margin-top: 20px;">
-<form action="/products/create" method="post" enctype="multipart/form-data">
-    Назва товару: <input type="text" name="title" placeholder="..." required><br><br>
-    Опис: <input type="text" name="description" placeholder="..." style="width: 200px; height: 50px;"
-                 required><br><br>
-    Ціна: <input type="number" name="price" step="100" min="0" placeholder="..." required><br><br>
-    Місто: <input type="text" name="city" placeholder="..." required><br><br>
-    Додайте фотографії до оголошення<br><br>
-    <input type="file" name="file1"/><br><br>
-    <input type="file" name="file2"/><br><br>
-    <input type="file" name="file3"/><br><br>
-
-    <input type="hidden" name="_csrf" value="${_csrf.token}">
-    <input type="submit" value="Додати товар"/>
+<form action="/marketplace" method="get">
+<button type="submit">
+Маркетплейс
+</button>
+<input type="hidden" name="_csrf" value="${_csrf.token}"/>
 </form>
-</div>
-</center>
-        </#if>
+
+<br><br>
+
+    <form action="/marketplace" method="get">
+        <button type="submit">
+            Маркетплейс
+        </button>
+        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+    </form>
+
+    <br><br>
+
+        <form action="/exchange" method="get">
+            <button type="submit">
+                Обмін
+            </button>
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+        </form>
+
+        <br><br>
+
+            <form action="/repair" method="get">
+                <button type="submit">
+                    Ремонт
+                </button>
+                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+            </form>
+
+            <br><br>
+
+                <form action="/referal" method="get">
+                    <button type="submit">
+                        Реферальна система
+                    </button>
+                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                </form>
 
 <script src="/script.js"></script>
 

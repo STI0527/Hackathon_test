@@ -37,9 +37,8 @@ public class ProductController {
 
 
     @GetMapping("/")
-    public String products(@RequestParam(name = "title", required = false) String title, Model model, Principal principal,
+    public String main(@RequestParam(name = "title", required = false) String title, Model model, Principal principal,
                            Authentication authentication, User user) throws IOException {
-        model.addAttribute("products", productService.productList(title));
 
         if (authentication instanceof OAuth2AuthenticationToken token) {
             // Якщо аутентифікація через OAuth2
@@ -52,13 +51,7 @@ public class ProductController {
             model.addAttribute("user", productService.getUserByPrincipal(principal));
         }
 
-        List<Image> images = new ArrayList<>();
-        for (int i = 0; i < productService.productList(title).size(); i++) {
-            images.add(productService.productList(title).get(i).getImages().getFirst());
-        }
-        model.addAttribute("images", images);
-
-        return "products";
+        return "main";
     }
 
     @PostMapping("/products/create")

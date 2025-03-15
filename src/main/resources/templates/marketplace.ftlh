@@ -78,6 +78,28 @@
 </form>
         </div>
 
+<#if user.email??>
+<center>
+<button onclick="toggleForm()">Додати оголошення</button>
+<div id="productForm" style="display: none; margin-top: 20px;">
+    <form action="/products/create" method="post" enctype="multipart/form-data">
+        Назва товару: <input type="text" name="title" placeholder="..." required><br><br>
+        Опис: <input type="text" name="description" placeholder="..." style="width: 200px; height: 50px;"
+                     required><br><br>
+        Ціна: <input type="number" name="price" step="100" min="0" placeholder="..." required><br><br>
+        Місто: <input type="text" name="city" placeholder="..." required><br><br>
+        Додайте фотографії до оголошення<br><br>
+        <input type="file" name="file1"/><br><br>
+        <input type="file" name="file2"/><br><br>
+        <input type="file" name="file3"/><br><br>
+
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <input type="submit" value="Додати товар"/>
+    </form>
+</div>
+</center>
+        </#if>
+
         <!--<div class="search">-->
         <!--<div class="form-outline" data-mdb-input-init>-->
         <!--    <input id="search-focus" type="search" id="form1" class="form-control" />-->
