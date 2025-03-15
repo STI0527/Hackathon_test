@@ -5,7 +5,7 @@
     <script>
         google.charts.load("current,{
         "packages":["map"],
-        "mapsApiKey": "api key"});
+        "mapsApiKey": "AIzaSyCSqwdmdwdSvp2EwsAvmP9wbhsXkbAAjt0"});
         google.charts.setOnLoadCallback(drawChart);
 
         function drawCart(){
