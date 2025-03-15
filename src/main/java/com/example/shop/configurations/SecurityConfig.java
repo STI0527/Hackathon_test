@@ -54,7 +54,9 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                         .permitAll()
-                        )
+                        ).oauth2Login(oauth2Login->{
+                    oauth2Login.loginPage("/login")
+                            .successHandler(((request, response, authentication) -> response.sendRedirect("/work")));})
                 .csrf(withDefaults());
         return http.build();
     }

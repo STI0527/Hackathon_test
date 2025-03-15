@@ -2,8 +2,13 @@ package com.example.shop.controller;
 
 import com.example.shop.models.Image;
 import com.example.shop.models.Product;
+import com.example.shop.models.User;
 import com.example.shop.services.ProductService;
+import com.example.shop.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +27,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final UserService userService;
 
 //Через анотацію @RequiredArgsConstructor ці рядки не потрібні;
     //____________________________________________________________
@@ -31,9 +37,20 @@ public class ProductController {
 
 
     @GetMapping("/")
-    public String products(@RequestParam(name = "title", required = false) String title, Model model, Principal principal) {
+    public String products(@RequestParam(name = "title", required = false) String title, Model model, Principal principal,
+                           Authentication authentication, User user) throws IOException {
         model.addAttribute("products", productService.productList(title));
-        model.addAttribute("user", productService.getUserByPrincipal(principal));
+
+        if (authentication instanceof OAuth2AuthenticationToken token) {
+            // Якщо аутентифікація через OAuth2
+            userService.createUserFromOAuth2(model, token);
+            String email = token.getPrincipal().getAttribute("email");
+            user = userService.getUserByEmail(email);
+            model.addAttribute("user", user);
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            // Якщо аутентифікація через ім'я користувача та пароль
+            model.addAttribute("user", productService.getUserByPrincipal(principal));
+        }
 
         List<Image> images = new ArrayList<>();
         for (int i = 0; i < productService.productList(title).size(); i++) {

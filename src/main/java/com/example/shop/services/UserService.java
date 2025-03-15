@@ -10,10 +10,16 @@ import com.example.shop.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URL;
+import java.io.InputStream;
+import org.apache.commons.io.IOUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -60,6 +66,57 @@ public class UserService {
 
     }
 
+    public void createUserFromOAuth2(Model model, OAuth2AuthenticationToken token) throws IOException {
+        OAuth2User oAuth2User = token.getPrincipal();
+        String email = oAuth2User.getAttribute("email");
+
+        // Якщо користувач вже існує, повертаємо існуючого
+        User existingUser = userRepository.findByEmail(email);
+        if (existingUser != null) {
+            if (existingUser.getRoles().contains(Role.ROLE_ADMIN)) {
+                model.addAttribute("admin", true);
+            }
+            // Якщо користувач існує, можемо просто логінити його або повернути відповідне повідомлення
+            model.addAttribute("message", "Ласкаво просимо назад, " + existingUser.getName());
+            return;
+        }
+
+        // Якщо користувач новий, створюємо його
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setName(oAuth2User.getAttribute("name"));
+        newUser.setPhoneNumber("Не вказаний");
+        newUser.setActive(true);
+        newUser.getRoles().add(Role.ROLE_ADMIN);
+
+        // Створення аватара
+        Avatar userAvatar = new Avatar();
+        String avatarUrl = oAuth2User.getAttribute("picture");
+        if (avatarUrl != null) {
+            try {
+                URL url = new URL(avatarUrl);
+                System.out.println("Завантаження аватара з: " + avatarUrl);
+                InputStream inputStream = url.openStream();
+                byte[] bytes = IOUtils.toByteArray(inputStream);
+                inputStream.close();
+
+                userAvatar.setBytes(bytes);
+                userAvatar.setSize((long) bytes.length); // Виправлено! Установка розміру файлу
+                userAvatar.setContentType("image/jpeg");  // Або отримати коректний тип контенту з заголовків HTTP
+                userAvatar.setOriginalFileName(email + ".jpg");
+
+                avatarRepository.save(userAvatar); // Спочатку зберігаємо аватар
+                newUser.setAvatar(userAvatar); // Потім прив’язуємо до користувача
+            }
+            catch (Exception e){
+                System.out.println(e);
+            }
+        }
+// Збереження нового користувача
+        newUser.setAvatar(userAvatar);
+        userRepository.save(newUser);
+    }
+
 
     public Avatar toAvatarEntity(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
@@ -103,7 +160,7 @@ public class UserService {
 
         userRepository.save(user);
     }
-
+    public User getUserByEmail(String email){return userRepository.findByEmail(email);}
     public User getUserById(Long id){
         return userRepository.findById(id).orElse(null);
     }
