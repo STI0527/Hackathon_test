@@ -108,4 +108,8 @@ public class ProductService {
 //        return null;
         return productRepository.findById(id).orElse(null);
     }
+
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
 }

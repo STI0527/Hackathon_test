@@ -164,4 +164,9 @@ public class UserService {
     public User getUserById(Long id){
         return userRepository.findById(id).orElse(null);
     }
+
+    public User findUserByPrincipal(String principalName) {
+
+        return userRepository.findByEmail(principalName);
+    }
 }

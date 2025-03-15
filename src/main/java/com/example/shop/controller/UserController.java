@@ -6,6 +6,7 @@ import com.example.shop.models.Product;
 import com.example.shop.models.User;
 import com.example.shop.repositories.AvatarRepository;
 import com.example.shop.repositories.UserRepository;
+import com.example.shop.services.ProductService;
 import com.example.shop.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final AvatarRepository avatarRepository;
+    private final ProductService productService;
 
     @GetMapping("/login")
     public String login(){
@@ -94,6 +97,39 @@ public class UserController {
         model.addAttribute("products", user.getProducts());
         return "profile";
     }
+
+
+    @GetMapping("/marketplace")
+    public String toMarketplace(Model model, Principal principal){
+        model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        model.addAttribute("products", productService.findAll());
+        return "marketplace";
+    }
+
+
+    @GetMapping("/exchange")
+    public String toExchange(Model model, Principal principal){
+        model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        model.addAttribute("products", productService.findAll());
+        return "exchange";
+    }
+
+    @GetMapping("/repair")
+    public String toRepair(Model model, Principal principal){
+        model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        model.addAttribute("products", productService.findAll());
+        return "repair";
+    }
+
+    @GetMapping("/referal")
+    public String toReferal(Model model, Principal principal){
+        model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        model.addAttribute("products", productService.findAll());
+        return "referal";
+    }
+
+
+
 
 
 }
