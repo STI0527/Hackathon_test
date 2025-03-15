@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 @Entity
 @Table(name = "IMAGES")
 @Data
@@ -41,6 +44,19 @@ public class Image {
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)//фотографії -> товар;
     private Product product;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Image image = (Image) o;
+        return isPreviewImage() == image.isPreviewImage() && Objects.equals(getId(), image.getId()) && Objects.equals(getName(), image.getName()) && Objects.equals(getOriginalFileName(), image.getOriginalFileName()) && Objects.equals(getSize(), image.getSize()) && Objects.equals(getContentType(), image.getContentType()) && Arrays.equals(getBytes(), image.getBytes()) && Objects.equals(getProduct(), image.getProduct());
+    }
 
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(getId(), getName(), getOriginalFileName(), getSize(), getContentType(), isPreviewImage(), getProduct());
+        result = 31 * result + Arrays.hashCode(getBytes());
+        return result;
+    }
 }
 

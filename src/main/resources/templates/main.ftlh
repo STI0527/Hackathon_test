@@ -93,17 +93,11 @@
 
 <hr></hr>
 
-<form action="/marketplace" method="get">
-<button type="submit">
-Маркетплейс
-</button>
-<input type="hidden" name="_csrf" value="${_csrf.token}"/>
-</form>
 
+<br><br>
 <br><br>
 
     <form action="/marketplace" method="get">
-        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <button type="submit">
             Маркетплейс
         </button>
@@ -115,7 +109,6 @@
             <button type="submit">
                 Обмін
             </button>
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         </form>
 
         <br><br>
@@ -124,7 +117,6 @@
                 <button type="submit">
                     Ремонт
                 </button>
-                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             </form>
 
             <br><br>
@@ -133,7 +125,6 @@
                     <button type="submit">
                         Реферальна система
                     </button>
-                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                 </form>
 
 <script src="/script.js"></script>

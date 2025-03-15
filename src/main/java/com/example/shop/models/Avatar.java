@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
 
 @Entity
 @Table(name = "avatars")
@@ -43,6 +45,18 @@ public class Avatar {
     @OneToOne(mappedBy = "avatar", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User user;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Avatar avatar = (Avatar) o;
+        return Objects.equals(getId(), avatar.getId()) && Objects.equals(getName(), avatar.getName()) && Objects.equals(getOriginalFileName(), avatar.getOriginalFileName()) && Objects.equals(getSize(), avatar.getSize()) && Objects.equals(getContentType(), avatar.getContentType()) && Arrays.equals(getBytes(), avatar.getBytes()) && Objects.equals(getUser(), avatar.getUser());
+    }
 
-
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(getId(), getName(), getOriginalFileName(), getSize(), getContentType());
+        result = 31 * result + Arrays.hashCode(getBytes());
+        return result;
+    }
 }

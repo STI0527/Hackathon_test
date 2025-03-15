@@ -147,6 +147,8 @@
         <input type="file" name="file2"/><br><br>
         <input type="file" name="file3"/><br><br>
 
+            <input type="hidden" name="type" value="SELL" required/>
+
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <input type="submit" value="Додати товар"/>
     </form>

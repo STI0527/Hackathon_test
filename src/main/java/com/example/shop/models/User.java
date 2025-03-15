@@ -49,7 +49,18 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Product> products = new ArrayList<>();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return isActive() == user.isActive() && getCoins() == user.getCoins() && Objects.equals(getId(), user.getId()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPhoneNumber(), user.getPhoneNumber()) && Objects.equals(getName(), user.getName()) && Objects.equals(getAvatar(), user.getAvatar()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getRoles(), user.getRoles()) && Objects.equals(getDateOfRegistration(), user.getDateOfRegistration()) && Objects.equals(getProducts(), user.getProducts());
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getEmail(), getPhoneNumber(), getName(), isActive(), getPassword(), getCoins(), getRoles(), getDateOfRegistration(), getProducts());
+    }
 
     public void addAvatar(Avatar avatar){
         this.avatar = avatar;
