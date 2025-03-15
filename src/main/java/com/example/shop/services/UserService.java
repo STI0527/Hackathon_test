@@ -3,10 +3,13 @@ package com.example.shop.services;
 
 import com.example.shop.enums.Role;
 import com.example.shop.models.Avatar;
+import com.example.shop.models.ConfirmationToken;
 import com.example.shop.models.Image;
 import com.example.shop.models.User;
 import com.example.shop.repositories.AvatarRepository;
+import com.example.shop.repositories.ConfirmationTokenRepository;
 import com.example.shop.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +23,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
+
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,6 +36,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AvatarRepository avatarRepository;
+    private final ConfirmationTokenService confirmationTokenService;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
     public boolean createUser(User user, MultipartFile fileAvatar) throws IOException {
         if(userRepository.findByEmail(user.getEmail()) != null)
             return false;
@@ -57,11 +64,15 @@ public class UserService {
         }
 
 
-        user.setActive(true);
+        user.setActive(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_USER);
         log.info("\u001B[31mSaving new User with email {}\u001B[0m", user.getEmail());
         userRepository.save(user);
+
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
         return true;
 
     }
@@ -134,11 +145,62 @@ public class UserService {
 
     }
 
+    @Transactional
+    public String confirmToken(String token) {
+        log.info("\u001b[31mReceived token: " + token + "\u001b[0m");
+        ConfirmationToken confirmationToken = confirmationTokenService
+                .getToken(token)
+                .orElseThrow(() ->
+                        new IllegalStateException("token not found"));
+
+
+        if (confirmationToken.getConfirmedAt() != null) {
+            System.out.println("email already confirmed");
+            log.info("\u001b[31memail already confirmed\u001b[0m");
+            return "/login?confirmed";
+        }
+
+
+        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
+
+        if (expiredAt.isBefore(LocalDateTime.now())) {
+            log.info("\u001b[31mtoken expired\u001b[0m");
+            Optional<User> userOptional = userRepository.findById(confirmationToken.getId());
+            if (userOptional.isPresent()) {
+                deleteUser(userOptional.get().getId());
+            } else {
+                log.warn("User with ID {} not found. Skipping deletion.", confirmationToken.getId());
+            }
+            return "/login?expired";
+
+        }
+
+
+        confirmationTokenService.setConfirmedAt(token);
+        confirmationTokenRepository.save(confirmationToken);
+        enableUser(confirmationToken.getUser().getEmail());
+
+
+        confirmationToken.getUser().setActive(true);
+        userRepository.save(confirmationToken.getUser());
+
+        return "confirmation";
+    }
+
 
     public List<User> list(){
         return userRepository.findAll();
     }
 
+    public void deleteUser(Long id) {
+        List<ConfirmationToken> tokens = confirmationTokenRepository.findAllByUserId(id);
+        if (!tokens.isEmpty()) {
+            confirmationTokenRepository.deleteAll(tokens);
+        }
+        userRepository.deleteById(id);
+
+        log.info("Deleted user with ID {}", id);
+    }
 
     public void banUser(Long id) {
         User user = userRepository.findById(id).orElse(null);
@@ -161,6 +223,9 @@ public class UserService {
 
         userRepository.save(user);
     }
+    public void enableUser(String email) {
+        userRepository.enableUser(email);
+    }
     public User getUserByEmail(String email){return userRepository.findByEmail(email);}
     public User getUserById(Long id){
         return userRepository.findById(id).orElse(null);
@@ -170,4 +235,6 @@ public class UserService {
 
         return userRepository.findByEmail(principalName);
     }
+
+
 }

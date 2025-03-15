@@ -69,7 +69,23 @@
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             <input class="authorization_form_submit" type="submit" value="Вхід"/>
         </form>
+
+        <#if message_confirmed??>
+        ${message_confirmed}
+    </#if>
+
+
+    <#if message_already_confirmed??>
+    ${message_already_confirmed}
+</#if>
+
+        <!-- Повідомлення про термін дії токену -->
+<#if message_expired??>
+${message_expired}
+
+</#if>
     </div>
+
 
     <form action="/oauth2/authorization/google" method="GET">
         <button type="submit" class="login-with-google-btn">
