@@ -6,51 +6,44 @@
     <link rel="icon" type="image/png" href="/icon.png">
 </head>
 <body>
-<header class="header_advanced">
-    <div class="container">
-        <div class="header_advanced_inner">
-        <button class="burger_menu-btn">
-<!--            <span class="burger_span"></span>-->
-        </button>
-        <h1 class="header_title">Hackathon</h1>
-
+<header>
+    <div class="header-left"></div>
+    <a href="/">YUKI — СМАК МАЙБУТНЬОГО</a>
+    <div id="toggleMenu" class="account-logo-container">
         <#if user.email??>
-        <a href="/profile/${user.id}">
-            <img class="user_avatar" src="/default_avatar.png" alt="avatar">
-        </a>
-    </#if>
+        <img class="account-logo-image" src="/avatars/${user.avatar.id}">
+        <#else>
+        <img class="account-logo-image" src="/default_avatar.png">
+        </#if>
 
-        <#if !user.email??>
-        <a href="/login">
-            <img class="user_avatar" src="/default_avatar.png" alt="avatar">
-        </a>
-    </#if>
+        <img class="dropdown-icon" src="/dropdown-logo.png">
     </div>
-        </div>
+    <div class="header-right"></div>
+
 </header>
 
-<div class="burger_menu">
-    <div class="burger_menu-inner">
+<div id="menu" class="user-menu-container">
+    <div class="user-menu-inner">
         <#if user.email??>
-            <img class="burger_user-avatar" src="/default_avatar.png" alt="avatar">
+            <img class="user-avatar" src="/default_avatar.png" alt="avatar">
 
-            <h3 class="burger_menu-user">${user.name}</h3>
+            <h3 class="user_menu-name" >${user.name}</h3>
                 <form action="/profile/${user.id}" method="post">
-                    <input class="burger_menu_personal burger_btn-base" type="submit" name="profile" value="Особистий кабінет"/>
+                    <input class="user-menu-private-page-text" type="submit" name="profile" value="Особистий кабінет"/>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                 </form>
 
         <#if user.isAdmin()>
-                <a class="burger_menu_admin burger_btn-base" href="/admin">Панель адміністратора</a>
+                <a class="user-menu-admin-link" href="/admin">Панель адміністратора</a>
         </#if>
 
         <form action="/logout" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <input class="burger_menu_quit burger_btn-base" type="submit" value="Вийти з акаунта"/>
+            <input class="user-menu-quit-text" type="submit" value="Вийти з акаунта"/>
         </form>
         <#else>
         <img class="user_avatar" src="/default_avatar.png" alt="avatar">
-            <a class="burger_menu_authorize burger_btn-base" href="/login">Авторизуватися</h3></a>
+            <a class="" href="/login">Авторизуватися</h3></a>
     </#if>
 
     </div>

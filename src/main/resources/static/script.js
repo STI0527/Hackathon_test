@@ -13,5 +13,17 @@ function toggleForm() {
         const form = document.getElementById("productForm");
         form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
     }
+    function toggleHistory() {
+    const form = document.getElementById("historyTable");
+                form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
+
+
+    }
+
+    function toggleMyProducts () {
+    const list = document.getElementById("myProducts");
+    list.style.display = (list.style.display === "none" || list.style.display === "") ? "block" :"none";
+
+    }
 
 
