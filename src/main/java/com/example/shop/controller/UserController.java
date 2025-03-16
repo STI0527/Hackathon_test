@@ -152,7 +152,7 @@ public class UserController {
 
         }
 
-        model.addAttribute("products", productService.findAll());
+        model.addAttribute("products", productService.findSELL());
         return "marketplace";
     }
 
@@ -165,7 +165,7 @@ public class UserController {
         } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
             model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
         }
-        model.addAttribute("products", productService.findAll());
+        model.addAttribute("products", productService.findEXCHANGE());
         return "exchange";
     }
 
@@ -176,7 +176,7 @@ public class UserController {
     } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
         model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
     }
-        model.addAttribute("products", productService.findAll());
+        model.addAttribute("products", productService.findREPAIR());
         return "repair";
     }
 

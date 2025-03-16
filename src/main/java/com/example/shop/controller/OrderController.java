@@ -13,6 +13,9 @@ import org.apache.poi.ss.usermodel.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +40,12 @@ public class OrderController {
 
 
     @GetMapping("/statistics")
-    public String getStatistics(Model model, Principal principal){
-        model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+    public String getStatistics(Model model, Principal principal, Authentication authentication){
+        if (authentication instanceof OAuth2AuthenticationToken token) {
+            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        }
         if (model.containsAttribute("orders")) {
             model.addAttribute("orders", model.getAttribute("orders"));
         } else {
@@ -50,8 +57,12 @@ public class OrderController {
     }
 
     @PostMapping("/statistics")
-    public String toStatistics(Model model, Principal principal){
-        model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+    public String toStatistics(Model model, Principal principal, Authentication authentication){
+        if (authentication instanceof OAuth2AuthenticationToken token) {
+            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        }
         model.addAttribute("orders", orderService.getOrderList());
         model.addAttribute("period", "all");
         return "statistics";

@@ -89,6 +89,75 @@
 
 </div>
 
+<#if user.isAdmin()??>
+<div class="add-product-window">
+
+    <div id="addForm" class="add-product-container">
+
+        <div class="add-product-top-container">
+
+            <div class="add-title">
+                Додайте товар
+            </div>
+
+            <div class="close-button-container">
+                <button id="close-button" type="button" class="close-button" data-bs-dismiss="toast" aria-label="Закрити">X</button>
+            </div>
+
+        </div>
+
+        <div class="form-add-container">
+            <form id="productFormToast" action="/products/create" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <input type="hidden" name="type" value="EXCHANGE" required/>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Назва..." required>
+                    <label for="floatingDescription">Назва :</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  id="floatingDescription" name="description" placeholder="Опис..." required>
+                    <label for="floatingDescription">Опис:</label>
+
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingPrice" name="price" placeholder="Ціна..." required>
+                    <label for="floatingPrice">Ціна:</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingCity" name="city" placeholder="Місто..." required>
+                    <label for="floatingCity">Місто:</label>
+                </div>
+
+
+
+                <div class="add-subtitle">Додайте фотографії до оголошення</div>
+
+                <div class="add-files-container">
+                    <label for="file1" class="file-upload-btn">Вибрати файл</label>
+                    <input type="file" name="file1" id="file1" required>
+
+                    <label for="file2" class="file-upload-btn">Вибрати файл</label>
+                    <input type="file" name="file2" id="file2">
+
+                    <label for="file3" class="file-upload-btn">Вибрати файл</label>
+                    <input type="file" name="file3" id="file3">
+                </div>
+
+                <div class="confirm-adding-container">
+                    <p id="file-error" style="color: red; display: none;">Будь ласка, виберіть файл!</p>
+                    <input  class="add-button-confirm" type="submit" onsubmit="submitForm(event)" value="Додати">
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+</#if>
+
         <!--<div class="search">-->
         <!--<div class="form-outline" data-mdb-input-init>-->
         <!--    <input id="search-focus" type="search" id="form1" class="form-control" />-->

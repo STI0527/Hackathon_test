@@ -1,5 +1,6 @@
 package com.example.shop.services;
 
+import com.example.shop.enums.AdvertType;
 import com.example.shop.models.Image;
 import com.example.shop.models.Product;
 import com.example.shop.models.User;
@@ -138,5 +139,29 @@ public class ProductService {
 
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    public List<Product> findSELL() {
+        List<Product> products = new ArrayList<>();
+        for(Product product: findAll()){
+            if (product.getType()== AdvertType.SELL) products.add(product);
+        }
+        return products;
+    }
+
+    public List<Product> findEXCHANGE() {
+        List<Product> products = new ArrayList<>();
+        for(Product product: findAll()){
+            if (product.getType()== AdvertType.EXCHANGE) products.add(product);
+        }
+        return products;
+    }
+
+    public List<Product> findREPAIR() {
+        List<Product> products = new ArrayList<>();
+        for(Product product: findAll()){
+            if (product.getType()== AdvertType.REPAIR) products.add(product);
+        }
+        return products;
     }
 }
