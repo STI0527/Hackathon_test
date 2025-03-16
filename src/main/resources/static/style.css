@@ -1395,7 +1395,7 @@ margin-bottom: 8px;
  display: flex;
  justify-content: left;
  align-items: center;
-
+margin: 20px;
  }
 
  .liqpay-button {
@@ -1407,6 +1407,7 @@ margin-bottom: 8px;
 
  padding: 10px 42px 10px 42px;
  cursor: pointer;
+ margin-top: 20px;
 
  transition: color 0.1s,
  background-color 0.1s,

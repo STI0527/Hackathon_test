@@ -4,59 +4,61 @@
     <title>Hackathon Test</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<header class="header_advanced">
-    <div class="container">
-        <div class="header_advanced_inner">
-            <button class="burger_menu-btn">
-                <!--            <span class="burger_span"></span>-->
-            </button>
-            <h1 class="header_title">Hackathon</h1>
-
-            <#if user.email??>
-            <a href="/profile/${user.id}">
-                <img class="user_avatar" src="/default_avatar.png" alt="avatar">
-            </a>
+<header>
+    <div class="header-left"></div>
+    <a href="/">ReUse Hub</a>
+    <div id="toggleMenu" class="account-logo-container">
+        <#if user.email??>
+        <img class="account-logo-image" src="/avatars/${user.avatar.id}">
+        <#else>
+        <img class="account-logo-image" src="/default_avatar.png">
         </#if>
 
-        <#if !user.email??>
-        <a href="/login">
-            <img class="user_avatar" src="/default_avatar.png" alt="avatar">
-        </a>
-    </#if>
-</div>
-</div>
+        <img class="dropdown-icon" src="/dropdown-logo.png">
+    </div>
+    <div class="header-right"></div>
+
 </header>
 
-<div class="burger_menu">
-<div class="burger_menu-inner">
-    <#if user.email??>
-    <img class="burger_user-avatar" src="/default_avatar.png" alt="avatar">
+<div class="body-flex">
 
-        <h3 class="burger_menu-user">${user.name}</h3>
-        <form action="/profile/${user.id}" method="post">
-            <input class="burger_menu_personal burger_btn-base" type="submit" name="profile" value="Особистий кабінет"/>
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        </form>
+    <main class="main-flex">
 
-        <#if user.isAdmin()>
-        <a class="burger_menu_admin burger_btn-base" href="/admin">Панель адміністратора</a>
-    </#if>
+    <div id="menu" class="user-menu-container">
+        <div class="user-menu-inner">
+            <#if user.email??>
 
-    <form action="/logout" method="post">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <input class="burger_menu_quit burger_btn-base" type="submit" value="Вийти з акаунта"/>
-    </form>
-    <#else>
-    <img class="user_avatar" src="/default_avatar.png" alt="avatar">
-        <a class="burger_menu_authorize burger_btn-base" href="/login">Авторизуватися</h3></a>
-</#if>
+            <img class="user-avatar" src="/avatars/${user.avatar.id}" alt="avatar">
 
+                <div class="user_menu-name">${user.name}</div>
+
+                <form action="/profile/${user.id}" method="post">
+                    <input class="user-menu-private-page-text" type="submit" name="profile" value="Особистий кабінет"/>
+                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                </form>
+
+
+                <#if user.isAdmin()>
+                <a class="user-menu-admin-link" href="/admin">Панель адміністратора</a>
+            </#if>
+
+
+            <form action="/logout" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input class="user-menu-quit-text" type="submit" value="Вийти з акаунта"/>
+            </form>
+            <#else>
+            <img class="user-avatar" src="/default_avatar.png" alt="avatar">
+                <a class="burger_menu_authorize burger_btn-base" href="/login">Авторизуватися</h3></a>
+        </#if>
+
+    </div>
 </div>
-        </div>
 
-<h3>Інтернет-магазин |</h3>
 
         <!--<#if user.email??>-->
         <!--<h3>Ім'я користувача: <i>${user.name}</i></h3>-->
@@ -65,39 +67,96 @@
         <!--<input type="submit" value="Вийти з акаунта"/>-->
         <!--</form>-->
 
-<form action="/profile/${user.id}" method="post">
-<input type="submit" name="profile" value="Особистий кабінет"/>
-<input type="hidden" name="_csrf" value="${_csrf.token}"/>
-</form>
+<div class="search-container">
 
-<div class="search">
-<form action="/" method="get"/>
-Пошук за назвою оголошення: <input type="text" name="title"/>
+    <div class="search-empty-container">
 
-<input type="submit" value="Пошук"/>
-</form>
+    </div>
+
+    <form class="middle-container" action="/marketplace" method="get"/>
+
+    <input class="search-bar" type="text"  name="title" placeholder="ПОШУК...">
+        <input class="search-button" type="submit" value=""/>
+
+    </form>
+
+    <#if user.isAdmin()>
+    <button id="addButton" class="add-button" onclick="showForm()">Додати товар</button>
+</#if>
+
+<div class="search-empty-container">
+
+</div>
+
+</div>
+
+<#if user.isAdmin()??>
+<div class="add-product-window">
+
+    <div id="addForm" class="add-product-container">
+
+        <div class="add-product-top-container">
+
+            <div class="add-title">
+                Додайте товар
+            </div>
+
+            <div class="close-button-container">
+                <button id="close-button" type="button" class="close-button" data-bs-dismiss="toast" aria-label="Закрити">X</button>
+            </div>
+
         </div>
 
-<#if user.email??>
-<center>
-<button onclick="toggleForm()">Додати оголошення</button>
-<div id="productForm" style="display: none; margin-top: 20px;">
-    <form action="/products/create" method="post" enctype="multipart/form-data">
-        Назва товару: <input type="text" name="title" placeholder="..." required><br><br>
-        Опис: <input type="text" name="description" placeholder="..." style="width: 200px; height: 50px;"
-                     required><br><br>
-        Ціна: <input type="number" name="price" step="100" min="0" placeholder="..." required><br><br>
-        Місто: <input type="text" name="city" placeholder="..." required><br><br>
-        Додайте фотографії до оголошення<br><br>
-        <input type="file" name="file1"/><br><br>
-        <input type="file" name="file2"/><br><br>
-        <input type="file" name="file3"/><br><br>
+        <div class="form-add-container">
+            <form id="productFormToast" action="/products/create" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <input type="hidden" name="type" value="SELL" required/>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Назва..." required>
+                    <label for="floatingDescription">Назва :</label>
+                </div>
 
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <input type="submit" value="Додати товар"/>
-    </form>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  id="floatingDescription" name="description" placeholder="Опис..." required>
+                    <label for="floatingDescription">Опис:</label>
+
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingPrice" name="price" placeholder="Ціна..." required>
+                    <label for="floatingPrice">Ціна:</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingCity" name="city" placeholder="Місто..." required>
+                    <label for="floatingCity">Місто:</label>
+                </div>
+
+
+
+                <div class="add-subtitle">Додайте фотографії до оголошення</div>
+
+                <div class="add-files-container">
+                    <label for="file1" class="file-upload-btn">Вибрати файл</label>
+                    <input type="file" name="file1" id="file1" required>
+
+                    <label for="file2" class="file-upload-btn">Вибрати файл</label>
+                    <input type="file" name="file2" id="file2">
+
+                    <label for="file3" class="file-upload-btn">Вибрати файл</label>
+                    <input type="file" name="file3" id="file3">
+                </div>
+
+                <div class="confirm-adding-container">
+                    <p id="file-error" style="color: red; display: none;">Будь ласка, виберіть файл!</p>
+                    <input  class="add-button-confirm" type="submit" onsubmit="submitForm(event)" value="Додати">
+                </div>
+
+            </form>
+        </div>
+    </div>
+
 </div>
-</center>
+
         </#if>
 
         <!--<div class="search">-->
@@ -167,29 +226,6 @@
 
 <hr></hr>
 
-<#if user.email??>
-<center>
-<button onclick="toggleForm()">Додати оголошення</button>
-<div id="productForm" style="display: none; margin-top: 20px;">
-    <form action="/products/create" method="post" enctype="multipart/form-data">
-        Назва товару: <input type="text" name="title" placeholder="..." required><br><br>
-        Опис: <input type="text" name="description" placeholder="..." style="width: 200px; height: 50px;"
-                     required><br><br>
-        Ціна: <input type="number" name="price" step="100" min="0" placeholder="..." required><br><br>
-        Місто: <input type="text" name="city" placeholder="..." required><br><br>
-        Додайте фотографії до оголошення<br><br>
-        <input type="file" name="file1"/><br><br>
-        <input type="file" name="file2"/><br><br>
-        <input type="file" name="file3"/><br><br>
-
-        <input type="hidden" name="type" value="SELL" required/>
-
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <input type="submit" value="Додати товар"/>
-    </form>
-</div>
-</center>
-        </#if>
 
 <footer>
 <div class="empty-container">
@@ -229,5 +265,24 @@
 <script src="/script.js"></script>
 
         </body>
+        <script>
 
+        document.getElementById("toggleMenu").addEventListener("click", function () {
+        const menu = document.getElementById("menu");
+        menu.classList.toggle("active");
+        });
+
+        document.getElementById("addButton").addEventListener("click", function () {
+        const addForm = document.getElementById("addForm");
+        addForm.classList.toggle("active");
+        });
+
+        document.getElementById("close-button").addEventListener("click", function() {
+
+        const addForm = document.getElementById("addForm");
+        addForm.classList.toggle("active");
+        });
+
+
+        </script>
         </html>

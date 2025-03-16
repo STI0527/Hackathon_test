@@ -12,7 +12,7 @@
 
 <body>
 <header>
-    <a href="/">YUKI — СМАК МАЙБУТНЬОГО</a>
+    <a href="/">ReUse Hub</a>
 </header>
 
 <div class="body-flex">

@@ -8,7 +8,7 @@
 
 <body>
 <header>
-    <a href="/work">YUKI — СМАК МАЙБУТНЬОГО</a>
+    <a href="/">ReUse Hub</a>
 </header>
 
 <div class="body-flex">

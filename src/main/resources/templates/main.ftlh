@@ -8,7 +8,7 @@
 <body>
 <header>
     <div class="header-left"></div>
-    <a href="/">YUKI — СМАК МАЙБУТНЬОГО</a>
+    <a href="/">ReUse Hub</a>
     <div id="toggleMenu" class="account-logo-container">
         <#if user.email??>
         <img class="account-logo-image" src="/avatars/${user.avatar.id}">
@@ -56,11 +56,6 @@
 <!--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
 <!--<input type="submit" value="Вийти з акаунта"/>-->
 <!--</form>-->
-
-<form action="/profile/${user.id}" method="post">
-<input type="submit" name="profile" value="Особистий кабінет"/>
-<input type="hidden" name="_csrf" value="${_csrf.token}"/>
-</form>
 
 
 <!--<div class="search">-->
@@ -246,5 +241,23 @@
 
 
                 </style>
+<script>
+    document.getElementById("toggleMenu").addEventListener("click", function () {
+        const menu = document.getElementById("menu");
+        menu.classList.toggle("active");
+    });
 
+    document.getElementById("addButton").addEventListener("click", function () {
+        const addForm = document.getElementById("addForm");
+        addForm.classList.toggle("active");
+    });
+
+    document.getElementById("close-button").addEventListener("click", function() {
+
+    const addForm = document.getElementById("addForm");
+    addForm.classList.toggle("active");
+    });
+
+
+</script>
         </html>

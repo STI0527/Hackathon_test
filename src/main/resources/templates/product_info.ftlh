@@ -13,7 +13,7 @@
 
 <header>
     <div class="header-left"></div>
-    <a href="/work">YUKI — СМАК МАЙБУТНЬОГО</a>
+    <a href="/">ReUse Hub</a>
     <div id="toggleMenu" class="account-logo-container">
         <#if user.email??>
         <img class="account-logo-image" src="/avatars/${user.avatar.id}">
@@ -100,48 +100,51 @@
 
     </div> <!-- Закриваючий тег для left-container -->
 
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script>
-    const swiper = new Swiper('.swiper', {
-        loop: true,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-    });
-</script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        const swiper = new Swiper('.swiper', {
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    </script>
 
-<div class="right-container">
-
-<div class="product-info-title">${product.title}</div>
-<div class="product-info-price">${product.price} ₴</div>
-<div class="product-info-description"> ${product.description}</div>
-<div class="pink-container">
-<div class="product-info-city"> ${product.city}</div>
-<div class="product-info-author"> Автор: <a href="/user/${product.user.id}">${product.user.name}</a></div
-</div>
-<!--<b>Номер телефона:</b>${product.user.phoneNumber}<br>-->
-<hr>
-<!--<form action = "/products/delete/${product.id}" method = "post">-->
-<!--<input type = "submit" value = "Видалити товар"/>-->
-<!--</form>-->
-    <div class="product-info-buy">
-    <form method="post" accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
-        <input type="hidden" name="data" value="${liqPayData}" />
-        <input type="hidden" name="signature" value="${liqPaySignature}" />
-
-        <button class="liqpay-button">
-            BUY NOW
-        </button>
-    </form>
-</div>
+    <div class="right-container">
 
 
-</div>
+    <div class="product-info-title">${product.title}</div>
+        <div class="product-info-price">${product.price} ₴</div>
+        <div class="product-info-description"> ${product.description}</div>
+        <div class="pink-container">
+            <div class="product-info-city"> ${product.city}</div>
+            <div class="product-info-author"> Автор: <a href="/user/${product.user.id}">${product.user.name}</a></div
+
+            <div class="product-info-buy">
+                <form method="post" accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
+                    <input type="hidden" name="data" value="${liqPayData}" />
+                    <input type="hidden" name="signature" value="${liqPaySignature}" />
+
+                    <button class="liqpay-button">
+                        BUY NOW
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!--<b>Номер телефона:</b>${product.user.phoneNumber}<br>-->
+        <hr>
+        <!--<form action = "/products/delete/${product.id}" method = "post">-->
+        <!--<input type = "submit" value = "Видалити товар"/>-->
+        <!--</form>-->
+
+
+
+    </div>
 </div>
 
 <#if message??>
@@ -152,9 +155,10 @@
 </div>
 
 </#if>
-</body>
+</main>
+        </body>
 
-</html>
+        </html>
 
 
 <script>

@@ -65,10 +65,13 @@ public class ProductController {
     public String createProduct(@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2,
                                 @RequestParam("file3") MultipartFile file3,
                                 @RequestParam("type") AdvertType type,
-                                Product product, Principal principal) throws IOException {
+                                Product product, Principal principal, OAuth2AuthenticationToken token) throws IOException {
 
         product.setType(type);
-        productService.saveProduct(principal, product, file1, file2, file3);
+        if (token==null)
+            productService.saveProduct(principal, product, file1, file2, file3);
+        else
+            productService.saveProduct(token, product, file1, file2, file3);
         return "redirect:/";
     }
 

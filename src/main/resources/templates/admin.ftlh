@@ -10,7 +10,7 @@
 
 <header>
     <div class="header-left"></div>
-    <a href="/work">YUKI — СМАК МАЙБУТНЬОГО</a>
+    <a href="/">ReUse Hub</a>
     <div id="toggleMenu" class="account-logo-container">
         <#if user.email??>
         <img class="account-logo-image" src="/avatars/${user.avatar.id}">
