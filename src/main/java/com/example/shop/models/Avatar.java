@@ -37,6 +37,17 @@ public class Avatar {
     @Column(name = "contentType")
     private String contentType;
 
+    @Override
+    public String toString() {
+        return "Avatar{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", originalFileName='" + originalFileName + '\'' +
+                ", size=" + size +
+                ", contentType='" + contentType + '\'' +
+                ", bytes=" + Arrays.toString(bytes) +
+                '}';
+    }
 
     @Lob
     @Column(name = "bytes", columnDefinition = "longblob")

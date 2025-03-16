@@ -62,6 +62,22 @@ public class User implements UserDetails {
         return Objects.hash(getId(), getEmail(), getPhoneNumber(), getName(), isActive(), getPassword(), getCoins(), getRoles(), getDateOfRegistration(), getProducts());
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", name='" + name + '\'' +
+                ", isActive=" + isActive +
+                ", avatar=" + avatar +
+                ", password='" + password + '\'' +
+                ", coins=" + coins +
+                ", roles=" + roles +
+                ", dateOfRegistration=" + dateOfRegistration +
+                '}';
+    }
+
     public void addAvatar(Avatar avatar){
         this.avatar = avatar;
         avatar.setUser(this);
