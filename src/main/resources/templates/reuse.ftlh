@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Maps Chart</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/png" href="/icon.png">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
         google.charts.load('current', {
@@ -32,7 +34,7 @@
     </script>
 </head>
 <body>
-<h2>Google Maps with Chart API</h2>
+<h2>Мапа точок переробки матеріалів</h2>
 <div id="chart_div" style="width: 800px; height: 500px;"></div>
 
 <footer>
@@ -41,8 +43,8 @@
     </div>
     <div class="footer-container">
         <div class="footer-element">
-            <a href="https://robotcoffees.com/oferta.html" target="_blank">
-                Публічна оферта
+            <a href="/main">
+                Головна
             </a>
         </div>
         <div class="footer-element">
@@ -69,5 +71,6 @@
 
     </div>
 </footer>
+
 </body>
 </html>

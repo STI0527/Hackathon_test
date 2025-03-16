@@ -149,8 +149,8 @@
 </div>
 <div class="footer-container">
     <div class="footer-element">
-        <a href="https://robotcoffees.com/oferta.html" target="_blank">
-            Публічна оферта
+        <a href="/main">
+            Головна
         </a>
     </div>
     <div class="footer-element">

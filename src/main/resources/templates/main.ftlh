@@ -130,7 +130,7 @@
             <div class="img-container">
                 <img class="img-mode" src="recycle.png">
             </div>
-                <form action="/referal" method="get">
+                <form action="/reuse" method="get">
                     <button class="mode-button" type="submit">
                         Переробка
                     </button>
@@ -151,8 +151,8 @@
         </div>
         <div class="footer-container">
             <div class="footer-element">
-                <a href="https://robotcoffees.com/oferta.html" target="_blank">
-                    Публічна оферта
+                <a href="/main">
+                    Головна
                 </a>
             </div>
             <div class="footer-element">
