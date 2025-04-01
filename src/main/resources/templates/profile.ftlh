@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Hackathon Test</title>
+    <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -38,23 +38,23 @@
                 <div class="user_menu-name">${user.name}</div>
 
                 <form action="/profile/${user.id}" method="post">
-                    <input class="user-menu-private-page-text" type="submit" name="profile" value="Особистий кабінет"/>
+                    <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                 </form>
 
 
                 <#if user.isAdmin()>
-                <a class="user-menu-admin-link" href="/admin">Панель адміністратора</a>
+                <a class="user-menu-admin-link" href="/admin">Administration Panel</a>
             </#if>
 
 
             <form action="/logout" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input class="user-menu-quit-text" type="submit" value="Вийти з акаунта"/>
+                <input class="user-menu-quit-text" type="submit" value="Log out"/>
             </form>
             <#else>
             <img class="user-avatar" src="/default_avatar.png" alt="avatar">
-                <a class="burger_menu_authorize burger_btn-base" href="/login">Авторизуватися</h3></a>
+                <a class="burger_menu_authorize burger_btn-base" href="/login">Sign in</h3></a>
         </#if>
 
     </div>
@@ -64,28 +64,28 @@
 
 <div class="profile-container">
     <div class="profile-card">
-        <div class="profile-title">Особистий кабінет</div>
+        <div class="profile-title">Profile</div>
 
 
         <div class="profile-subtitle">${user.name}</div>
 
         <#if user.avatar??>
-        <img class="profile-page-avatar" src="/avatars/${user.avatar.id}" alt="Фото профіля" width="230px" height="216px"/>
+        <img class="profile-page-avatar" src="/avatars/${user.avatar.id}" alt="Profile image" width="230px" height="216px"/>
         <#else>
-        <img class="profile-page-avatar" src="/default_avatar.png" alt="Фото профіля"/>
+        <img class="profile-page-avatar" src="/default_avatar.png" alt="Profile image"/>
     </#if>
 
     <div class="change-avatar-container">
         <form id="uploadForm" action="/changeAvatar/${user.id}" method="post" enctype="multipart/form-data">
             <input id="file-upload" type="file" name="file" onchange="document.getElementById('uploadForm').submit();"/>
             <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-            <label for="file-upload" class="file-upload-btn">Змінити фотографію</label>
+            <label for="file-upload" class="file-upload-btn">Change photo</label>
         </form>
     </div>
 
     <div class="profile-information-container">
-        <div class="profile-user-information">Електронна пошта: ${user.email}</div>
-        <div class="profile-user-information">Телефон: ${user.phoneNumber}</div>
+        <div class="profile-user-information">Email: ${user.email}</div>
+        <div class="profile-user-information">Telephone number: ${user.phoneNumber}</div>
     </div>
 
 
@@ -94,7 +94,7 @@
         <button onclick="toggleMyProducts()" style="background-color: rgba(202, 202, 202, 0.6);
 border-radius: 16px;
 padding: 6px 12px;">
-            Мої оголошення
+            My products
             <img class="dropdown-icon"  style="margin:0;" src="/dropdown-logo.png"></img>
         </button>
 
@@ -102,22 +102,22 @@ padding: 6px 12px;">
 
     <div id="myProducts" style="display: none;">
         <#list products as product>
-        <p>${product.title} ${product.price} USD| <a href="/products/${product.id}">Додатково</a></p>
+        <p>${product.title} ${product.price} USD| <a href="/products/${product.id}">Details</a></p>
         <form action="/products/delete/${product.id}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-            <input type="submit" value="Видалити"/>
+            <input type="submit" value="Delete"/>
         </form>
 
-        <button onclick="toggleForm()">Редагувати</button>
+        <button onclick="toggleForm()">Edit</button>
         <div id="productForm" style="display: none; margin-top: 20px;">
             <form action="/products/edit/${product.id}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="newTitle" id="newDrinkName" placeholder="..." required>
         <br><br>
-        Опис: <input type="text" name="newDescription" placeholder="..."  value="${product.description}" style="width: 200px; height: 50px;"
+        Description: <input type="text" name="newDescription" placeholder="..."  value="${product.description}" style="width: 200px; height: 50px;"
                      required><br><br>
-        Ціна: <input type="number" name="newPrice" step="100" min="0" placeholder="..."  value="${product.price}" required><br><br>
-        Місто: <input type="text" name="newCity" placeholder="..." value="${product.city}" required><br><br>
-        Змініть фотографії оголошення<br><br>
+        Price: <input type="number" name="newPrice" step="100" min="0" placeholder="..."  value="${product.price}" required><br><br>
+        City: <input type="text" name="newCity" placeholder="..." value="${product.city}" required><br><br>
+                Change the advertisement photos<br><br>
         <#if product.images??>
         <#list product.images as image>
         <img src="/images/${image.id}" width="180px" height="180px"/>
@@ -127,7 +127,7 @@ padding: 6px 12px;">
     </#list>
 
         <#else>
-        Немає фотографій
+                No photos available
 
     </#if>
         <br><br>
@@ -137,7 +137,7 @@ padding: 6px 12px;">
         <input type="file" name="newFile3"/><br><br>
 
         <input type="hidden" name="_csrf" value="${_csrf.token}">
-            <input type="submit" value="Редагувати товар"/>
+            <input type="submit" value="Edit Product"/>
         </form>
     </div>
     <#else>
@@ -151,7 +151,7 @@ padding: 6px 12px;">
 
 <#if user.isAdmin()>
 <button id="addButton" class="add-button" onclick="showForm()">
-    Додати товар
+    Add Product
 </button>
 </#if>
 
@@ -166,11 +166,11 @@ padding: 6px 12px;">
         <div class="add-product-top-container">
 
             <div class="add-title">
-                Додайте товар
+                Add Product
             </div>
 
             <div class="close-button-container">
-                <button id="close-button" type="button" class="close-button" data-bs-dismiss="toast" aria-label="Закрити">X</button>
+                <button id="close-button" type="button" class="close-button" data-bs-dismiss="toast" aria-label="Close">X</button>
             </div>
 
         </div>
@@ -179,44 +179,44 @@ padding: 6px 12px;">
             <form id="productFormToast" action="/products/create" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                 <input type="hidden" name="type" value="SELL" required/>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Назва..." required>
-                <label for="floatingDescription">Назва :</label>
-            </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Назва..." required>
+                    <label for="floatingDescription">Назва :</label>
+                </div>
 
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control"  id="floatingDescription" name="description" placeholder="Опис..." required>
-            <label for="floatingDescription">Опис:</label>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  id="floatingDescription" name="description" placeholder="Опис..." required>
+                    <label for="floatingDescription">Опис:</label>
 
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="floatingPrice" name="price" placeholder="Ціна..." required>
-            <label for="floatingPrice">Ціна:</label>
-        </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingPrice" name="price" placeholder="Ціна..." required>
+                    <label for="floatingPrice">Ціна:</label>
+                </div>
 
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="floatingCity" name="city" placeholder="Місто..." required>
-            <label for="floatingCity">Місто:</label>
-        </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingCity" name="city" placeholder="Місто..." required>
+                    <label for="floatingCity">Місто:</label>
+                </div>
 
 
 
-        <div class="add-subtitle">Додайте фотографії до оголошення</div>
+                <div class="add-subtitle">Add photos to the listing</div>
 
-        <div class="add-files-container">
-            <label for="file1" class="file-upload-btn">Вибрати файл</label>
-            <input type="file" name="file1" id="file1" required>
+                <div class="add-files-container">
+                    <label for="file1" class="file-upload-btn">Select file</label>
+                    <input type="file" name="file1" id="file1" required>
 
-            <label for="file2" class="file-upload-btn">Вибрати файл</label>
-            <input type="file" name="file2" id="file2">
+                    <label for="file2" class="file-upload-btn">Select file</label>
+                    <input type="file" name="file2" id="file2">
 
-            <label for="file3" class="file-upload-btn">Вибрати файл</label>
-            <input type="file" name="file3" id="file3">
-        </div>
+                    <label for="file3" class="file-upload-btn">Select file</label>
+                    <input type="file" name="file3" id="file3">
+                </div>
 
-        <div class="confirm-adding-container">
-            <p id="file-error" style="color: red; display: none;">Будь ласка, виберіть файл!</p>
-            <input  class="add-button-confirm" type="submit" onsubmit="submitForm(event)" value="Додати">
+                <div class="confirm-adding-container">
+                    <p id="file-error" style="color: red; display: none;">Please select a file!</p>
+            <input  class="add-button-confirm" type="submit" onsubmit="submitForm(event)" value="Add">
         </div>
 
     </form>
@@ -229,7 +229,7 @@ padding: 6px 12px;">
 
 
 <div class="history-container">
-<button class="add-button" onclick="toggleHistory()">Історія замовлень
+<button class="add-button" onclick="toggleHistory()">Order History
     <img class="dropdown-icon" src="/dropdown-logo.png"></img>
 </button>
 </div>
@@ -242,12 +242,12 @@ padding: 6px 12px;">
     <#list orders as order>
     <tr>
         <th>${order.orderName}</th>
-        <th>${order.orderPrice} грн</th>
+        <th>${order.orderPrice} UAH</th>
         <th>${order.dateOfPurchase}</th>
-        <th><a href="/products/${order.productId}">Замовити ще раз</th>
+        <th><a href="/products/${order.productId}">Order Again</th>
         <#else>
         <div style="background-color: white;">
-            <h3>Замовлень немає</h3>
+            <h3>No Orders</h3>
         </div>
 
     </#list>
@@ -268,23 +268,23 @@ padding: 6px 12px;">
 <div class="footer-container">
     <div class="footer-element">
         <a href="/main">
-            Головна
+            Home
         </a>
     </div>
     <div class="footer-element">
         <a href="/#carousel_0b16" data-page-id="65053303">
-            Контакти
+            Contacts
         </a>
     </div>
 
     <div class="footer-element">
         <a href="/#carousel_840a" data-page-id="65053303">
-            Відгуки
+            Reviews
         </a>
     </div>
     <div class="footer-element">
         <a  href="/#carousel_acb2" data-page-id="65053303">
-            Зворотній зв'язок
+            Feedback
         </a>
     </div>
 </div>

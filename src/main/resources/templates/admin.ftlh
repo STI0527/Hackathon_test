@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <head>
-    <title>Hackathon Test</title>
+    <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.1">
@@ -33,23 +33,23 @@
             <div class="user_menu-name">${user.name}</div>
 
             <form action="/profile/${user.id}" method="post">
-                <input class="user-menu-private-page-text" type="submit" name="profile" value="Особистий кабінет"/>
+                <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             </form>
 
 
             <#if user.isAdmin()>
-            <a class="user-menu-admin-link" href="/admin">Панель адміністратора</a>
+            <a class="user-menu-admin-link" href="/admin">Administration Panel</a>
         </#if>
 
 
         <form action="/logout" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <input class="user-menu-quit-text" type="submit" value="Вийти з акаунта"/>
+            <input class="user-menu-quit-text" type="submit" value="Log out"/>
         </form>
         <#else>
         <img class="user-avatar" src="/default_avatar.png" alt="avatar">
-            <a class="burger_menu_authorize burger_btn-base" href="/login">Авторизуватися</h3></a>
+            <a class="burger_menu_authorize burger_btn-base" href="/login">Sign in</h3></a>
     </#if>
 
 </div>
@@ -59,11 +59,11 @@
 
 <div class="admin-container">
 <div class="admin-table-title">
-    Панель адміністратора
+    Administration Panel
 
     <form action="/statistics" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <input class="statistics-button" type="submit" value="Статистика замовлень"/>
+        <input class="statistics-button" type="submit" value="Order Statistics"/>
     </form>
 
 </div>
@@ -73,13 +73,13 @@
         <thead>
         <tr>
             <th scope="col">Email</th>
-            <th scope="col">Номер телефона</th>
-            <th scope="col">Активність</th>
-            <th scope="col">Ролі</th>
-            <th scope="col">Бан</th>
-            <th scope="col">Детальна інформація</th>
-            <th scope="col">Редагувати</th>
-            <th scope="col">Видалити користувача</th>
+            <th scope="col">Telephone number</th>
+            <th scope="col">Activeness</th>
+            <th scope="col">Roles</th>
+            <th scope="col">Ban</th>
+            <th scope="col">Detailed information</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete user</th>
         </tr>
         </thead>
 
@@ -101,12 +101,12 @@
         <td>
             <form action="/admin/user/ban/${user.id}" method="post">
                 <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-                <input class="ban_button" type="submit" value="Бан"/>
+                <input class="ban_button" type="submit" value="Ban"/>
             </form>
         </td>
         <td>
             <a class="admin_link" href="/user/${user.id}">
-                Детально...
+                Details...
             </a>
         </td>
 
@@ -127,7 +127,7 @@
 
         </td>
         </tr>
-        <#else><h3>Користувачів немає</h3>
+        <#else><h3>Users not found</h3>
 
     </#list>
 </tbody>
@@ -139,7 +139,7 @@
 
 <form action="/" method="post">
 <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-<input class="home_button" type="submit" value="На головну"/>
+<input class="home_button" type="submit" value="Home"/>
 </form>
         </main>
 
@@ -150,23 +150,23 @@
 <div class="footer-container">
     <div class="footer-element">
         <a href="/main">
-            Головна
+            Home
         </a>
     </div>
     <div class="footer-element">
         <a href="/#carousel_0b16" data-page-id="65053303">
-            Контакти
+            Contacts
         </a>
     </div>
 
     <div class="footer-element">
         <a href="/#carousel_840a" data-page-id="65053303">
-            Відгуки
+            Reviews
         </a>
     </div>
     <div class="footer-element">
         <a  href="/#carousel_acb2" data-page-id="65053303">
-            Зворотній зв'язок
+            Feedback
         </a>
     </div>
 </div>

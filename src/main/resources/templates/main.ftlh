@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Hackathon Test</title>
+    <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
 </head>
@@ -25,28 +25,32 @@
 <div id="menu" class="user-menu-container">
     <div class="user-menu-inner">
         <#if user.email??>
-            <img class="user-avatar" src="/default_avatar.png" alt="avatar">
 
-            <h3 class="user_menu-name" >${user.name}</h3>
-                <form action="/profile/${user.id}" method="post">
-                    <input class="user-menu-private-page-text" type="submit" name="profile" value="Особистий кабінет"/>
-                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                </form>
+        <img class="user-avatar" src="/avatars/${user.avatar.id}" alt="avatar">
 
-        <#if user.isAdmin()>
-                <a class="user-menu-admin-link" href="/admin">Панель адміністратора</a>
+            <div class="user_menu-name">${user.name}</div>
+
+            <form action="/profile/${user.id}" method="post">
+                <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
+                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+            </form>
+
+
+            <#if user.isAdmin()>
+            <a class="user-menu-admin-link" href="/admin">Administration Panel</a>
         </#if>
+
 
         <form action="/logout" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <input class="user-menu-quit-text" type="submit" value="Вийти з акаунта"/>
+            <input class="user-menu-quit-text" type="submit" value="Log out"/>
         </form>
         <#else>
-        <img class="user_avatar" src="/default_avatar.png" alt="avatar">
-            <a class="" href="/login">Авторизуватися</h3></a>
+        <img class="user-avatar" src="/default_avatar.png" alt="avatar">
+            <a class="burger_menu_authorize burger_btn-base" href="/login">Sign in</h3></a>
     </#if>
 
-    </div>
+</div>
 </div>
 
 
@@ -97,7 +101,7 @@
             </div>
     <form action="/marketplace" method="get">
         <button class="mode-button" type="submit">
-            Маркетплейс
+            Marketplace
         </button>
     </form>
         </div>
@@ -109,7 +113,7 @@
             </div>
         <form action="/exchange" method="get">
             <button class="mode-button" type="submit">
-                Обмін
+                Exchange
             </button>
         </form>
         </div>
@@ -120,7 +124,7 @@
             </div>
             <form action="/repair" method="get">
                 <button class="mode-button" type="submit">
-                    Ремонт
+                    Repair
                 </button>
             </form>
         </div>
@@ -132,7 +136,7 @@
             </div>
                 <form action="/reuse" method="get">
                     <button class="mode-button" type="submit">
-                        Переробка
+                        Reuse
                     </button>
                 </form>
         </div>
@@ -152,23 +156,23 @@
         <div class="footer-container">
             <div class="footer-element">
                 <a href="/main">
-                    Головна
+                    Home
                 </a>
             </div>
             <div class="footer-element">
                 <a href="/#carousel_0b16" data-page-id="65053303">
-                    Контакти
+                    Contacts
                 </a>
             </div>
 
             <div class="footer-element">
                 <a href="/#carousel_840a" data-page-id="65053303">
-                    Відгуки
+                    Reviews
                 </a>
             </div>
             <div class="footer-element">
                 <a  href="/#carousel_acb2" data-page-id="65053303">
-                    Зворотній зв'язок
+                    Feedback
                 </a>
             </div>
         </div>

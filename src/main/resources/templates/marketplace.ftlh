@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Hackathon Test</title>
+    <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.1">
@@ -37,23 +37,23 @@
                 <div class="user_menu-name">${user.name}</div>
 
                 <form action="/profile/${user.id}" method="post">
-                    <input class="user-menu-private-page-text" type="submit" name="profile" value="Особистий кабінет"/>
+                    <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                 </form>
 
 
                 <#if user.isAdmin()>
-                <a class="user-menu-admin-link" href="/admin">Панель адміністратора</a>
+                <a class="user-menu-admin-link" href="/admin">Administration Panel</a>
             </#if>
 
 
             <form action="/logout" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input class="user-menu-quit-text" type="submit" value="Вийти з акаунта"/>
+                <input class="user-menu-quit-text" type="submit" value="Log out"/>
             </form>
             <#else>
             <img class="user-avatar" src="/default_avatar.png" alt="avatar">
-                <a class="burger_menu_authorize burger_btn-base" href="/login">Авторизуватися</h3></a>
+                <a class="burger_menu_authorize burger_btn-base" href="/login">Sign in</h3></a>
         </#if>
 
     </div>
@@ -75,13 +75,13 @@
 
     <form class="middle-container" action="/marketplace" method="get"/>
 
-    <input class="search-bar" type="text"  name="title" placeholder="ПОШУК...">
+    <input class="search-bar" type="text"  name="title" placeholder="Search...">
         <input class="search-button" type="submit" value=""/>
 
     </form>
 
     <#if user.isAdmin()>
-    <button id="addButton" class="add-button" onclick="showForm()">Додати товар</button>
+    <button id="addButton" class="add-button" onclick="showForm()">Add product</button>
 </#if>
 
 <div class="search-empty-container">
@@ -98,11 +98,11 @@
         <div class="add-product-top-container">
 
             <div class="add-title">
-                Додайте товар
+                Add product
             </div>
 
             <div class="close-button-container">
-                <button id="close-button" type="button" class="close-button" data-bs-dismiss="toast" aria-label="Закрити">X</button>
+                <button id="close-button" type="button" class="close-button" data-bs-dismiss="toast" aria-label="Close">X</button>
             </div>
 
         </div>
@@ -112,43 +112,43 @@
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                 <input type="hidden" name="type" value="SELL" required/>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Назва..." required>
-                    <label for="floatingDescription">Назва :</label>
+                    <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Name..." required>
+                    <label for="floatingDescription">Name :</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control"  id="floatingDescription" name="description" placeholder="Опис..." required>
-                    <label for="floatingDescription">Опис:</label>
+                    <input type="text" class="form-control"  id="floatingDescription" name="description" placeholder="Description..." required>
+                    <label for="floatingDescription">Description:</label>
 
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingPrice" name="price" placeholder="Ціна..." required>
-                    <label for="floatingPrice">Ціна:</label>
+                    <input type="text" class="form-control" id="floatingPrice" name="price" placeholder="Price..." required>
+                    <label for="floatingPrice">Price:</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingCity" name="city" placeholder="Місто..." required>
-                    <label for="floatingCity">Місто:</label>
+                    <input type="text" class="form-control" id="floatingCity" name="city" placeholder="City..." required>
+                    <label for="floatingCity">City:</label>
                 </div>
 
 
 
-                <div class="add-subtitle">Додайте фотографії до оголошення</div>
+                <div class="add-subtitle">Add photos to the product</div>
 
                 <div class="add-files-container">
-                    <label for="file1" class="file-upload-btn">Вибрати файл</label>
+                    <label for="file1" class="file-upload-btn">Select file</label>
                     <input type="file" name="file1" id="file1" required>
 
-                    <label for="file2" class="file-upload-btn">Вибрати файл</label>
+                    <label for="file2" class="file-upload-btn">Select file</label>
                     <input type="file" name="file2" id="file2">
 
-                    <label for="file3" class="file-upload-btn">Вибрати файл</label>
+                    <label for="file3" class="file-upload-btn">Select file</label>
                     <input type="file" name="file3" id="file3">
                 </div>
 
                 <div class="confirm-adding-container">
-                    <p id="file-error" style="color: red; display: none;">Будь ласка, виберіть файл!</p>
-                    <input  class="add-button-confirm" type="submit" onsubmit="submitForm(event)" value="Додати">
+                    <p id="file-error" style="color: red; display: none;">Please select a file!</p>
+                    <input  class="add-button-confirm" type="submit" onsubmit="submitForm(event)" value="Add">
                 </div>
 
             </form>
@@ -206,7 +206,7 @@
         <div class="buy-button-container">
             <a href="/products/${product.id}">
                 <button class="buy-button">
-                    ЗАМОВИТИ
+                    ORDER
                 </button>
             </a>
         </div>
@@ -215,7 +215,7 @@
     </div>
     <#else>
     <div class="no-products-container">
-        Оголошень немає
+        No products
     </div>
 </#list>
 
@@ -234,23 +234,23 @@
 <div class="footer-container">
     <div class="footer-element">
         <a href="/main">
-            Головна
+            Home
         </a>
     </div>
     <div class="footer-element">
         <a href="/#carousel_0b16" data-page-id="65053303">
-            Контакти
+            Contacts
         </a>
     </div>
 
     <div class="footer-element">
         <a href="/#carousel_840a" data-page-id="65053303">
-            Відгуки
+            Reviews
         </a>
     </div>
     <div class="footer-element">
         <a  href="/#carousel_acb2" data-page-id="65053303">
-            Зворотній зв'язок
+            Feedback
         </a>
     </div>
 </div>

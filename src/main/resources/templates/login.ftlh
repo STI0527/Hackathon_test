@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hackathon Test</title>
+    <title>ReUse Hub</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
     <link rel="stylesheet" href="/style.css">
@@ -68,25 +68,25 @@
 
         <main class="authorization-main">
             <div class="authorization_block">
-                <div class="form_title">Авторизація</div>
+                <div class="form_title">Sign in</div>
                 <div class="authorization-two-sides">
                     <div class="authorization-left-side">
                         <form class="authorization_form" action="/login" method="post" onsubmit="return validatePassword()">
                             <div class="form-floating mb-3">
                                 <input type="email" class="form-control" id="floatingInput" name="username" placeholder="name@example.com" required>
-                                <label for="floatingInput">Електронна адреса</label>
+                                <label for="floatingInput">Email</label>
                             </div>
 
                             <div class="form-floating mb-3">
                                 <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required minlength="0">
-                                <label for="floatingPassword">Пароль</label>
+                                <label for="floatingPassword">Password</label>
                             </div>
 
                             <input type="hidden" name="_csrf" value="${_csrf.token}" />
-                            <input class="authorization_form_submit" type="submit" value="Вхід" />
+                            <input class="authorization_form_submit" type="submit" value="Log in" />
                             <br/><br/>
-                            <span>Ще не маєте акаунта?</span>
-                            <a class="registration_link" href="/registration">Зареєструватися</a>
+                            <span>Don't have an account yet?</span>
+                            <a class="registration_link" href="/registration">Sign up</a>
                         </form>
                     </div>
                     <div class="authorization-image-div">
@@ -123,7 +123,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         <form action="/registration" method="post">
-            <input class="home_button" type="submit" value="Зареєструватися знову" />
+            <input class="home_button" type="submit" value="Register again" />
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
         </form>
     </#if>
@@ -144,7 +144,7 @@
 
 
 <form action="/" method="post">
-<input class="skip-button" type="submit" value="Пропустити" />
+<input class="skip-button" type="submit" value="Skip" />
 <input type="hidden" name="_csrf" value="${_csrf.token}" />
 </form>
         </main>

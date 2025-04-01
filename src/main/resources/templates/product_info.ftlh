@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Hackathon Test</title>
+    <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
@@ -40,23 +40,23 @@
                 <div class="user_menu-name">${user.name}</div>
 
                 <form action="/profile/${user.id}" method="post">
-                    <input class="user-menu-private-page-text" type="submit" name="profile" value="Особистий кабінет"/>
+                    <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                 </form>
 
 
                 <#if user.isAdmin()>
-                <a class="user-menu-admin-link" href="/admin">Панель адміністратора</a>
+                <a class="user-menu-admin-link" href="/admin">Administration Panel</a>
             </#if>
 
 
             <form action="/logout" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input class="user-menu-quit-text" type="submit" value="Вийти з акаунта"/>
+                <input class="user-menu-quit-text" type="submit" value="Log out"/>
             </form>
             <#else>
             <img class="user-avatar" src="/default_avatar.png" alt="avatar">
-                <a class="burger_menu_authorize burger_btn-base" href="/login">Авторизуватися</h3></a>
+                <a class="burger_menu_authorize burger_btn-base" href="/login">Sign in</h3></a>
         </#if>
 
     </div>
@@ -123,7 +123,7 @@
         <div class="product-info-description"> ${product.description}</div>
         <div class="pink-container">
             <div class="product-info-city"> ${product.city}</div>
-            <div class="product-info-author"> Автор: <a href="/user/${product.user.id}">${product.user.name}</a></div
+            <div class="product-info-author"> Author: <a href="/user/${product.user.id}">${product.user.name}</a></div
 
             <div class="product-info-buy">
                 <form method="post" accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
@@ -163,23 +163,23 @@
 <div class="footer-container">
     <div class="footer-element">
         <a href="/main">
-            Головна
+            Home
         </a>
     </div>
     <div class="footer-element">
         <a href="/#carousel_0b16" data-page-id="65053303">
-            Контакти
+            Contacts
         </a>
     </div>
 
     <div class="footer-element">
         <a href="/#carousel_840a" data-page-id="65053303">
-            Відгуки
+            Reviews
         </a>
     </div>
     <div class="footer-element">
         <a  href="/#carousel_acb2" data-page-id="65053303">
-            Зворотній зв'язок
+            Feedback
         </a>
     </div>
 </div>

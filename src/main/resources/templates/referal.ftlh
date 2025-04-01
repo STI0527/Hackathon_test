@@ -30,31 +30,36 @@
 </header>
 
 <div class="burger_menu">
-<div class="burger_menu-inner">
-    <#if user.email??>
-    <img class="burger_user-avatar" src="/default_avatar.png" alt="avatar">
+<div id="menu" class="user-menu-container">
+    <div class="user-menu-inner">
+        <#if user.email??>
 
-        <h3 class="burger_menu-user">${user.name}</h3>
-        <form action="/profile/${user.id}" method="post">
-            <input class="burger_menu_personal burger_btn-base" type="submit" name="profile" value="Особистий кабінет"/>
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+        <img class="user-avatar" src="/avatars/${user.avatar.id}" alt="avatar">
+
+            <div class="user_menu-name">${user.name}</div>
+
+            <form action="/profile/${user.id}" method="post">
+                <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
+                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+            </form>
+
+
+            <#if user.isAdmin()>
+            <a class="user-menu-admin-link" href="/admin">Administration Panel</a>
+        </#if>
+
+
+        <form action="/logout" method="post">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <input class="user-menu-quit-text" type="submit" value="Log out"/>
         </form>
-
-        <#if user.isAdmin()>
-        <a class="burger_menu_admin burger_btn-base" href="/admin">Панель адміністратора</a>
+        <#else>
+        <img class="user-avatar" src="/default_avatar.png" alt="avatar">
+            <a class="burger_menu_authorize burger_btn-base" href="/login">Sign in</h3></a>
     </#if>
 
-    <form action="/logout" method="post">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <input class="burger_menu_quit burger_btn-base" type="submit" value="Вийти з акаунта"/>
-    </form>
-    <#else>
-    <img class="user_avatar" src="/default_avatar.png" alt="avatar">
-        <a class="burger_menu_authorize burger_btn-base" href="/login">Авторизуватися</h3></a>
-</#if>
-
 </div>
-        </div>
+</div>
 
 <h3>Реферальна система |</h3>
 
@@ -142,23 +147,23 @@
 <div class="footer-container">
     <div class="footer-element">
         <a href="/main">
-            Головна
+            Home
         </a>
     </div>
     <div class="footer-element">
         <a href="/#carousel_0b16" data-page-id="65053303">
-            Контакти
+            Contacts
         </a>
     </div>
 
     <div class="footer-element">
         <a href="/#carousel_840a" data-page-id="65053303">
-            Відгуки
+            Reviews
         </a>
     </div>
     <div class="footer-element">
         <a  href="/#carousel_acb2" data-page-id="65053303">
-            Зворотній зв'язок
+            Feedback
         </a>
     </div>
 </div>
