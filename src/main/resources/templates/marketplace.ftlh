@@ -178,8 +178,8 @@
         <!--<a href="/login">Авторизуватися</h3></a>-->
         <!--        </#if>-->
 
-<div class="product-section">
-<div class="product_list">
+    <div class="product-section">
+        <div class="product_list">
     <#list products as product>
 
     <div class="product-container">

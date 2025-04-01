@@ -10,7 +10,7 @@
 
 <body>
 <header>
-    <a href="/work">ReUse Hub</a>
+    <a href="/">ReUse Hub</a>
 </header>
 
 <div class="user-edit-wrapper">
