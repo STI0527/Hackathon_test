@@ -251,6 +251,8 @@ padding: 6px 12px;">
         </div>
 
     </#list>
+        <#else>
+    <div>No purchases found</div>
     </#if>
 </tbody>
 </table>

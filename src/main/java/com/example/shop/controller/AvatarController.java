@@ -2,6 +2,7 @@ package com.example.shop.controller;
 
 import com.example.shop.models.Avatar;
 import com.example.shop.models.Image;
+import com.example.shop.models.User;
 import com.example.shop.repositories.AvatarRepository;
 import com.example.shop.repositories.ImageRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,9 @@ public class AvatarController {
     private final AvatarRepository avatarRepository;
 
     @GetMapping("/avatars/{id}")
-    private ResponseEntity<?> getAvatarById(@PathVariable Long id) {
-        Avatar avatar = avatarRepository.findById(id).orElse(null);
+    private ResponseEntity<?> getAvatarById(@PathVariable String id) {
+        Long iD = Long.parseLong(id.replace("\u00A0", ""));
+        Avatar avatar = avatarRepository.findById(iD).orElse(null);
         return ResponseEntity.ok()
                 .header("fileName", avatar.getOriginalFileName())
                 .contentType(MediaType.valueOf(avatar.getContentType()))

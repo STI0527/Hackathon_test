@@ -60,13 +60,6 @@
 </div>
 
 
-        <!--<#if user.email??>-->
-        <!--<h3>Ім'я користувача: <i>${user.name}</i></h3>-->
-        <!--<form action="/logout" method="post">-->
-        <!--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
-        <!--<input type="submit" value="Вийти з акаунта"/>-->
-        <!--</form>-->
-
 <section class="title-text-section">
     <div class="marketplace-title">
         Welcome to the ReUse Hub marketplace! Here you can buy and sell used items to help protect the environment!
@@ -87,9 +80,9 @@
 
     </form>
 
-    <#if user.isAdmin()>
+
     <button id="addButton" class="add-button" onclick="showForm()">Add product</button>
-</#if>
+
 
 <div class="search-empty-container">
 
@@ -97,7 +90,6 @@
 
 </div>
 
-<#if user.isAdmin()??>
 <div class="add-product-window">
 
     <div id="addForm" class="add-product-container">
@@ -164,26 +156,7 @@
 
 </div>
 
-        </#if>
 
-        <!--<div class="search">-->
-        <!--<div class="form-outline" data-mdb-input-init>-->
-        <!--    <input id="search-focus" type="search" id="form1" class="form-control" />-->
-        <!--&lt;!&ndash;    <label class="form-label" for="form1">Search</label>&ndash;&gt;-->
-        <!--</div>-->
-        <!--<button type="button" class="btn btn-primary" data-mdb-ripple-init>-->
-        <!--    <i class="fas fa-search">Пошук</i>-->
-        <!--</button>-->
-        <!--</div>-->
-
-        <!--<#if user.isAdmin()>-->
-        <!--<br>-->
-        <!--<a href="/admin">Панель адміністратора</a>-->
-        <!--</#if>-->
-
-        <!--<#else>-->
-        <!--<a href="/login">Авторизуватися</h3></a>-->
-        <!--        </#if>-->
 
     <div class="product-section">
         <div class="product_list">

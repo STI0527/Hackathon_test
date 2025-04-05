@@ -87,8 +87,9 @@ public class UserController {
     }
 
     @PostMapping("/changeAvatar/{id}")
-    public String changeAvatar(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws IOException {
-        User user = userRepository.findById(id).orElse(null);
+    public String changeAvatar(@RequestParam("file") MultipartFile file, @PathVariable String id) throws IOException {
+        Long iD = Long.parseLong(id.replace("\u00A0", ""));
+        User user = userRepository.findById(iD).orElse(null);
 
         
 
@@ -118,8 +119,11 @@ public class UserController {
 
 
     @GetMapping("/user/{user}")
-    public String userInfo(@PathVariable("user") User user, Model model,
+    public String userInfo(@PathVariable("user") String id, Model model,
                            Principal principal, OAuth2AuthenticationToken token){
+        Long iD = Long.parseLong(id.replace("\u00A0", ""));
+        User user = userService.getUserById(iD);
+
         model.addAttribute("user", user);
         model.addAttribute("products", user.getProducts());
         if (token==null)
@@ -132,8 +136,9 @@ public class UserController {
 
 
     @PostMapping("/profile/{id}")
-    public String profile(@PathVariable("id") Long id, Model model){
-        User user = userService.getUserById(id);
+    public String profile(@PathVariable("id") String id, Model model){
+        Long iD = Long.parseLong(id.replace("\u00A0", ""));
+        User user = userService.getUserById(iD);
         model.addAttribute("user", user);
         model.addAttribute("products", user.getProducts());
         return "profile";
@@ -193,7 +198,7 @@ public class UserController {
 
     @GetMapping("/reuse")
     public String toReuse(Model model, Principal principal,
-                          Authentication authentication){
+                          Authentication authentication, User user){
         if (authentication instanceof OAuth2AuthenticationToken token) {
             model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
         } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
