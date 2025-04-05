@@ -180,28 +180,28 @@ padding: 6px 12px;">
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                 <input type="hidden" name="type" value="SELL" required/>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Назва..." required>
-                    <label for="floatingDescription">Назва :</label>
+                    <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Title..." required>
+                    <label for="floatingDescription">Title:</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control"  id="floatingDescription" name="description" placeholder="Опис..." required>
-                    <label for="floatingDescription">Опис:</label>
+                    <input type="text" class="form-control"  id="floatingDescription" name="description" placeholder="Description..." required>
+                    <label for="floatingDescription">Description:</label>
 
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingPrice" name="price" placeholder="Ціна..." required>
-                    <label for="floatingPrice">Ціна:</label>
+                    <input type="text" class="form-control" id="floatingPrice" name="price" placeholder="Price..." required>
+                    <label for="floatingPrice">Price:</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingCity" name="city" placeholder="Місто..." required>
-                    <label for="floatingCity">Місто:</label>
+                    <input type="text" class="form-control" id="floatingCity" name="city" placeholder="City..." required>
+                    <label for="floatingCity">City:</label>
                 </div>
 
 
 
-                <div class="add-subtitle">Add photos to the listing</div>
+                <div class="add-subtitle">Add photos to the product</div>
 
                 <div class="add-files-container">
                     <label for="file1" class="file-upload-btn">Select file</label>

@@ -61,8 +61,8 @@ public class UserController {
 
         if(!userService.createUser(user, fileAvatar)){
             model.addAttribute(fileAvatar.getName());
-            model.addAttribute("errorMessage", "Користувач з email"
-                    + user.getEmail() + " вже існує");
+            model.addAttribute("errorMessage", "User with email "
+                    + user.getEmail() + " already exists");
             return "registration";
         }
         ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationToken(user.getId());
@@ -76,8 +76,8 @@ public class UserController {
 //            smsService.send(user.getPhoneNumber(), user.getName(), link);
 //        }
 
-        String confirmMessage = "На Вашу електронну адресу відправлено лист. " +
-                "Перейдіть за посиланням в ньому для підтвердження електронної пошти";
+        String confirmMessage = "An email has been sent to your email address. " +
+                "Follow the link in the email to confirm your email address.";
 
 
 
@@ -192,7 +192,13 @@ public class UserController {
     }
 
     @GetMapping("/reuse")
-    public String toReuse(Model model, Principal principal){
+    public String toReuse(Model model, Principal principal,
+                          Authentication authentication){
+        if (authentication instanceof OAuth2AuthenticationToken token) {
+            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        }
         return "reuse";
     }
 
@@ -204,15 +210,15 @@ public class UserController {
 
         switch (tokenStatus) {
             case "/login?confirmed":
-                model.addAttribute("message_already_confirmed", "Ваша електронна адреса вже підтверджена. Авторизуйтеся, будь ласка");
+                model.addAttribute("message_already_confirmed", "Your email address has already been confirmed. Please log in.");
                 break;
 
             case "/login?expired":
-                model.addAttribute("message_expired", "Термін дії посилання для підтвердження минув. Будь ласка, попросіть новий");
+                model.addAttribute("message_expired", "The confirmation link has expired. Please request a new one.");
                 break;
 
             case "confirmation":
-                model.addAttribute("message_confirmed", "Ваша електронна адреса успішно підтверджена. Авторизуйтеся, будь ласка");
+                model.addAttribute("message_confirmed", "Your email address has been successfully confirmed. Please log in.");
                 break;
 
             default:
@@ -280,7 +286,7 @@ public class UserController {
                 "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
                 "      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;max-width:560px\">\n" +
                 "        \n" +
-                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Привіт, " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> Дякуємо за реєстрацію в ReUse Hub. Перейдіть, будь ласка, за цим посиланням для пітвердження своєї електронної адреси: </p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a href=\"" + link + "\">Активувати зараз</a> </p></blockquote>\n Термін дії посилання закінчиться через 15 хвилин. <p>До зустрічі в ReUse Hub!</p>" +
+                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hello, " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> Thank you for registering with ReUse Hub. Please follow this link to confirm your email address: </p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a href=\"" + link + "\">Activate now</a> </p></blockquote>\n The link will expire in 15 minutes. <p>See you at ReUse Hub!</p>" +
                 "        \n" +
                 "      </td>\n" +
                 "      <td width=\"10\" valign=\"middle\"><br></td>\n" +

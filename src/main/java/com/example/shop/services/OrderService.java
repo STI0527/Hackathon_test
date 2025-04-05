@@ -210,9 +210,9 @@ public class OrderService {
     }
 
     public String getMonthName(int monthValue) {
-        String[] months = new String[]{"січень", "лютий", "березень",
-                "квітень", "травень", "червень", "липень", "серпень",
-                "вересень", "жовтень", "листопад", "грудень"};
+        String[] months = new String[]{"January", "February", "March",
+                "April", "May", "June", "July", "August",
+                "September", "October", "November", "December"};
 
         return months[monthValue - 1];
 

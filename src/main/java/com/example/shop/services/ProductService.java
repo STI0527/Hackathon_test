@@ -144,7 +144,7 @@ public class ProductService {
     public List<Product> findSELL() {
         List<Product> products = new ArrayList<>();
         for(Product product: findAll()){
-            if (product.getType()== AdvertType.SELL) products.add(product);
+            if (product.getType() == AdvertType.SELL) products.add(product);
         }
         return products;
     }

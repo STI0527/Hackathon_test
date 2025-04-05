@@ -20,8 +20,8 @@ import java.util.Map;
 public class LiqPayService {
 
     // Ваша конфігурація (PRIVATE_KEY і PUBLIC_KEY)
-    private static final String PRIVATE_KEY = "sandbox_WOLyeYlnHfoZ2JyLhSDCHuL4tFbrloEw4G1sbrwq";
-    private static final String PUBLIC_KEY = "sandbox_i75263331109";
+    private static final String PRIVATE_KEY = "sandbox_CiZtVBZlxopZFMrt42Sd3TvM3bK6xE0wanyq35h4";
+    private static final String PUBLIC_KEY = "sandbox_i98216480294";
 
     public String generateData(int amount, String currency, String description,
                                String resultURL, String callBackURL) throws JSONException {

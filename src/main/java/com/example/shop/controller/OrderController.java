@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,65 @@ public class OrderController {
     private final ProductService productService;
     private final LiqPayService liqPayService;
 
+
+    @PostMapping(value = "/payment/result", consumes = "application/x-www-form-urlencoded")
+    public String handlePaymentCall(
+            @RequestParam("data") String data,
+            @RequestParam("signature") String signature,
+            HttpSession session, Model model,
+            Principal principal) throws MqttException {
+
+
+
+        if (data.isEmpty() || signature.isEmpty()) {
+            throw new IllegalArgumentException("Відсутні параметри \"data\" або \"signature\".");
+        }
+
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("data", data);
+        requestBody.put("signature", signature);
+
+
+
+        // Парсинг callback-даних
+        LiqPayResponse response = liqPayService.parseCallback(requestBody);
+
+        Long userId = (Long) session.getAttribute("user_id");
+        Long productId = (Long) session.getAttribute("product_id");
+        String os = (String) session.getAttribute("os");
+
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+
+        if (response.isSuccess()) {
+            // Збереження замовлення в базі
+            System.out.println("\u001b[32mConducted a successfull payment operation!\u001b[0m");
+            orderService.saveOrder(userService.getUserById(userId), productService.getProductById(productId), os);
+            userService.getUserById(userId).setCoins((int) (userService.getUserById(userId).getCoins() + (productService.getProductById(productId).getPrice()
+                        * 0.05)));
+
+            productService.getProductById(productId).getUser().setCoins((int) (productService.getProductById(productId).getUser().getCoins() + (productService.getProductById(productId).getPrice()
+                    * 0.03)));
+
+
+            session.removeAttribute("user_id"); // очищаємо сесію після обробки
+            session.removeAttribute("product_id");
+            session.removeAttribute("os");
+
+            model.addAttribute("payment_result", "Purchase saved");
+            return "payment_result";
+        } else {
+            // Помилка оплати
+            System.out.println("\u001b[31mPurchase cancelled!\u001b[0m");
+            model.addAttribute("payment_result", "Purchase canceled ");
+            return "payment_result";
+        }
+
+    }
+
+    @GetMapping("/payment/result")
+    public String toResultPage(){
+        return "payment_result";
+    }
 
     @GetMapping("/statistics")
     public String getStatistics(Model model, Principal principal, Authentication authentication){
@@ -77,7 +137,7 @@ public class OrderController {
 
 
         String period = "all";
-        String tableTitle = "Усі замовлення";
+        String tableTitle = "All orders";
 
         redirectAttributes.addFlashAttribute("message", tableTitle);
         model.addAttribute("title", tableTitle);
@@ -101,12 +161,12 @@ public class OrderController {
 
         // Передаємо нові замовлення і повідомлення
         redirectAttributes.addFlashAttribute("orders", ordersHour);
-        redirectAttributes.addFlashAttribute("message", "Замовлення за період " + orderService.getHoursLine(LocalDateTime.now().minusHours(1).getHour()) + ":" + orderService.getMinutesLine(LocalDateTime.now().minusHours(1).getMinute()) + " - "
+        redirectAttributes.addFlashAttribute("message", "Orders for the period " + orderService.getHoursLine(LocalDateTime.now().minusHours(1).getHour()) + ":" + orderService.getMinutesLine(LocalDateTime.now().minusHours(1).getMinute()) + " - "
                 + orderService.getHoursLine(LocalDateTime.now().getHour()) + ":" + orderService.getMinutesLine(LocalDateTime.now().getMinute()) + " (" + orderService.getDayLine(LocalDateTime.now().getDayOfMonth()) + "." + orderService.getMonthLine(LocalDateTime.now().getMonthValue()) +  "." + LocalDateTime.now().getYear() + ")");
 
 
         String period = "hour";
-        String tableTitle = "Замовлення за період " + orderService.getHoursLine(LocalDateTime.now().minusHours(1).getHour()) + ":" + orderService.getMinutesLine(LocalDateTime.now().minusHours(1).getMinute()) + " - "
+        String tableTitle = "Orders for the period " + orderService.getHoursLine(LocalDateTime.now().minusHours(1).getHour()) + ":" + orderService.getMinutesLine(LocalDateTime.now().minusHours(1).getMinute()) + " - "
                 + orderService.getHoursLine(LocalDateTime.now().getHour()) + ":" + orderService.getMinutesLine(LocalDateTime.now().getMinute()) + " (" + orderService.getDayLine(LocalDateTime.now().getDayOfMonth()) + "." + orderService.getMonthLine(LocalDateTime.now().getMonthValue()) +  "." + LocalDateTime.now().getYear() + ")";
 
         redirectAttributes.addFlashAttribute("message", tableTitle);
@@ -129,7 +189,7 @@ public class OrderController {
         redirectAttributes.addFlashAttribute("orders", orderService.getOrdersYesterday());
 
         String period = "yesterday";
-        String tableTitle = "Замовлення за період " + "00:00 - 23:59" +
+        String tableTitle = "Orders for the period " + "00:00 - 23:59" +
                 " (" + orderService.getDayLine(LocalDateTime.now().minusDays(1).getDayOfMonth()) + "." + orderService.getMonthLine(LocalDateTime.now().minusDays(1).getMonthValue()) +  "." + LocalDateTime.now().minusDays(1).getYear() + ")";
 
         redirectAttributes.addFlashAttribute("message", tableTitle);
@@ -154,7 +214,7 @@ public class OrderController {
         redirectAttributes.addFlashAttribute("orders", orderService.getOrdersWeek());
 
         String period = "week";
-        String tableTitle = "Замовлення за період "
+        String tableTitle = "Orders for the period "
                 + orderService.getDayLine(LocalDateTime.now().minusWeeks(1).getDayOfMonth()) + "." + orderService.getMonthLine(LocalDateTime.now().minusWeeks(1).getMonthValue()) + "." + LocalDateTime.now().minusWeeks(1).getYear() + " - "
                 + orderService.getDayLine(LocalDateTime.now().getDayOfMonth()) + "." + orderService.getMonthLine(LocalDateTime.now().getMonthValue()) + "." + LocalDateTime.now().getYear();
 
@@ -180,8 +240,8 @@ public class OrderController {
         redirectAttributes.addFlashAttribute("orders", orderService.getOrdersMonth());
 
         String period = "month";
-        String tableTitle = "Замовлення за період: " + orderService.getMonthName(LocalDateTime.now().minusMonths(1).getMonthValue())
-                + " " + LocalDateTime.now().minusMonths(1).getYear() + " року";
+        String tableTitle = "Orders for the period: " + orderService.getMonthName(LocalDateTime.now().minusMonths(1).getMonthValue())
+                + " " + LocalDateTime.now().minusMonths(1).getYear();
 
         redirectAttributes.addFlashAttribute("message", tableTitle);
         model.addAttribute("title", tableTitle);
@@ -206,7 +266,7 @@ public class OrderController {
         redirectAttributes.addFlashAttribute("orders", orderService.getOrdersYear());
 
         String period = "year";
-        String tableTitle = "Замовлення за " + LocalDateTime.now().minusYears(1).getYear() + " рік";
+        String tableTitle = "Orders for " + LocalDateTime.now().minusYears(1).getYear() + " year";
         redirectAttributes.addFlashAttribute("message", tableTitle);
         model.addAttribute("title", tableTitle);
         session.setAttribute("title", tableTitle);

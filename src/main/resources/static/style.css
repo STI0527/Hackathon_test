@@ -643,6 +643,40 @@ align-items: center;
 
 }
 
+.coins-container {
+color: rgb(232, 227, 81);
+font-size: 24px !important;
+margin-left: 4px;
+margin-right: 8px;
+}
+
+.coins-image {
+width: 24px;
+height: 100%;
+object-fit: cover;
+}
+
+.title-text-section {
+display: flex;
+align-items: center;
+justify-content: center;
+
+}
+
+.marketplace-title {
+display: flex;
+align-items: center;
+justify-content: center;
+color: rgb(0, 0, 0);
+background-color: rgba(255, 255, 255, 0.7);
+font-size: 20px;
+border-radius: 16px;
+width: 960px;
+padding: 24px;
+margin-top: 24px;
+margin-bottom: 24px;
+}
+
 .pagination-info {
 color: rgb(255, 255,255);
 background-color: rgba(0, 0, 0, 0.5);

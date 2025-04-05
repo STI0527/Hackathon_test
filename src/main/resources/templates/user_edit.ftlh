@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hackathon Test</title>
+    <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,7 +16,7 @@
 <div class="user-edit-wrapper">
 
     <div class="user-edit-container">
-        <div class="user-edit_title">Редагувати профіль ${user.name}</div>
+        <div class="user-edit_title">Edit profile ${user.name}</div>
 
         <div class="edit_block">
 
@@ -55,7 +55,7 @@
 
     <input type="hidden" name="userId" value="${user.id}"/>
     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-    <button class="save-button" onclick="location.href='/product_info'">Зберегти</button>
+    <button class="save-button" onclick="location.href='/product_info'">Save</button>
 
 </form>
 </div>

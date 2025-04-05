@@ -61,6 +61,7 @@ public class ProductController {
         return "main";
     }
 
+
     @PostMapping("/products/create")
     public String createProduct(@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2,
                                 @RequestParam("file3") MultipartFile file3,
@@ -88,13 +89,14 @@ public class ProductController {
         Long iD = Long.parseLong(id.replace("\u00A0", ""));
         Product product = productService.getProductById(iD);
 
+
         if (authentication instanceof UsernamePasswordAuthenticationToken)
             model.addAttribute("user", userService.getUserByPrincipal(principal));
         else if (authentication instanceof OAuth2AuthenticationToken token)
             model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
 
         if(product == null){
-            model.addAttribute("productNotFound", "Товар було вилучено адміністратором");
+            model.addAttribute("productNotFound", "The item was removed by the administrator");
             return "product_info";
         }
 
@@ -104,9 +106,9 @@ public class ProductController {
         String data = liqPayService.generateData(
                 productService.getProductById(iD).getPrice(),
                 "UAH",
-                "Оплата замовлення " + productService.getProductById(iD).getTitle(),
-                "https://f68b-89-209-136-227.ngrok-free.app/payment/result",
-                "https://f68b-89-209-136-227.ngrok-free.app/payment/result"
+                "Purchase payment " + productService.getProductById(iD).getTitle(),
+                "https://6054-46-150-81-93.ngrok-free.app/payment/result",
+                "https://6054-46-150-81-93.ngrok-free.app/payment/result"
         );
 
         String signature = liqPayService.generateSignature(data);

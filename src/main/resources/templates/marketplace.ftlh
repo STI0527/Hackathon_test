@@ -67,6 +67,13 @@
         <!--<input type="submit" value="Вийти з акаунта"/>-->
         <!--</form>-->
 
+<section class="title-text-section">
+    <div class="marketplace-title">
+        Welcome to the ReUse Hub marketplace! Here you can buy and sell used items to help protect the environment!
+    </div>
+</section>
+
+
 <div class="search-container">
 
     <div class="search-empty-container">
@@ -206,7 +213,7 @@
         <div class="buy-button-container">
             <a href="/products/${product.id}">
                 <button class="buy-button">
-                    ORDER
+                    BUY
                 </button>
             </a>
         </div>

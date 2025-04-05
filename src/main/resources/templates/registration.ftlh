@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hackathon Test</title>
+    <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
 
@@ -21,46 +21,46 @@
 
         <main class="registration-main">
         <div class="registration_block">
-            <h4 class="form-title">Реєстрація</h4>
+            <h4 class="form-title">Registration</h4>
 
             <form class="registration_form needs-validation" action="/registration" method="post" enctype="multipart/form-data" novalidate>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="floatingInputGroup1" name="name" placeholder="Username" required>
-                    <label for="floatingInputGroup1">Ім'я користувача</label>
+                    <label for="floatingInputGroup1">Username</label>
                     <div class="invalid-feedback">
-                        Будь ласка, введіть ім'я користувача.
+                        Please enter your username.
                     </div>
                 </div>
 
                 <div class="form-floating mb-3">
                     <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com" required>
-                    <label for="floatingInput">Електронна адреса</label>
+                    <label for="floatingInput">Email address</label>
                     <div class="invalid-feedback">
-                        Будь ласка, введіть правильну електронну адресу.
+                        Please enter a valid email address.
                     </div>
                 </div>
 
                 <div class="form-floating mb-3">
                     <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required minlength="8">
-                    <label for="floatingPassword">Пароль</label>
+                    <label for="floatingPassword">Password</label>
                     <div class="invalid-feedback">
-                        Пароль повинен бути не менше 8 символів.
+                        The password must be at least 8 characters long.
                     </div>
                 </div>
 
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="floatingTextarea2" name="phoneNumber" placeholder="Phone number" required>
-                    <label for="floatingTextarea2">Номер телефону</label>
+                    <label for="floatingTextarea2">Phone number</label>
                     <div class="invalid-feedback">
-                        Будь ласка, введіть правильний номер телефону.
+                        Please enter a valid phone number.
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="fileAvatar" class="file-upload-btn">Виберіть аватар</label>
+                    <label for="fileAvatar" class="file-upload-btn">Select an avatar</label>
                     <input type="file" name="fileAvatar" id="fileAvatar" required />
                     <div class="invalid-feedback">
-                        Будь ласка, завантажте фото.
+                        Please upload a photo.
                     </div>
                 </div>
 
@@ -70,7 +70,7 @@
 
 
                 <input type="hidden" name="_csrf" value="${_csrf.token}" required />
-                <input class="registration_form_submit" type="submit" value="Зареєструватися" />
+                <input class="registration_form_submit" type="submit" value="Sign up" />
             </form>
 
 

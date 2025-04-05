@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <head>
-    <title>Hackathon Test</title>
+    <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.1">
@@ -17,7 +17,7 @@
 
         <div class="user-info-container">
             <#if user.isAdmin()>
-            <div class="user-info-title">Пропозиції адміністратора ${user.name}</div>
+            <div class="user-info-title">Administrator's ${user.name} products</div>
 
 
             <div class="user-info-list">
@@ -40,8 +40,8 @@
 
     <#if viewer.isAdmin()>
     <div class="user-info-additional-container">
-        <div class="user-info-admin-title">Детальна інформація про користувача (тільки для адміністраторів)</div>
-        <div class="user-info-admin-number">Номер телефона: <span class="user-info-admin-number-span">${user.phoneNumber}</span> </div>
+        <div class="user-info-admin-title">Detailed user information (for admins only)</div>
+        <div class="user-info-admin-number">Phone number: <span class="user-info-admin-number-span">${user.phoneNumber}</span> </div>
         <div class="user-info-admin-email">Email: <span class="user-info-admin-email-span">${user.email}</span></div>
     </div>
 </#if>

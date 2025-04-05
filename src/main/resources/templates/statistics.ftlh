@@ -47,7 +47,7 @@
 
 
                 <#if user.isAdmin()>
-                <a class="user-menu-admin-link" href="/admin">Administration Panel</a>
+                <a class="user-menu-admin-link" href="/admin">Admin Panel</a>
             </#if>
 
 
@@ -69,52 +69,52 @@
     <div class="dropdowns">
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                Режим показу
+                Display mode
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li class="dropdown-item-li">
                     <form action="/orders/all" method="post">
                         <a class="dropdown-item" onclick="selectModeView('Всі')" hidden></a>
                         <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-                        <input class="dropdown-submit" type="submit" value="Всі"/>
+                        <input class="dropdown-submit" type="submit" value="All"/>
                     </form>
 
                 </li>
 
                 <li class="dropdown-item-li">
                     <form action="/orders/hour" method="post">
-                        <a class="dropdown-item" href="/work" onclick="selectModeView('За вчора')" hidden>Остання година</a>
+                        <a class="dropdown-item" href="/work" onclick="selectModeView('За вчора')" hidden>Last hour</a>
                         <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-                        <input class="dropdown-submit" type="submit" value="Остання година"/>
+                        <input class="dropdown-submit" type="submit" value="Last hour"/>
                     </form>
                 </li>
 
                 <li class="dropdown-item-li">
                     <form action="/orders/yesterday" method="post">
-                        <a class="dropdown-item" href="/work" onclick="selectModeView('За вчора')" hidden>За вчора</a>
+                        <a class="dropdown-item" href="/work" onclick="selectModeView('За вчора')" hidden>Since yesterday</a>
                         <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-                        <input class="dropdown-submit" type="submit" value="За вчора"/>
+                        <input class="dropdown-submit" type="submit" value="Since yesterday"/>
                     </form>
                 </li>
                 <li class="dropdown-item-li">
                     <form action="/orders/week" method="post">
-                        <a class="dropdown-item" href="/work" onclick="selectModeView('За тиждень')" hidden>За тиждень</a>
+                        <a class="dropdown-item" href="/work" onclick="selectModeView('За тиждень')" hidden>For the week</a>
                         <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-                        <input class="dropdown-submit" type="submit" value="За тиждень"/>
+                        <input class="dropdown-submit" type="submit" value="For the week"/>
                     </form>
                 </li>
                 <li class="dropdown-item-li">
                     <form action="/orders/month" method="post">
-                        <a class="dropdown-item" href="/work" onclick="selectModeView('Минулий місяць')" hidden>Минулий місяць</a>
+                        <a class="dropdown-item" href="/work" onclick="selectModeView('Минулий місяць')" hidden>Last month</a>
                         <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-                        <input class="dropdown-submit" type="submit" value="Минулий місяць"/>
+                        <input class="dropdown-submit" type="submit" value="Last month"/>
                     </form>
                 </li>
                 <li class="dropdown-item-li">
                     <form action="/orders/year" method="post">
-                        <a class="dropdown-item" href="/work" onclick="selectModeView('Минулий рік')" hidden>Минулий рік</a>
+                        <a class="dropdown-item" href="/work" onclick="selectModeView('Минулий рік')" hidden>Last year</a>
                         <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-                        <input class="dropdown-submit" type="submit" value="Минулий рік"/>
+                        <input class="dropdown-submit" type="submit" value="Last year"/>
                     </form>
                 </li>
 
@@ -124,7 +124,7 @@
         <div class="dropdown">
             <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 <!--                style="background-color: rgba(235, 154, 169, 1); color: white;"-->
-                Експорт
+                Export
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <li>
@@ -165,15 +165,15 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Номер замовлення</th>
-            <th scope="col">Ім'я покупця</th>
-            <th scope="col">Email покупця</th>
-            <th scope="col">Номер телефона</th>
-            <th scope="col">Дата</th>
-            <th scope="col">Назва продукта</th>
-            <th scope="col">Ціна, грн</th>
-            <th scope="col">Операційна система</th>
-            <th scope="col">Місто</th>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Buyer’s email</th>
+            <th scope="col">Phone number</th>
+            <th scope="col">Date</th>
+            <th scope="col">Product name</th>
+            <th scope="col">Price, UAH</th>
+            <th scope="col">Operating system</th>
+            <th scope="col">City</th>
         </tr>
         </thead>
 
@@ -194,7 +194,7 @@
         </#list>
         <#else>
         <tr>
-            <td  colspan="9"><h3>Замовлень немає</h3></td>
+            <td  colspan="9"><h3>No operations found</h3></td>
         </tr>
     </#if>
 
@@ -202,7 +202,7 @@
 </table>
 </body>
 <#else>
-        У Вас немає дозволу для цієї сторінки!
+        You don't have a permission to visit this page!
         </#if>
 
         </div>
