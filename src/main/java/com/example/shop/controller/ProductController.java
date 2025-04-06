@@ -80,14 +80,15 @@ public class ProductController {
     public String createProduct(@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2,
                                 @RequestParam("file3") MultipartFile file3,
                                 @RequestParam("type") AdvertType type,
-                                Product product, Principal principal, OAuth2AuthenticationToken token) throws IOException {
+                                Product product, Principal principal,Authentication authentication) throws IOException {
 
         product.setType(type);
-        if (token==null)
+        if (authentication instanceof UsernamePasswordAuthenticationToken)
             productService.saveProduct(principal, product, file1, file2, file3);
-        else
+        else if (authentication instanceof OAuth2AuthenticationToken token)
             productService.saveProduct(token, product, file1, file2, file3);
         return "redirect:/";
+
     }
 
     @PostMapping("/products/delete/{id}")
