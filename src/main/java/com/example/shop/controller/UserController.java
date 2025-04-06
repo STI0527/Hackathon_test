@@ -9,6 +9,7 @@ import com.example.shop.models.User;
 import com.example.shop.repositories.AvatarRepository;
 import com.example.shop.repositories.UserRepository;
 import com.example.shop.services.ConfirmationTokenService;
+import com.example.shop.services.CurrencyExchangeService;
 import com.example.shop.services.ProductService;
 import com.example.shop.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class UserController {
     private final ProductService productService;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
+    private final CurrencyExchangeService currencyExchangeService;
 
     @GetMapping("/login")
     public String login(){
@@ -141,6 +143,7 @@ public class UserController {
         User user = userService.getUserById(iD);
         model.addAttribute("user", user);
         model.addAttribute("products", user.getProducts());
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
         return "profile";
     }
 
@@ -158,6 +161,7 @@ public class UserController {
         }
 
         model.addAttribute("products", productService.findSELL());
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
         return "marketplace";
     }
 

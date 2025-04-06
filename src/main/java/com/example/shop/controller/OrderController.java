@@ -72,10 +72,10 @@ public class OrderController {
             // Збереження замовлення в базі
             System.out.println("\u001b[32mConducted a successfull payment operation!\u001b[0m");
             orderService.saveOrder(userService.getUserById(userId), productService.getProductById(productId), os);
-            userService.getUserById(userId).setCoins((int) (userService.getUserById(userId).getCoins() + (productService.getProductById(productId).getPrice()
+            userService.getUserById(userId).setCoins((userService.getUserById(userId).getCoins() + (productService.getProductById(productId).getPrice()
                         * 0.05)));
 
-            productService.getProductById(productId).getUser().setCoins((int) (productService.getProductById(productId).getUser().getCoins() + (productService.getProductById(productId).getPrice()
+            productService.getProductById(productId).getUser().setCoins((productService.getProductById(productId).getUser().getCoins() + (productService.getProductById(productId).getPrice()
                     * 0.03)));
 
 
@@ -88,7 +88,7 @@ public class OrderController {
         } else {
             // Помилка оплати
             System.out.println("\u001b[31mPurchase cancelled!\u001b[0m");
-            model.addAttribute("payment_result", "Purchase canceled ");
+            model.addAttribute("payment_result", "Purchase canceled");
             return "payment_result";
         }
 

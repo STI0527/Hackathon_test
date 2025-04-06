@@ -18,10 +18,12 @@ public class CurrencyController {
     private final CurrencyExchangeService currencyExchangeService;
 
     @GetMapping("/exchange-rates")
-    public String showExchangeRates(@RequestParam(required = false) String date, Model model) {
-        String exchangeRates = currencyExchangeService.getExchangeRates(currencyExchangeService.getCurrentDate());
+    public String showExchangeRates(Model model) {
+        String currentDate = currencyExchangeService.getCurrentDate();
+
+        String exchangeRates = currencyExchangeService.getExchangeRates(currentDate);
         model.addAttribute("exchangeRates", exchangeRates);
-        model.addAttribute("date", date);
+        model.addAttribute("euro_uah_rate", CurrencyExchangeService.getEuroExchangeRate());
         return "exchange_rates";
     }
 

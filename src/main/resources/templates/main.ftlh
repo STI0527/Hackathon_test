@@ -85,8 +85,6 @@
 <!--        </#if>-->
 
 
-<hr><hr>
-
 <section class="title-text-section">
     <div class="marketplace-title">
         Welcome to ReUse Hub — your one-stop place to buy, swap, repair, and reuse items to help the planet and connect with your community!

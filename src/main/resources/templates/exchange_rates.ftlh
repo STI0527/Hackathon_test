@@ -6,36 +6,11 @@
     <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script>
-        google.charts.load('current', {
-            packages: ['map'],
-            mapsApiKey: 'AIzaSyCSqwdmdwdSvp2EwsAvmP9wbhsXkbAAjt0'
-        });
 
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Lat', 'Long', 'Name'],
-                [50.4501, 30.5234, 'Kyiv, Ukraine'],
-                [48.8566, 2.3522, 'Paris, France'],
-                [40.7128, -74.0060, 'New York, USA']
-            ]);
-
-            var options = {
-                showTooltip: true,
-                showInfoWindow: true
-            };
-
-            var map = new google.visualization.Map(document.getElementById('chart_div'));
-            map.draw(data, options);
-        }
-    </script>
 </head>
 <body>
 
-
+<div style="background-color: rgb(255, 255, 255);">
 <#if exchangeRates??>
 ${exchangeRates}
 </#if>
@@ -46,7 +21,10 @@ ${exchangeRates}
 ${date}
 </#if>
 
-
+<#if euro_uah_rate??>
+Euro to UAH exchange rate: ${euro_uah_rate}
+</#if>
+</div>
 
 <footer>
     <div class="empty-container">

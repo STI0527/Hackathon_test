@@ -55,6 +55,7 @@ public class Product {
         dateOfCreation = LocalDateTime.now();
     }
 
+    private transient double virtualPrice;
 
     public void addImageToProduct(Image image){
         image.setProduct(this);

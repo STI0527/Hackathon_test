@@ -6,6 +6,7 @@ import com.example.shop.models.Product;
 import com.example.shop.models.User;
 import com.example.shop.repositories.ProductRepository;
 import com.example.shop.repositories.UserRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,6 +27,9 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+
+    @Getter
+    private final double currencyIndex = 50;
 
 
 

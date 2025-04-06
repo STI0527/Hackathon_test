@@ -245,4 +245,8 @@ public class UserService {
     }
 
 
+    @Transactional
+    public void save(User customer) {
+        userRepository.save(customer);
+    }
 }

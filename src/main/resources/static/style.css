@@ -656,6 +656,30 @@ height: 100%;
 object-fit: cover;
 }
 
+.coins-image-card {
+width: 30px;
+height: 100%;
+object-fit: cover;
+margin-bottom: 2px;
+}
+
+.coins-image-product-info {
+width: 40px;
+height: 100%;
+object-fit: cover;
+margin-bottom: 2px;
+}
+
+.product-info-virtual-price {
+display: flex;
+align-items: center;
+justify-content: left;
+color: rgb(231, 28, 37);
+font-family: 'Open Sans', sans-serif;
+font-size: 30px;
+font-weight: 700;
+}
+
 .title-text-section {
 display: flex;
 align-items: center;
@@ -1095,7 +1119,10 @@ border-radius: 50%;
 }
 
 .product-price {
-display: inline-block;
+display: flex;
+align-items: center;
+justify-content: center;
+
 color: rgb(231, 28, 37);
     font-size: 20px;
     font-weight: 700;

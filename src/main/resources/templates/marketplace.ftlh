@@ -156,7 +156,9 @@
 
 </div>
 
-
+<#if euro_exchange_rate??>
+<div>Euro to UAH exchange rate: ${euro_exchange_rate}</div>
+</#if>
 
     <div class="product-section">
         <div class="product_list">
@@ -177,6 +179,12 @@
 
         <div class="product-price">
             ${product.price} ₴
+        </div>
+        <div class="product-price">
+            ${((product.price / euro_exchange_rate) * 50)?string("0.0")}
+            <div class="coins-container">
+                <img class="coins-image-card" src="coins_logo.png">
+            </div>
         </div>
 
         <div class="product-description">

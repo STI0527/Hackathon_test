@@ -36,6 +36,8 @@
 
 <#if payment_result??>
     <div>${payment_result}</div>
+    <#else>
+    <div>No data about your purchase</div>
 </#if>
 
 

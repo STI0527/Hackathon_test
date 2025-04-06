@@ -4,13 +4,12 @@ import com.example.shop.enums.AdvertType;
 import com.example.shop.models.Image;
 import com.example.shop.models.Product;
 import com.example.shop.models.User;
-import com.example.shop.services.LiqPayService;
-import com.example.shop.services.OrderService;
-import com.example.shop.services.ProductService;
-import com.example.shop.services.UserService;
+import com.example.shop.services.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -23,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ public class ProductController {
     private final UserService userService;
     private final LiqPayService liqPayService;
     private final OrderService orderService;
+    private final CurrencyExchangeService currencyExchangeService;
 
 //Через анотацію @RequiredArgsConstructor ці рядки не потрібні;
     //____________________________________________________________
@@ -89,6 +91,10 @@ public class ProductController {
                               HttpSession session,Authentication authentication) {
         Long iD = Long.parseLong(id.replace("\u00A0", ""));
         Product product = productService.getProductById(iD);
+        double virtualPrice = (product.getPrice() / currencyExchangeService.getEuroToUahRate()) * productService.getCurrencyIndex();
+        product.setVirtualPrice(BigDecimal.valueOf(virtualPrice)
+                .setScale(1, RoundingMode.HALF_UP)
+                .doubleValue());
 
 
         if (authentication instanceof UsernamePasswordAuthenticationToken)
@@ -108,8 +114,8 @@ public class ProductController {
                 productService.getProductById(iD).getPrice(),
                 "UAH",
                 "Purchase payment " + productService.getProductById(iD).getTitle(),
-                "https://6054-46-150-81-93.ngrok-free.app/payment/result",
-                "https://6054-46-150-81-93.ngrok-free.app/payment/result"
+                "https://56b4-46-150-81-93.ngrok-free.app/payment/result",
+                "https://56b4-46-150-81-93.ngrok-free.app/payment/result"
         );
 
         String signature = liqPayService.generateSignature(data);
@@ -133,6 +139,44 @@ public class ProductController {
         else if (authentication instanceof OAuth2AuthenticationToken token)
             model.addAttribute("user_id", userService.getUserByEmail(token.getPrincipal().getAttribute("email")).getId());
         return "product_info";
+    }
+    
+    @PostMapping("/buy/virtual/{id}")
+    public ResponseEntity<?> buyVirtual(@PathVariable String id, Principal principal,
+                                     HttpServletRequest request,
+                                     HttpSession session, Authentication authentication, Model model,
+                                        @RequestParam(name = "virtualPrice") String virtualPriceLine){
+        Long iD = Long.parseLong(id.replace("\u00A0", ""));
+        Product product = productService.getProductById(iD);
+
+        User customer = null;
+        
+        if (authentication instanceof UsernamePasswordAuthenticationToken)
+            customer = productService.getUserByPrincipal(principal);
+        else if(authentication instanceof OAuth2AuthenticationToken token)
+            customer = userService.getUserByEmail(token.getPrincipal().getAttribute("email"));
+
+        System.out.println("Customer id = " + customer.getId());
+
+        double virtualPrice = Double.parseDouble(virtualPriceLine.replace(",", "."));
+
+        System.out.println("Customer balance: " + customer.getCoins());
+        System.out.println("Product virtual price: " + virtualPrice);
+
+        if(customer.getCoins() < virtualPrice) {
+            model.addAttribute("payment_message", "You don’t have enough coins!");
+            return ResponseEntity.ok("You don’t have enough coins!");
+        }
+        else {
+            System.out.println("New customer balance: " + (customer.getCoins() - virtualPrice));
+            customer.setCoins((customer.getCoins() - virtualPrice));
+            userService.save(customer);
+
+
+            model.addAttribute("payment_message", "Purchase completed successfully!");
+            return ResponseEntity.ok("Purchase completed successfully!");
+        }
+
     }
 
     @PostMapping("/")

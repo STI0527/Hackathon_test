@@ -38,7 +38,7 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "coins")
-    private int coins;
+    private double coins;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))

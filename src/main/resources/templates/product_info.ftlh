@@ -120,20 +120,20 @@
 
     <div class="product-info-title">${product.title}</div>
         <div class="product-info-price">${product.price} ₴</div>
+        <div class="product-info-virtual-price">${product.virtualPrice}
+        <img class="coins-image-product-info" src="/coins_logo.png">
+        </div>
         <div class="product-info-description"> ${product.description}</div>
         <div class="pink-container">
             <div class="product-info-city"> ${product.city}</div>
             <div class="product-info-author"> Author: <a href="/user/${product.user.id}">${product.user.name}</a></div
 
             <div class="product-info-buy">
-                <form method="post" accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
-                    <input type="hidden" name="data" value="${liqPayData}" />
-                    <input type="hidden" name="signature" value="${liqPaySignature}" />
 
-                    <button class="liqpay-button">
+                    <button class="liqpay-button" onclick="showTypesOfPayment();">
                         BUY NOW
                     </button>
-                </form>
+
             </div>
         </div>
         <!--<b>Номер телефона:</b>${product.user.phoneNumber}<br>-->
@@ -143,9 +143,73 @@
         <!--</form>-->
 
 
+</div>
+</div>
 
+<div id="paymentModal" style="display: none; position: fixed; top: 0; left: 0;
+width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999;"
+onclick="onModalBackgroundClick(event)">
+
+<div style="background-color: white; padding: 20px; border-radius: 10px;
+        width: 450px; margin: 100px auto; text-align: center;">
+
+    <div id="modalContent" style="background-color: white;">
+
+    <h3>Choose a payment method</h3>
+
+    <form method="post" accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
+        <input type="hidden" name="data" value="${liqPayData}" />
+        <input type="hidden" name="signature" value="${liqPaySignature}" />
+
+        <button class="liqpay-button">
+            ${product.price} UAH
+        </button>
+    </form>
+
+        <form action="/buy/virtual/${product.id}" method="post">
+            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+            <input type="hidden" name="virtualPrice" value="${product.virtualPrice}">
+    <button class="liqpay-button">
+        ${product.virtualPrice}
+        <img class="coins-image" src="/coins_logo.png">
+    </button>
+        </form>
+        <br><br>
+
+    <button onclick="closeModal()">❌ Скасувати</button>
 </div>
 </div>
+
+<script>
+    function showTypesOfPayment() {
+            document.getElementById("paymentModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("paymentModal").style.display = "none";
+        }
+
+        function payWithMoney() {
+            closeModal();
+            alert("Оплата реальними грошима вибрана ✅");
+            // Тут можна редіректити або викликати API
+        }
+
+        function payWithVirtual() {
+            closeModal();
+            alert("Оплата віртуальною валютою вибрана ✅");
+            // Тут також обробити оплату віртуальною
+        }
+
+        function onModalBackgroundClick(event) {
+        const modalContent = document.getElementById("modalContent");
+        if (!modalContent.contains(event.target)) {
+            closeModal();
+        }
+    }
+
+</script>
+
 
 <#if message??>
 <br>
@@ -184,7 +248,7 @@
     </div>
 </div>
 <div class="footer-bottom-element">
-    <a class="footer-link" href="/">ReUse Hub &#xa9 2025</a>
+    <a class="footer-link" href="/">ReUse Hub &#xa9; 2025</a>
 </div>
 <div class="empty-container">
 

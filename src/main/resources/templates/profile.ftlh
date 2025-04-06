@@ -83,6 +83,15 @@
         </form>
     </div>
 
+    <div>
+        Balance: ${user.coins}
+        <img class="coins-image" src="/coins_logo.png">
+    </div>
+
+    <#if euro_exchange_rate??>
+    <div>Euro exchange rate: ${euro_exchange_rate}</div>
+    </#if>
+
     <div class="profile-information-container">
         <div class="profile-user-information">Email: ${user.email}</div>
         <div class="profile-user-information">Telephone number: ${user.phoneNumber}</div>
