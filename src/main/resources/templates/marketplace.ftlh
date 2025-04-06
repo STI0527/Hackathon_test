@@ -112,7 +112,7 @@
                 <input type="hidden" name="type" value="SELL" required/>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Name..." required>
-                    <label for="floatingDescription">Name :</label>
+                    <label for="floatingTitle">Name :</label>
                 </div>
 
                 <div class="form-floating mb-3">

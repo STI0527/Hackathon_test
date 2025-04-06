@@ -2,16 +2,10 @@ package com.example.shop.controller;
 
 
 import com.example.shop.email.EmailSender;
-import com.example.shop.models.Avatar;
-import com.example.shop.models.ConfirmationToken;
-import com.example.shop.models.Product;
-import com.example.shop.models.User;
+import com.example.shop.models.*;
 import com.example.shop.repositories.AvatarRepository;
 import com.example.shop.repositories.UserRepository;
-import com.example.shop.services.ConfirmationTokenService;
-import com.example.shop.services.CurrencyExchangeService;
-import com.example.shop.services.ProductService;
-import com.example.shop.services.UserService;
+import com.example.shop.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +20,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,6 +33,7 @@ public class UserController {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
     private final CurrencyExchangeService currencyExchangeService;
+    private final PlaceService placeService;
 
     @GetMapping("/login")
     public String login(){
@@ -214,7 +210,22 @@ public class UserController {
         } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
             model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
         }
+
+        model.addAttribute("places", placeService.getAllPlaces());
+
         return "reuse";
+    }
+
+    @PostMapping("/places/create")
+    public String createPlace(@RequestParam String title,
+                              @RequestParam double latitude,
+                              @RequestParam double longitude, Principal principal, OAuth2AuthenticationToken token){
+        Place place = new Place(title, latitude, longitude);
+        if (token==null)
+            placeService.savePlace(principal, place);
+        else
+            placeService.savePlace(token, place);
+        return "redirect:/reuse";
     }
 
 

@@ -113,7 +113,7 @@
                 <input type="hidden" name="type" value="REPAIR" required/>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Назва..." required>
-                    <label for="floatingDescription">Title :</label>
+                    <label for="floatingTitle">Title :</label>
                 </div>
 
                 <div class="form-floating mb-3">

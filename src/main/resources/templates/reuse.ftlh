@@ -6,32 +6,30 @@
     <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script>
-        google.charts.load('current', {
-            packages: ['map'],
-            mapsApiKey: 'AIzaSyCSqwdmdwdSvp2EwsAvmP9wbhsXkbAAjt0'
-        });
 
-        google.charts.setOnLoadCallback(drawChart);
 
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Lat', 'Long', 'Name'],
-                [50.4501, 30.5234, 'Kyiv, Ukraine'],
-                [48.8566, 2.3522, 'Paris, France'],
-                [40.7128, -74.0060, 'New York, USA']
-            ]);
-
-            var options = {
-                showTooltip: true,
-                showInfoWindow: true
-            };
-
-            var map = new google.visualization.Map(document.getElementById('chart_div'));
-            map.draw(data, options);
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        #map {
+    width: 80vw;
+    height: 80vh;
+    border: 2px solid #333;
+    border-radius: 16px;
+  }
+        .map{
+            display: flex;
+            justify-content: center;
+    align-items: center;
         }
-    </script>
+        #menu{
+            z-index: 999;
+        }
+
+    </style>
 </head>
 <body>
 
@@ -92,8 +90,63 @@
     </div>
 </section>
 
-<h2>Мапа точок переробки матеріалів</h2>
-<div id="chart_div" style="width: 800px; height: 500px;"></div>
+<center>
+<#if user.isAdmin()>
+<button id="addPlaceButton" class="add-button" onclick="showPlaceAddingForm()">Add Place</button>
+</#if>
+
+
+
+<div class="add-place-window">
+
+    <div id="addPlaceForm" class="add-product-container">
+
+        <div class="add-product-top-container">
+
+            <div class="add-title">
+                Add place
+            </div>
+
+            <div class="close-button-container">
+                <button id="close-button" type="button" class="close-button" data-bs-dismiss="toast" aria-label="Close">X</button>
+            </div>
+
+        </div>
+
+        <div class="form-add-container">
+            <form id="productFormToast" action="/places/create" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Name..." required>
+                    <label for="floatingTitle">Name :</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="number" step="any" class="form-control"  id="floatingLatitude" name="latitude" placeholder="Latitude..." required>
+                    <label for="floatingLatitude">Latitude :</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="number" step="any" class="form-control"  id="floatingLongitude" name="longitude" placeholder="Longitude..." required>
+                    <label for="floatingLongitude">Longitude :</label>
+                </div>
+
+
+                <div class="confirm-adding-container">
+                    <input  class="add-button-confirm" type="submit" onsubmit="submitForm(event)" value="Add">
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+</center>
+
+<div class="map">
+<div id="map"></div>
+</div>
 
 <footer>
     <div class="empty-container">
@@ -130,6 +183,29 @@
     </div>
 </footer>
 
+<script>
+    const map = L.map('map', {zoomControl: false}).setView([49.0, 31.0], 6); // Центр України
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; Carto & OpenStreetMap',
+        subdomains: 'abcd',
+        maxZoom: 20
+    }).addTo(map);
+
+    // Тестовий маркер для перевірки
+    L.marker([50.4501, 30.5234]).addTo(map).bindPopup("<b>Kyiv</b>");
+
+    <#if places??>
+        <#list places as place>
+        <#assign latitude = place.latitude?string?replace(",", ".") />
+        <#assign longitude = place.longitude?string?replace(",", ".") />
+                console.log('Invalid [${latitude}, ${longitude}] "<b>${place.name}</b>"');
+                L.marker([${latitude}, ${longitude}]).addTo(map)
+                    .bindPopup("<b>${place.name}</b>");
+        </#list>
+    </#if>
+</script>
+
 </body>
 </html>
 
@@ -139,4 +215,20 @@ document.getElementById("toggleMenu").addEventListener("click", function () {
     menu.classList.toggle("active");
 });
 
+const addPlaceButton = document.getElementById("addPlaceButton");
+if (addPlaceButton) {
+    addPlaceButton.addEventListener("click", function () {
+        const addPlaceForm = document.getElementById("addPlaceForm");
+        addPlaceForm.classList.toggle("active");
+    });
+}
+
+const closeButton = document.getElementById("close-button");
+if (closeButton) {
+    closeButton.addEventListener("click", function () {
+        const addPlaceForm = document.getElementById("addPlaceForm");
+        addPlaceForm.classList.toggle("active");
+    });
+}
 </script>
+
