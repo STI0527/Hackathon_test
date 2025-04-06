@@ -1,5 +1,6 @@
 package com.example.shop.services;
 
+import com.example.shop.enums.TypeOfPayment;
 import com.example.shop.models.Order;
 import com.example.shop.models.Product;
 import com.example.shop.models.User;
@@ -28,7 +29,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
 
-    public void saveOrder(User customer, Product product, String os) {
+    public void saveOrder(User customer, Product product, TypeOfPayment typeOfPayment, double virtualPrice, String os) {
         Order order = new Order();
         order.setCustomerName(customer.getName());
         order.setCustomerId(customer.getId());
@@ -40,6 +41,8 @@ public class OrderService {
         order.setOrderPrice(product.getPrice());
         order.setOrderCity(product.getCity());
         order.setOperationalSystem(os);
+        order.setOrderVirtualPrice(virtualPrice);
+        order.setTypeOfPayment(typeOfPayment);
 
         System.out.println("\u001b[31mUser with email" + customer.getEmail() + " ordered product with id " + product.getId() + " (" + product.getTitle() + "):"
                 + "\u001b[33m " + product.getPrice() + " UAH; \u001b[0m");

@@ -67,8 +67,11 @@
 
                 <hr><br><br>
 
-
-
+                <input type="hidden" name="plasticSaved" value="0">
+                <input type="hidden" name="metalSaved" value="0">
+                <input type="hidden" name="glassSaved" value="0">
+                <input type="hidden" name="CO2Saved" value="0">
+                    <input type="hidden" name="coins" value="100">
                 <input type="hidden" name="_csrf" value="${_csrf.token}" required />
                 <input class="registration_form_submit" type="submit" value="Sign up" />
             </form>

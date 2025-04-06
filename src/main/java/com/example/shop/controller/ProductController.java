@@ -1,9 +1,13 @@
 package com.example.shop.controller;
 
 import com.example.shop.enums.AdvertType;
+import com.example.shop.enums.Rewards;
+import com.example.shop.enums.TypeOfPayment;
 import com.example.shop.models.Image;
+import com.example.shop.models.Notification;
 import com.example.shop.models.Product;
 import com.example.shop.models.User;
+import com.example.shop.repositories.NotificationRepository;
 import com.example.shop.services.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -37,6 +41,7 @@ public class ProductController {
     private final LiqPayService liqPayService;
     private final OrderService orderService;
     private final CurrencyExchangeService currencyExchangeService;
+    private final NotificationService notificationService;
 
 //Через анотацію @RequiredArgsConstructor ці рядки не потрібні;
     //____________________________________________________________
@@ -54,11 +59,18 @@ public class ProductController {
             userService.createUserFromOAuth2(model, token);
             String email = token.getPrincipal().getAttribute("email");
             user = userService.getUserByEmail(email);
+            user.setCoins(BigDecimal.valueOf(user.getCoins())
+                    .setScale(1, RoundingMode.HALF_UP)
+                    .doubleValue());
+
             model.addAttribute("user", user);
         } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
             // Якщо аутентифікація через ім'я користувача та пароль
             model.addAttribute("user", productService.getUserByPrincipal(principal));
         }
+
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
+        model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
 
         return "main";
     }
@@ -92,9 +104,11 @@ public class ProductController {
         Long iD = Long.parseLong(id.replace("\u00A0", ""));
         Product product = productService.getProductById(iD);
         double virtualPrice = (product.getPrice() / currencyExchangeService.getEuroToUahRate()) * productService.getCurrencyIndex();
+
         product.setVirtualPrice(BigDecimal.valueOf(virtualPrice)
                 .setScale(1, RoundingMode.HALF_UP)
                 .doubleValue());
+
 
 
         if (authentication instanceof UsernamePasswordAuthenticationToken)
@@ -170,8 +184,36 @@ public class ProductController {
         else {
             System.out.println("New customer balance: " + (customer.getCoins() - virtualPrice));
             customer.setCoins((customer.getCoins() - virtualPrice));
+            String os = (String) session.getAttribute("os");
             userService.save(customer);
+            orderService.saveOrder(customer, product, TypeOfPayment.VIRTUAL_CURRENCY, virtualPrice, os);
+            customer.setCoins((customer.getCoins() + (virtualPrice
+                    * Rewards.BUY.getRewardPercentage())));
+            System.out.println("Customer's reward: " + (virtualPrice
+                    * Rewards.BUY.getRewardPercentage()));
+            System.out.println("Seller's reward: " + (virtualPrice
+                    * Rewards.SELL.getRewardPercentage()));
 
+            product.getUser().setCoins((product.getUser().getCoins() + (virtualPrice
+                    * Rewards.SELL.getRewardPercentage())));
+
+            userService.save(customer);
+            userService.save(product.getUser());
+
+            double customerReward = BigDecimal.valueOf(virtualPrice
+                    * Rewards.BUY.getRewardPercentage())
+                    .setScale(1, RoundingMode.HALF_UP)
+                    .doubleValue();
+
+            double sellerReward = BigDecimal.valueOf(virtualPrice
+                            * Rewards.SELL.getRewardPercentage())
+                    .setScale(1, RoundingMode.HALF_UP)
+                    .doubleValue();
+
+            notificationService.saveNotification(customer, product.getUser(), Rewards.BUY, product, customerReward);
+            notificationService.saveNotification(product.getUser(), customer, Rewards.SELL, product, sellerReward);
+
+            //productService.deleteProduct(product.getId());
 
             model.addAttribute("payment_message", "Purchase completed successfully!");
             return ResponseEntity.ok("Purchase completed successfully!");

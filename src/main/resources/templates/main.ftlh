@@ -4,15 +4,23 @@
     <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 <header>
-    <div class="header-left"></div>
+    <div class="header-left">
+        <#if user.email??>
+            <img id="notificationIcon" class="notification-image" src="/notification_icon.png">
+        </#if>
+    </div>
     <a href="/">ReUse Hub</a>
     <div id="toggleMenu" class="account-logo-container">
         <#if user.email??>
+
         <img class="coins-image" src="/coins_logo.png">
         <div class="coins-container">${user.getCoins()}</div>
+
         <img class="account-logo-image" src="/avatars/${user.avatar.id}">
         <#else>
         <img class="account-logo-image" src="/default_avatar.png">
@@ -33,6 +41,112 @@
 
             <div class="user_menu-name">${user.name}</div>
 
+            <div class="euro_exchange_rate_container">
+                1 EUR — ${euro_exchange_rate} UAH
+            </div>
+
+            <div class="material-statistics-container">
+                <canvas id="userMaterialsChart" width="100%" height="20"></canvas>
+            </div>
+
+
+            <script>
+                // Дані користувача
+                <!--const plasticSaved = ${user.plasticSaved};-->
+                <!--const metalSaved = ${user.metalSaved};-->
+                <!--const glassSaved = ${user.glassSaved};-->
+                <!--const CO2Saved = ${user.CO2Saved};-->
+
+                const plasticSaved = 12;
+                const metalSaved = 24;
+                const glassSaved = 24;
+                const CO2Saved = 40;
+
+                const totalSaved = plasticSaved + metalSaved + glassSaved + CO2Saved;
+
+                // Розрахунок відсотків
+                const percent = (val) => Math.round((val / totalSaved) * 100);
+
+                const data = {
+                    labels: [''],
+                    datasets: [{
+                        label: 'Plastic',
+                        data: [percent(plasticSaved)],
+                        backgroundColor: 'rgba(255, 99, 132, 0.8)'
+                    }, {
+                        label: 'Metal',
+                        data: [percent(metalSaved)],
+                        backgroundColor: 'rgba(54, 162, 235, 0.8)'
+                    }, {
+                        label: 'Glass',
+                        data: [percent(glassSaved)],
+                        backgroundColor: 'rgba(255, 206, 86, 0.8)'
+                    }, {
+                        label: 'CO₂',
+                        data: [percent(CO2Saved)],
+                        backgroundColor: 'rgba(75, 192, 192, 0.8)'
+                    }]
+                };
+
+                const config = {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        indexAxis: 'y',
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `
+                                        <#noparse>
+                                        ${context.dataset.label}: ${context.raw}%`;
+                                        </#noparse>
+                                    }
+                                },
+                                bodyFont: {
+                                    size: 10
+                                },
+                                 padding: 10,
+                                 maxWidth: 20,
+                                 backgroundColor: 'rgba(0, 0, 0, 0.8)'
+
+                            },
+                            legend: {
+                                position: 'none'
+                            },
+                <!--            title: {-->
+                <!--                display: true,-->
+                <!--                text: 'Відсоток збережених матеріалів'-->
+                <!--            }-->
+                        },
+                        responsive: true,
+                        scales: {
+                            x: {
+                                stacked: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            },
+                            y: {
+                                stacked: true,
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                };
+
+                new Chart(
+                    document.getElementById('userMaterialsChart'),
+                    config
+                );
+            </script>
+
+
             <form action="/profile/${user.id}" method="post">
                 <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
@@ -42,7 +156,6 @@
             <#if user.isAdmin()>
             <a class="user-menu-admin-link" href="/admin">Administration Panel</a>
         </#if>
-
 
         <form action="/logout" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -57,33 +170,22 @@
 </div>
 
 
-<!--<#if user.email??>-->
-<!--<h3>Ім'я користувача: <i>${user.name}</i></h3>-->
-<!--<form action="/logout" method="post">-->
-<!--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
-<!--<input type="submit" value="Вийти з акаунта"/>-->
-<!--</form>-->
+<div id="notificationMenu" class="notifications-container">
+    <#list notifications as notification>
+    <div class="notification-container">You've got +${notification.rewardAmount}
+        <img class="coins-image-notifications" src="coins_logo.png">
+   for ${notification.rewardType.getOperationType()}: ${notification.productTitle}!
 
+    <div class="notification-time-container">
+        ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
 
-<!--<div class="search">-->
-<!--<div class="form-outline" data-mdb-input-init>-->
-<!--    <input id="search-focus" type="search" id="form1" class="form-control" />-->
-<!--&lt;!&ndash;    <label class="form-label" for="form1">Search</label>&ndash;&gt;-->
-<!--</div>-->
-<!--<button type="button" class="btn btn-primary" data-mdb-ripple-init>-->
-<!--    <i class="fas fa-search">Пошук</i>-->
-<!--</button>-->
-<!--</div>-->
+    </div>
 
-<!--<#if user.isAdmin()>-->
-<!--<br>-->
-<!--<a href="/admin">Панель адміністратора</a>-->
-<!--</#if>-->
-
-<!--<#else>-->
-<!--<a href="/login">Авторизуватися</h3></a>-->
-<!--        </#if>-->
-
+    </div>
+    <#else>
+    <div>No notifications</div>
+    </#list>
+</div>
 
 <section class="title-text-section">
     <div class="marketplace-title">
@@ -255,17 +357,31 @@
         menu.classList.toggle("active");
     });
 
-    document.getElementById("addButton").addEventListener("click", function () {
-        const addForm = document.getElementById("addForm");
-        addForm.classList.toggle("active");
-    });
+const notificationIcon = document.getElementById("notificationIcon");
+const notificationModule = document.getElementById("notificationMenu");
 
-    document.getElementById("close-button").addEventListener("click", function() {
+let hideTimeout;
 
-    const addForm = document.getElementById("addForm");
-    addForm.classList.toggle("active");
-    });
-
+notificationIcon.addEventListener("click", function () {
+    // Якщо вже активне — приховуємо з затримкою
+    if (notificationMenu.classList.contains("active")) {
+        notificationMenu.classList.remove("active");
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+            notificationMenu.style.visibility = "hidden";
+        }, 300);
+    } else {
+        clearTimeout(hideTimeout);
+        notificationMenu.style.visibility = "visible";
+        notificationMenu.classList.add("active");
+        document.addEventListener("click", function (event) {
+    if (!notificationModule.contains(event.target) && !notificationIcon.contains(event.target)) {
+        notificationModule.classList.remove("active");
+    }
+});
+    }
+});
 
 </script>
+
         </html>

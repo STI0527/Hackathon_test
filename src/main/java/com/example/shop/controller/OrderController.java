@@ -1,6 +1,7 @@
 package com.example.shop.controller;
 
 
+import com.example.shop.enums.TypeOfPayment;
 import com.example.shop.models.LiqPayResponse;
 import com.example.shop.models.Order;
 import com.example.shop.services.*;
@@ -71,7 +72,8 @@ public class OrderController {
         if (response.isSuccess()) {
             // Збереження замовлення в базі
             System.out.println("\u001b[32mConducted a successfull payment operation!\u001b[0m");
-            orderService.saveOrder(userService.getUserById(userId), productService.getProductById(productId), os);
+
+            orderService.saveOrder(userService.getUserById(userId), productService.getProductById(productId),  TypeOfPayment.REAL_MONEY,0.0, os);
             userService.getUserById(userId).setCoins((userService.getUserById(userId).getCoins() + (productService.getProductById(productId).getPrice()
                         * 0.05)));
 

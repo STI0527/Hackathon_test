@@ -40,6 +40,18 @@ public class User implements UserDetails {
     @Column(name = "coins")
     private double coins;
 
+    @Column(name = "plastic_saved, kg")
+    private double plasticSaved;
+
+    @Column(name = "metal_saved, kg")
+    private double metalSaved;
+
+    @Column(name = "glass_saved, kg")
+    private double glassSaved;
+
+    @Column(name = "CO2_saved, kg")
+    private double CO2Saved;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)

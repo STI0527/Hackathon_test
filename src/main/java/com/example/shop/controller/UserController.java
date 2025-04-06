@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.Principal;
 
 @Controller
@@ -141,6 +143,10 @@ public class UserController {
     public String profile(@PathVariable("id") String id, Model model){
         Long iD = Long.parseLong(id.replace("\u00A0", ""));
         User user = userService.getUserById(iD);
+        user.setCoins(BigDecimal.valueOf(user.getCoins())
+                .setScale(1, RoundingMode.HALF_UP)
+                .doubleValue());
+        
         model.addAttribute("user", user);
         model.addAttribute("products", user.getProducts());
         model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());

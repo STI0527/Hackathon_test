@@ -1,5 +1,6 @@
 package com.example.shop.models;
 
+import com.example.shop.enums.TypeOfPayment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,6 +46,13 @@ public class Order {
 
     @Column(name="order_price, UAH")
     private int orderPrice;
+
+    @Column(name="order_virtual_price, coins")
+    private double orderVirtualPrice;
+
+    @Column(name="type_of_payment")
+    @Enumerated(EnumType.STRING)
+    private TypeOfPayment typeOfPayment;
 
     @Column(name="order_city")
     private String orderCity;

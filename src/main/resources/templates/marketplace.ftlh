@@ -156,9 +156,7 @@
 
 </div>
 
-<#if euro_exchange_rate??>
-<div>Euro to UAH exchange rate: ${euro_exchange_rate}</div>
-</#if>
+
 
     <div class="product-section">
         <div class="product_list">
