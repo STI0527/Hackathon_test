@@ -218,9 +218,12 @@ public class UserController {
 
     @PostMapping("/places/create")
     public String createPlace(@RequestParam String title,
-                              @RequestParam double latitude,
-                              @RequestParam double longitude, Principal principal, OAuth2AuthenticationToken token){
-        Place place = new Place(title, latitude, longitude);
+                              @RequestParam double latitude, @RequestParam double longitude,
+                              @RequestParam String city, @RequestParam String address, @RequestParam String description,
+                              @RequestParam boolean paper, @RequestParam boolean plastic,
+                              @RequestParam boolean glass, @RequestParam boolean metal,
+                              Principal principal, OAuth2AuthenticationToken token){
+        Place place = new Place(title, latitude, longitude, city, address, description, paper, plastic, glass, metal);
         if (token==null)
             placeService.savePlace(principal, place);
         else

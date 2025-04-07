@@ -29,6 +29,54 @@
             z-index: 999;
         }
 
+        .add-place-window {
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: row;
+}
+        .add-product-container{
+        z-index: 999;
+        }
+
+
+
+        .icon-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.icon {
+    width: 80px;
+    height: 80px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    opacity: 0.5;  /* Іконки замутнені, якщо не вибрані */
+    transition: opacity 0.3s ease, border 0.3s ease;
+}
+
+.icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.icon.selected {
+    opacity: 1;  /* Якщо вибрано, іконка стає чіткою */
+    border-color: green;  /* Зелені кордони для вибраної іконки */
+}
+
+.icon:hover {
+    opacity: 0.8;  /* Коли наводять курсор, іконки стають трохи чіткішими */
+}
+
+.icon.selected:hover {
+    opacity: 1;  /* Якщо вибрана, не буде змінюватися при наведенні */
+}
+
     </style>
 </head>
 <body>
@@ -132,6 +180,43 @@
                     <label for="floatingLongitude">Longitude :</label>
                 </div>
 
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  id="floatingCity" name="city" placeholder="City..." required>
+                    <label for="floatingCity">City :</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  id="floatingAddress" name="address" placeholder="Address..." required>
+                    <label for="floatingAddress">Address :</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  id="floatingDescription" name="description" placeholder="Description..." required>
+                    <label for="floatingDescription">Description :</label>
+                </div>
+
+                <input type="hidden" name="paper" id="1" value="false">
+                <input type="hidden" name="plastic" id="2" value="false">
+                <input type="hidden" name="glass" id="3" value="false">
+                <input type="hidden" name="metal" id="4" value="false">
+
+                <div class="icon-container">
+                    <div class="icon" id="icon1">
+                        <img src="/paper1.png" alt="Paper">
+                    </div>
+                    <div class="icon" id="icon2">
+                        <img src="/plastic.png" alt="Plastic">
+                    </div>
+                    <div class="icon" id="icon3">
+                        <img src="/glass1.png" alt="Glass">
+                    </div>
+                    <div class="icon" id="icon4">
+                        <img src="/metal1.png" alt="Metal">
+                    </div>
+                </div>
+
+
+
 
                 <div class="confirm-adding-container">
                     <input  class="add-button-confirm" type="submit" onsubmit="submitForm(event)" value="Add">
@@ -184,7 +269,7 @@
 </footer>
 
 <script>
-    const map = L.map('map', {zoomControl: false}).setView([49.0, 31.0], 6); // Центр України
+    const map = L.map('map', {zoomControl: false}).setView([49.0, 31.0], 8); // Центр України
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; Carto & OpenStreetMap',
@@ -230,5 +315,23 @@ if (closeButton) {
         addPlaceForm.classList.toggle("active");
     });
 }
+
+const icons = document.querySelectorAll('.icon');
+
+icons.forEach(icon => {
+    icon.addEventListener('click', function() {
+        const iconId = icon.id; // Наприклад, "icon1"
+        const input = document.getElementById(iconId.replace('icon', '').toLowerCase()); // Отримуємо правильне приховане поле
+
+        // Якщо іконка вибрана, змінюємо значення на true і додаємо клас 'selected'
+        if (icon.classList.contains('selected')) {
+            icon.classList.remove('selected');
+            input.value = 'false'; // Встановлюємо значення на false
+        } else {
+            icon.classList.add('selected');
+            input.value = 'true'; // Встановлюємо значення на true
+        }
+    });
+});
 </script>
 

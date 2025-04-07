@@ -29,10 +29,50 @@ public class Place {
     @Column(name = "longitude")
     private double longitude;
 
-    public Place(String name, double lat, double lng) {
-        this.name = name;
-        this.latitude = lat;
-        this.longitude = lng;
-    }
+    @Getter
+    @Setter
+    @Column(name = "city")
+    private String city;
 
+    @Getter
+    @Setter
+    @Column(name = "address")
+    private String address;
+
+    @Getter
+    @Setter
+    @Column(name = "description")
+    private String description;
+
+    @Getter
+    @Setter
+    @Column(name = "paper")
+    private boolean paper;
+    @Getter
+    @Setter
+    @Column(name = "plastic")
+    private boolean plastic;
+    @Getter
+    @Setter
+    @Column(name = "glass")
+    private boolean glass;
+    @Getter
+    @Setter
+    @Column(name = "metal")
+    private boolean metal;
+
+
+    public Place(String name, double latitude, double longitude, String city, String address, String description,
+                 boolean paper, boolean plastic, boolean glass, boolean metal) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.city = city;
+        this.address = address;
+        this.description = description;
+        this.paper = paper;
+        this.plastic = plastic;
+        this.glass = glass;
+        this.metal = metal;
+    }
 }
