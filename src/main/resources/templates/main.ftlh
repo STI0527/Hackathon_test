@@ -172,14 +172,23 @@
 
 <div id="notificationMenu" class="notifications-container">
     <#list notifications as notification>
-    <div class="notification-container">You've got +${notification.rewardAmount}
+    <div class="notification-container">
+        <div class="notification-time-container">
+            ${notification.shortDateOfOperation}
+
+        </div>
+
+        You've got +${notification.rewardAmount}
         <img class="coins-image-notifications" src="coins_logo.png">
    for ${notification.rewardType.getOperationType()}: ${notification.productTitle}!
+
 
     <div class="notification-time-container">
         ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
 
     </div>
+
+
 
     </div>
     <#else>
@@ -202,9 +211,11 @@
 
     <div class="mode-container">
         <div class="mode">
+            <a href="/marketplace">
             <div class="img-container">
                 <img class="img-mode" src="marketplace.png">
             </div>
+            </a>
     <form action="/marketplace" method="get">
         <button class="mode-button" type="submit">
             Marketplace
@@ -214,9 +225,11 @@
 
 
         <div class="mode">
+            <a href="/exchange">
             <div class="img-container">
                 <img class="img-mode" src="exchange.png">
             </div>
+            </a>
         <form action="/exchange" method="get">
             <button class="mode-button" type="submit">
                 Exchange
@@ -225,9 +238,11 @@
         </div>
 
         <div class="mode">
+            <a href="/repair">
             <div class="img-container">
                 <img class="img-mode" src="repair.png">
             </div>
+            </a>
             <form action="/repair" method="get">
                 <button class="mode-button" type="submit">
                     Repair
@@ -237,9 +252,11 @@
 
 
         <div class="mode">
+            <a href="/reuse">
             <div class="img-container">
                 <img class="img-mode" src="recycle.png">
             </div>
+            </a>
                 <form action="/reuse" method="get">
                     <button class="mode-button" type="submit">
                         Reuse

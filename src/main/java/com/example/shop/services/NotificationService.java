@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.*;
 
 @Service
@@ -32,6 +33,12 @@ public class NotificationService {
         notification.setDateOfOperation(LocalDateTime.now());
         notification.setProductId(product.getId());
         notification.setProductTitle(product.getTitle());
+
+        String shortDateOfOperation = String.format("%02d", notification.getDateOfOperation().getDayOfMonth()) + " " +
+                notification.getDateOfOperation().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+
+        notification.setShortDateOfOperation(shortDateOfOperation);
+
         notificationRepository.save(notification);
     }
 
@@ -56,7 +63,7 @@ public class NotificationService {
         List<Notification> sortedList = new ArrayList<>(set);
 
         sortedList.sort((n1, n2) -> n2.getDateOfOperation().compareTo(n1.getDateOfOperation()));
-
+        System.out.println("\u001b[32mNotifications for user with id = " + id + " available: " + sortedList.size() + "\u001b[0m");
         return sortedList;
     }
 }

@@ -66,6 +66,7 @@ public class ProductController {
             model.addAttribute("user", user);
         } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
             // Якщо аутентифікація через ім'я користувача та пароль
+            user = userService.getUserByPrincipal(principal);
             model.addAttribute("user", productService.getUserByPrincipal(principal));
         }
 
@@ -129,8 +130,8 @@ public class ProductController {
                 productService.getProductById(iD).getPrice(),
                 "UAH",
                 "Purchase payment " + productService.getProductById(iD).getTitle(),
-                "https://56b4-46-150-81-93.ngrok-free.app/payment/result",
-                "https://56b4-46-150-81-93.ngrok-free.app/payment/result"
+                "https://cc5d-46-150-81-93.ngrok-free.app/payment/result",
+                "https://cc5d-46-150-81-93.ngrok-free.app/payment/result"
         );
 
         String signature = liqPayService.generateSignature(data);
@@ -173,7 +174,9 @@ public class ProductController {
 
         System.out.println("Customer id = " + customer.getId());
 
-        double virtualPrice = Double.parseDouble(virtualPriceLine.replace(",", "."));
+        String virtualPriceLine1 = String.valueOf(virtualPriceLine).replace("\u00A0", "");
+        double virtualPrice = Double.parseDouble(virtualPriceLine1.replace(",", "."));
+
 
         System.out.println("Customer balance: " + customer.getCoins());
         System.out.println("Product virtual price: " + virtualPrice);

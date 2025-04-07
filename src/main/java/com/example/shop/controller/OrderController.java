@@ -100,10 +100,16 @@ public class OrderController {
 
     }
 
-    @GetMapping("/payment/result")
-    public String toResultPage(){
-        return "payment_result";
-    }
+//    @GetMapping("/payment/result")
+//    public String toResultPage(Model model,
+//                               Principal principal, Authentication authentication){
+//        if (authentication instanceof OAuth2AuthenticationToken token) {
+//            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+//        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+//            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+//        }
+//        return "payment_result";
+//    }
 
     @GetMapping("/statistics")
     public String getStatistics(Model model, Principal principal, Authentication authentication){

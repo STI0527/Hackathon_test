@@ -6,13 +6,17 @@ import com.example.shop.models.User;
 import lombok.AllArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.Base64;
 
+import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -34,6 +38,7 @@ public class LiqPayService {
         json.put("result_url", resultURL);
         json.put("callback_url", callBackURL);
         json.put("public_key", PUBLIC_KEY);
+
 
 
         return Base64.getEncoder().encodeToString(json.toString().getBytes(StandardCharsets.UTF_8));

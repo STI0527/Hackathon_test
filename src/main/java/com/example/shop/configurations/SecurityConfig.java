@@ -45,7 +45,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/","/product/", "/images/**", "/registration", "/user/**", "/static/**", "/style.css", "/script.js", "/background_gif_cars.gif", "/default_avatar.png", "/img_cars_background.png",
                                 "/marketplace", "/exchange", "/repair", "/referal","/confirm", "/confirmation", "/reuse", "marketplace.png",
-                                "exchange.png", "recycle.png", "repair.png", "authorization_picture.jpg", "background.jpg", "search.svg", "coins_logo.png", "notification_icon.png", "dropdown-logo.png")
+                                "exchange.png", "recycle.png", "repair.png", "authorization_picture.jpg", "background.jpg", "search.svg", "coins_logo.png", "notification_icon.png", "dropdown-logo.png",
+                                "/payment/result", "payment_result")
                         .permitAll()
                         .anyRequest()
                         .authenticated()).
@@ -59,7 +60,7 @@ public class SecurityConfig {
                         ).oauth2Login(oauth2Login->{
                     oauth2Login.loginPage("/login")
                             .successHandler(((request, response, authentication) -> response.sendRedirect("/")));})
-                .csrf(withDefaults());
+                .csrf(withDefaults()).csrf(csrf -> csrf.ignoringRequestMatchers("/payment", "/payment/result"));;
         return http.build();
     }
     @Bean

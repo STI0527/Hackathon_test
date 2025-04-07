@@ -55,5 +55,8 @@ public class Notification {
     @Column(name="reward_amount")
     private double rewardAmount;
 
+    @Column(name="short_date_of_operation")
+    private String shortDateOfOperation;
+
 
 }
