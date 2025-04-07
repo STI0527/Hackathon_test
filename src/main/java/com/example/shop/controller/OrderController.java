@@ -46,7 +46,7 @@ public class OrderController {
             @RequestParam("data") String data,
             @RequestParam("signature") String signature,
             HttpSession session, Model model,
-            Principal principal) throws MqttException {
+            Principal principal, Authentication authentication) throws MqttException {
 
 
 
@@ -67,7 +67,11 @@ public class OrderController {
         Long productId = (Long) session.getAttribute("product_id");
         String os = (String) session.getAttribute("os");
 
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        if (authentication instanceof OAuth2AuthenticationToken token) {
+            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        }
 
         if (response.isSuccess()) {
             // Збереження замовлення в базі
