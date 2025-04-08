@@ -113,11 +113,30 @@ public class ProductController {
 
 
 
-        if (authentication instanceof UsernamePasswordAuthenticationToken)
-            model.addAttribute("user", userService.getUserByPrincipal(principal));
-        else if (authentication instanceof OAuth2AuthenticationToken token)
-            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+        if (authentication != null) {
+            User user = null;
+            if (authentication instanceof OAuth2AuthenticationToken token) {
+                user = userService.getUserByEmail(token.getPrincipal().getAttribute("email"));
+                user.setCoins(BigDecimal.valueOf(user.getCoins())
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .doubleValue());
 
+                model.addAttribute("user", user);
+
+            } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+                user = userService.findUserByPrincipal(principal.getName());
+
+                user.setCoins(BigDecimal.valueOf(user.getCoins())
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .doubleValue());
+
+                model.addAttribute("user", user);
+
+            }
+            model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
+            model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
+
+        }
         if(product == null){
             model.addAttribute("productNotFound", "The item was removed by the administrator");
             return "product_info";

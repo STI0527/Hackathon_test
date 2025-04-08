@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.Map;
@@ -35,13 +37,32 @@ public class AdminController {
     public String admin(Model model, Authentication authentication, Principal principal){
         model.addAttribute("users", userService.list());
 
-        if (authentication instanceof OAuth2AuthenticationToken token) {
-            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
-            model.addAttribute("notifications", notificationService.getNotificationsList(userService.getUserByEmail(token.getPrincipal().getAttribute("email")).getId()));
-        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
-            model.addAttribute("notifications", notificationService.getNotificationsList(userService.findUserByPrincipal(principal.getName()).getId()));
+        User user = null;
+        if (authentication != null) {
+
+            if (authentication instanceof OAuth2AuthenticationToken token) {
+                user = userService.getUserByEmail(token.getPrincipal().getAttribute("email"));
+                user.setCoins(BigDecimal.valueOf(user.getCoins())
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .doubleValue());
+
+                model.addAttribute("user", user);
+
+            } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+                user = userService.findUserByPrincipal(principal.getName());
+
+                user.setCoins(BigDecimal.valueOf(user.getCoins())
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .doubleValue());
+
+                model.addAttribute("user", user);
+
+            }
+
         }
+
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
+        model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
             return "admin";
     }
 

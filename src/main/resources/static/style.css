@@ -723,7 +723,7 @@ position: fixed;
 top: 109px;
 left: 20px;
 height: 300px;
-z-index: 4;
+z-index: 900;
 padding: 12px 6px;
 overflow: auto;
  opacity: 0;
@@ -760,6 +760,7 @@ font-style: italic;
 line-height: 25px;
 padding: 16px 0px 6px 0px;
 color: rgb(61, 61, 61);
+
 }
 
 .coins-image-notifications {

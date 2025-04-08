@@ -191,10 +191,26 @@ public class UserController {
     @GetMapping("/exchange")
     public String toExchange(Model model, Principal principal, Authentication authentication, User user){
 
-        if (authentication instanceof OAuth2AuthenticationToken token) {
-            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
-        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        if (authentication != null) {
+            if (authentication instanceof OAuth2AuthenticationToken token) {
+                user = userService.getUserByEmail(token.getPrincipal().getAttribute("email"));
+                user.setCoins(BigDecimal.valueOf(user.getCoins())
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .doubleValue());
+
+                model.addAttribute("user", user);
+
+            } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+                user = userService.findUserByPrincipal(principal.getName());
+
+                user.setCoins(BigDecimal.valueOf(user.getCoins())
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .doubleValue());
+
+                model.addAttribute("user", user);
+
+            }
+
         }
         model.addAttribute("products", productService.findEXCHANGE());
         model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
@@ -204,11 +220,27 @@ public class UserController {
 
     @GetMapping("/repair")
     public String toRepair(Model model, Principal principal, Authentication authentication, User user){
-        if (authentication instanceof OAuth2AuthenticationToken token) {
-        model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
-    } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
-        model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
-    }
+        if (authentication != null) {
+            if (authentication instanceof OAuth2AuthenticationToken token) {
+                user = userService.getUserByEmail(token.getPrincipal().getAttribute("email"));
+                user.setCoins(BigDecimal.valueOf(user.getCoins())
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .doubleValue());
+
+                model.addAttribute("user", user);
+
+            } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+                user = userService.findUserByPrincipal(principal.getName());
+
+                user.setCoins(BigDecimal.valueOf(user.getCoins())
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .doubleValue());
+
+                model.addAttribute("user", user);
+
+            }
+
+        }
         model.addAttribute("products", productService.findREPAIR());
         model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
         model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
@@ -230,10 +262,26 @@ public class UserController {
     @GetMapping("/reuse")
     public String toReuse(Model model, Principal principal,
                           Authentication authentication, User user){
-        if (authentication instanceof OAuth2AuthenticationToken token) {
-            model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
-        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+        if (authentication != null) {
+            if (authentication instanceof OAuth2AuthenticationToken token) {
+                user = userService.getUserByEmail(token.getPrincipal().getAttribute("email"));
+                user.setCoins(BigDecimal.valueOf(user.getCoins())
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .doubleValue());
+
+                model.addAttribute("user", user);
+
+            } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+                user = userService.findUserByPrincipal(principal.getName());
+
+                user.setCoins(BigDecimal.valueOf(user.getCoins())
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .doubleValue());
+
+                model.addAttribute("user", user);
+
+            }
+
         }
 
         model.addAttribute("places", placeService.getAllPlaces());
