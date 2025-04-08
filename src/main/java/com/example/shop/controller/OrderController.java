@@ -1,9 +1,11 @@
 package com.example.shop.controller;
 
 
+import com.example.shop.enums.Rewards;
 import com.example.shop.enums.TypeOfPayment;
 import com.example.shop.models.LiqPayResponse;
 import com.example.shop.models.Order;
+import com.example.shop.models.User;
 import com.example.shop.services.*;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +27,8 @@ import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -39,6 +43,8 @@ public class OrderController {
     private final UserService userService;
     private final ProductService productService;
     private final LiqPayService liqPayService;
+    private final CurrencyExchangeService currencyExchangeService;
+    private final NotificationService notificationService;
 
 
     @PostMapping(value = "/payment/result", consumes = "application/x-www-form-urlencoded")
@@ -78,11 +84,33 @@ public class OrderController {
             System.out.println("\u001b[32mConducted a successfull payment operation!\u001b[0m");
 
             orderService.saveOrder(userService.getUserById(userId), productService.getProductById(productId),  TypeOfPayment.REAL_MONEY,0.0, os);
-            userService.getUserById(userId).setCoins((userService.getUserById(userId).getCoins() + (productService.getProductById(productId).getPrice()
-                        * 0.05)));
 
-            productService.getProductById(productId).getUser().setCoins((productService.getProductById(productId).getUser().getCoins() + (productService.getProductById(productId).getPrice()
-                    * 0.03)));
+            double virtualPrice = BigDecimal.valueOf((productService.getProductById(productId).getPrice() / currencyExchangeService.getEuroToUahRate()) * productService.getCurrencyIndex())
+                    .setScale(1, RoundingMode.HALF_UP)
+                    .doubleValue();
+
+            double customerReward = BigDecimal.valueOf(virtualPrice * Rewards.BUY.getRewardPercentage())
+                    .setScale(1, RoundingMode.HALF_UP)
+                    .doubleValue();
+
+            double sellerReward = BigDecimal.valueOf(virtualPrice * Rewards.SELL.getRewardPercentage())
+                    .setScale(1, RoundingMode.HALF_UP)
+                    .doubleValue();
+
+
+            User customer = userService.getUserById(userId);
+            User seller = productService.getProductById(productId).getUser();
+
+            customer.setCoins((userService.getUserById(userId).getCoins() + customerReward));
+
+            seller.setCoins((productService.getProductById(productId).getUser().getCoins() + sellerReward));
+
+
+            userService.save(customer);
+            userService.save(seller);
+
+            notificationService.saveNotification(customer, seller, Rewards.BUY, productService.getProductById(productId), customerReward);
+            notificationService.saveNotification(seller, customer, Rewards.SELL, productService.getProductById(productId), sellerReward);
 
 
             session.removeAttribute("user_id"); // очищаємо сесію після обробки

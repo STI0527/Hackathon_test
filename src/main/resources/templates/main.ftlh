@@ -50,101 +50,6 @@
             </div>
 
 
-            <script>
-                // Дані користувача
-                <!--const plasticSaved = ${user.plasticSaved};-->
-                <!--const metalSaved = ${user.metalSaved};-->
-                <!--const glassSaved = ${user.glassSaved};-->
-                <!--const CO2Saved = ${user.CO2Saved};-->
-
-                const plasticSaved = 12;
-                const metalSaved = 24;
-                const glassSaved = 24;
-                const CO2Saved = 40;
-
-                const totalSaved = plasticSaved + metalSaved + glassSaved + CO2Saved;
-
-                // Розрахунок відсотків
-                const percent = (val) => Math.round((val / totalSaved) * 100);
-
-                const data = {
-                    labels: [''],
-                    datasets: [{
-                        label: 'Plastic',
-                        data: [percent(plasticSaved)],
-                        backgroundColor: 'rgba(255, 99, 132, 0.8)'
-                    }, {
-                        label: 'Metal',
-                        data: [percent(metalSaved)],
-                        backgroundColor: 'rgba(54, 162, 235, 0.8)'
-                    }, {
-                        label: 'Glass',
-                        data: [percent(glassSaved)],
-                        backgroundColor: 'rgba(255, 206, 86, 0.8)'
-                    }, {
-                        label: 'CO₂',
-                        data: [percent(CO2Saved)],
-                        backgroundColor: 'rgba(75, 192, 192, 0.8)'
-                    }]
-                };
-
-                const config = {
-                    type: 'bar',
-                    data: data,
-                    options: {
-                        indexAxis: 'y',
-                        plugins: {
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return `
-                                        <#noparse>
-                                        ${context.dataset.label}: ${context.raw}%`;
-                                        </#noparse>
-                                    }
-                                },
-                                bodyFont: {
-                                    size: 10
-                                },
-                                 padding: 10,
-                                 maxWidth: 20,
-                                 backgroundColor: 'rgba(0, 0, 0, 0.8)'
-
-                            },
-                            legend: {
-                                position: 'none'
-                            },
-                <!--            title: {-->
-                <!--                display: true,-->
-                <!--                text: 'Відсоток збережених матеріалів'-->
-                <!--            }-->
-                        },
-                        responsive: true,
-                        scales: {
-                            x: {
-                                stacked: true,
-                                max: 100,
-                                ticks: {
-                                    callback: function(value) {
-                                        return value + '%';
-                                    }
-                                }
-                            },
-                            y: {
-                                stacked: true,
-                                grid: {
-                                    display: false
-                                }
-                            }
-                        }
-                    }
-                };
-
-                new Chart(
-                    document.getElementById('userMaterialsChart'),
-                    config
-                );
-            </script>
 
 
             <form action="/profile/${user.id}" method="post">
@@ -369,7 +274,108 @@
 
                 </style>
 <script>
-    document.getElementById("toggleMenu").addEventListener("click", function () {
+// Дані користувача
+<!--const plasticSaved = ${user.plasticSaved};-->
+<!--const metalSaved = ${user.metalSaved};-->
+<!--const glassSaved = ${user.glassSaved};-->
+<!--const CO2Saved = ${user.CO2Saved};-->
+
+const plasticSaved = 12;
+const metalSaved = 24;
+const glassSaved = 24;
+const CO2Saved = 40;
+
+const totalSaved = plasticSaved + metalSaved + glassSaved + CO2Saved;
+
+// Розрахунок відсотків
+const percent = (val) => Math.round((val / totalSaved) * 100);
+
+const data = {
+    labels: [''],
+    datasets: [{
+        label: 'Plastic',
+        data: [percent(plasticSaved)],
+        backgroundColor: 'rgba(255, 99, 132, 0.8)'
+    }, {
+        label: 'Metal',
+        data: [percent(metalSaved)],
+        backgroundColor: 'rgba(54, 162, 235, 0.8)'
+    }, {
+        label: 'Glass',
+        data: [percent(glassSaved)],
+        backgroundColor: 'rgba(255, 206, 86, 0.8)'
+    }, {
+        label: 'CO₂',
+        data: [percent(CO2Saved)],
+        backgroundColor: 'rgba(75, 192, 192, 0.8)'
+    }]
+};
+
+const config = {
+    type: 'bar',
+    data: data,
+    options: {
+        indexAxis: 'y',
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return `
+                        <#noparse>
+                        ${context.dataset.label}: ${context.raw}%`;
+                        </#noparse>
+                    }
+                },
+                bodyFont: {
+                    size: 10
+                },
+                 padding: 10,
+                 maxWidth: 20,
+                 backgroundColor: 'rgba(0, 0, 0, 0.8)'
+
+            },
+            legend: {
+                position: 'none'
+            },
+<!--            title: {-->
+<!--                display: true,-->
+<!--                text: 'Відсоток збережених матеріалів'-->
+<!--            }-->
+        },
+        responsive: true,
+        scales: {
+            x: {
+                stacked: true,
+                max: 100,
+                ticks: {
+                    callback: function(value) {
+                        return value + '%';
+                    }
+                }
+            },
+            y: {
+                stacked: true,
+                grid: {
+                    display: false
+                }
+            }
+        }
+    }
+};
+
+new Chart(
+    document.getElementById('userMaterialsChart'),
+    config
+);
+</script>
+
+
+
+<script>
+
+const toggleMenu = document.getElementById("toggleMenu");
+
+    toggleMenu.addEventListener("click", function () {
         const menu = document.getElementById("menu");
         menu.classList.toggle("active");
     });

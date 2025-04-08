@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.1">
 </head>
 
@@ -64,6 +65,8 @@
 
 <div class="profile-container">
     <div class="profile-card">
+
+        <div class="profile-card-left-container">
         <div class="profile-title">Profile</div>
 
 
@@ -266,8 +269,70 @@ padding: 6px 12px;">
 </tbody>
 </table>
         </div>
+
         </div>
 
+<div class="profile-card-right-container">
+    <canvas id="myPieChart" width="100%" height="20"></canvas>
+
+    <h4 id="totalSaved"></h4>
+
+    <div>Plastic — ${user.plasticSaved} kg</div>
+    <div>Metal — ${user.metalSaved} kg</div>
+    <div>Glass — ${user.glassSaved} kg</div>
+    <div>CO2 — ${user.CO2Saved} kg</div>
+
+</div>
+
+        </div>
+
+<script>
+const user = {
+  plasticSaved: ${user.plasticSaved},
+  metalSaved: ${user.metalSaved},
+  glassSaved: ${user.glassSaved},
+  CO2Saved: ${user.CO2Saved}
+};
+
+const total = user.plasticSaved + user.metalSaved + user.glassSaved + user.CO2Saved;
+
+document.getElementById('totalSaved').innerHTML = `Total saved: <#noparse>${total.toFixed(2)}</#noparse> kg`;
+</script>
+
+
+
+<script>
+const ctx = document.getElementById('myPieChart').getContext('2d');
+const myPieChart = new Chart(ctx, {
+  type: 'pie',
+  data: {
+    labels: ['Plastic', 'Metal', 'Glass', 'CO2'],
+    datasets: [{
+      label: 'Saved (kg): ',
+      data: [${user.plasticSaved}, ${user.metalSaved}, ${user.glassSaved}, ${user.CO2Saved}],
+      backgroundColor: [
+        '#4CAF50',
+        '#2196F3',
+        '#FFC107',
+        '#FF5722'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom'
+      },
+      title: {
+        display: false,
+        text: 'Saved materials by you'
+      }
+    }
+  }
+});
+</script>
 
     </div>
 </main>
