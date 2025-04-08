@@ -3,6 +3,8 @@ package com.example.shop.controller;
 
 import com.example.shop.enums.Role;
 import com.example.shop.models.User;
+import com.example.shop.services.CurrencyExchangeService;
+import com.example.shop.services.NotificationService;
 import com.example.shop.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,15 +28,20 @@ import java.util.Map;
 public class AdminController {
 
     private final UserService userService;
+    private final NotificationService notificationService;
+    private final CurrencyExchangeService currencyExchangeService;
 
     @GetMapping("/admin")
     public String admin(Model model, Authentication authentication, Principal principal){
         model.addAttribute("users", userService.list());
 
-        if (authentication instanceof OAuth2AuthenticationToken token)
+        if (authentication instanceof OAuth2AuthenticationToken token) {
             model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
-        else if (authentication instanceof UsernamePasswordAuthenticationToken)
+            model.addAttribute("notifications", notificationService.getNotificationsList(userService.getUserByEmail(token.getPrincipal().getAttribute("email")).getId()));
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
             model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+            model.addAttribute("notifications", notificationService.getNotificationsList(userService.findUserByPrincipal(principal.getName()).getId()));
+        }
             return "admin";
     }
 
@@ -49,12 +56,16 @@ public class AdminController {
     public String userEdit(@PathVariable("user") User user, Model model){
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
+        model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
         return "user_edit";
     }
 
     @PostMapping("admin/user/edit")
-    public String userEdit(@RequestParam("userId") User user, @RequestParam String role){
+    public String userEdit(@RequestParam("userId") User user,  @RequestParam String role, Model model){
         userService.changeUserRole(user, role);
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
+        model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
         return "redirect:/admin";
     }
 

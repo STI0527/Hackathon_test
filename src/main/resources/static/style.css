@@ -539,7 +539,7 @@ padding-bottom: 12px;
 
 .add-button-confirm {
 color: white;
-    background-color: rgb(75, 104, 80);
+    background-color: #5f8a48;
 
     font-weight: 500;
     font-size: 20px;
@@ -1486,7 +1486,8 @@ margin-bottom: 24px;
  padding: 12px;
  display: block;
  border-radius: 12px;
- background-color: rgba(235, 154, 169, 0.6);
+ background-color: #b0d49b;
+ opacity: 0.9;
  }
 
  .product-info-city {

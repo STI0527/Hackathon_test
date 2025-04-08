@@ -34,6 +34,7 @@ public class UserController {
     private final EmailSender emailSender;
     private final CurrencyExchangeService currencyExchangeService;
     private final PlaceService placeService;
+    private final NotificationService notificationService;
 
     @GetMapping("/login")
     public String login(){
@@ -131,6 +132,8 @@ public class UserController {
         else
             model.addAttribute("viewer", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
 
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
+        model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
         return "user_info";
     }
 
@@ -146,6 +149,7 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("products", user.getProducts());
         model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
+        model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
         return "profile";
     }
 
@@ -164,6 +168,7 @@ public class UserController {
 
         model.addAttribute("products", productService.findSELL());
         model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
+        model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
         return "marketplace";
     }
 
@@ -177,6 +182,8 @@ public class UserController {
             model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
         }
         model.addAttribute("products", productService.findEXCHANGE());
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
+        model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
         return "exchange";
     }
 
@@ -188,6 +195,8 @@ public class UserController {
         model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
     }
         model.addAttribute("products", productService.findREPAIR());
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
+        model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
         return "repair";
     }
 
@@ -199,6 +208,7 @@ public class UserController {
             model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
         }
         model.addAttribute("products", productService.findAll());
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
         return "referal";
     }
 
@@ -212,6 +222,8 @@ public class UserController {
         }
 
         model.addAttribute("places", placeService.getAllPlaces());
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
+        model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
 
         return "reuse";
     }

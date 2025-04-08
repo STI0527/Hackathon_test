@@ -10,6 +10,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -75,6 +76,32 @@
         </#if>
 
     </div>
+</div>
+
+<div id="notificationMenu" class="notifications-container">
+    <#list notifications as notification>
+    <div class="notification-container">
+        <div class="notification-time-container">
+            ${notification.shortDateOfOperation}
+
+        </div>
+
+        You've got +${notification.rewardAmount}
+        <img class="coins-image-notifications" src="coins_logo.png">
+        for ${notification.rewardType.getOperationType()}: ${notification.productTitle}!
+
+
+        <div class="notification-time-container">
+            ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
+
+        </div>
+
+
+
+    </div>
+    <#else>
+    <div>No notifications</div>
+</#list>
 </div>
 
 <section class="title-text-section">
@@ -283,6 +310,32 @@ document.getElementById("toggleMenu").addEventListener("click", function () {
     const menu = document.getElementById("menu");
     menu.classList.toggle("active");
 });
+
+const notificationIcon = document.getElementById("notificationIcon");
+const notificationModule = document.getElementById("notificationMenu");
+
+let hideTimeout;
+
+notificationIcon.addEventListener("click", function () {
+    // Якщо вже активне — приховуємо з затримкою
+    if (notificationMenu.classList.contains("active")) {
+        notificationMenu.classList.remove("active");
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+            notificationMenu.style.visibility = "hidden";
+        }, 300);
+    } else {
+        clearTimeout(hideTimeout);
+        notificationMenu.style.visibility = "visible";
+        notificationMenu.classList.add("active");
+        document.addEventListener("click", function (event) {
+    if (!notificationModule.contains(event.target) && !notificationIcon.contains(event.target)) {
+        notificationModule.classList.remove("active");
+    }
+});
+    }
+});
+
 
 const addPlaceButton = document.getElementById("addPlaceButton");
 if (addPlaceButton) {

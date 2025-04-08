@@ -143,8 +143,10 @@ public class OrderController {
     public String getStatistics(Model model, Principal principal, Authentication authentication){
         if (authentication instanceof OAuth2AuthenticationToken token) {
             model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+            model.addAttribute("notifications", notificationService.getNotificationsList(userService.getUserByEmail(token.getPrincipal().getAttribute("email")).getId()));
         } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
             model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+            model.addAttribute("notifications", notificationService.getNotificationsList(userService.findUserByPrincipal(principal.getName()).getId()));
         }
         if (model.containsAttribute("orders")) {
             model.addAttribute("orders", model.getAttribute("orders"));
@@ -152,6 +154,8 @@ public class OrderController {
             model.addAttribute("orders", orderService.getOrderList());
         }
         model.addAttribute("period", "all");
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
+
 
         return "statistics";
     }
@@ -160,11 +164,14 @@ public class OrderController {
     public String toStatistics(Model model, Principal principal, Authentication authentication){
         if (authentication instanceof OAuth2AuthenticationToken token) {
             model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+            model.addAttribute("notifications", notificationService.getNotificationsList(userService.getUserByEmail(token.getPrincipal().getAttribute("email")).getId()));
         } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
             model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+            model.addAttribute("notifications", notificationService.getNotificationsList(userService.findUserByPrincipal(principal.getName()).getId()));
         }
         model.addAttribute("orders", orderService.getOrderList());
         model.addAttribute("period", "all");
+        model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
         return "statistics";
     }
 
