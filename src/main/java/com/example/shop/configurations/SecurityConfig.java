@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/","/product/", "/images/**", "/registration", "/user/**", "/static/**", "/style.css", "/script.js", "/background_gif_cars.gif", "/default_avatar.png", "/img_cars_background.png",
                                 "/marketplace", "/exchange", "/repair", "/referal","/confirm", "/confirmation", "/reuse", "marketplace.png",
                                 "exchange.png", "recycle.png", "repair.png", "authorization_picture.jpg", "background.jpg", "search.svg", "coins_logo.png", "notification_icon.png", "dropdown-logo.png",
-                                "/payment/result", "payment_result")
+                                "/payment/result", "payment_result", "ai_response")
                         .permitAll()
                         .anyRequest()
                         .authenticated()).
