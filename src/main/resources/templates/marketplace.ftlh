@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.1">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -45,6 +46,17 @@
 
                 <div class="user_menu-name">${user.name}</div>
 
+                <div class="euro_exchange_rate_container">
+                    1 EUR — ${euro_exchange_rate} UAH
+                </div>
+
+                <div class="material-statistics-container">
+                    <canvas id="userMaterialsChart" width="100%" height="20"></canvas>
+                </div>
+
+
+
+
                 <form action="/profile/${user.id}" method="post">
                     <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
@@ -54,7 +66,6 @@
                 <#if user.isAdmin()>
                 <a class="user-menu-admin-link" href="/admin">Administration Panel</a>
             </#if>
-
 
             <form action="/logout" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -68,6 +79,37 @@
     </div>
 </div>
 
+<div id="notificationMenu" class="notifications-container">
+    <#list notifications as notification>
+    <div id="notification-${notification.id}" class="notification-container">
+        <div class="notification-date-container">
+            ${notification.shortDateOfOperation}
+
+        </div>
+
+        <div class="notification-text-container">You've got +${notification.rewardAmount}
+            <img class="coins-image-notifications" src="coins_logo.png">
+            for ${notification.rewardType.getOperationType()}: ${notification.productTitle}!
+        </div>
+
+        <div class="notification-time-container">
+            ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
+
+        </div>
+
+        <form action="/notifications/delete/${notification.id}" method="post">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+            <button type="submit" onclick="deleteNotification(event, ${notification.id})" class="delete-notification-button">
+                <img class="cancel-image-notification" src="cancel_logo.png">
+            </button>
+
+        </form>
+
+    </div>
+    <#else>
+    <div class="no-notifications-text">No notifications</div>
+</#list>
+</div>
 
 <section class="title-text-section">
     <div class="marketplace-title">
@@ -258,20 +300,56 @@
 </footer>
 
 
-<script src="/script.js"></script>
-
         </body>
-        <script>
+<script>
+const toggleMenu = document.getElementById("toggleMenu");
+const menu = document.getElementById("menu");
+let hideTimeout;
 
-        document.getElementById("toggleMenu").addEventListener("click", function () {
-        const menu = document.getElementById("menu");
-        menu.classList.toggle("active");
-        });
 
-        document.getElementById("addButton").addEventListener("click", function () {
-        const addForm = document.getElementById("addForm");
-        addForm.classList.toggle("active");
-        });
+    toggleMenu.addEventListener("click", function () {
+        if(menu.classList.contains("active")){
+        menu.classList.remove("active");
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+            menu.style.visibility = "hidden";
+        }, 300);
+        } else {
+        clearTimeout(hideTimeout);
+        menu.style.visibility = "visible";
+        menu.classList.add("active");
+        document.addEventListener("click", function (event) {
+    if (!menu.contains(event.target) && !toggleMenu.contains(event.target)) {
+        menu.classList.remove("active");
+    }
+});
+
+        }
+    });
+
+const notificationIcon = document.getElementById("notificationIcon");
+const notificationModule = document.getElementById("notificationMenu");
+
+
+notificationIcon.addEventListener("click", function () {
+    // Якщо вже активне — приховуємо з затримкою
+    if (notificationMenu.classList.contains("active")) {
+        notificationMenu.classList.remove("active");
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+            notificationMenu.style.visibility = "hidden";
+        }, 300);
+    } else {
+        clearTimeout(hideTimeout);
+        notificationMenu.style.visibility = "visible";
+        notificationMenu.classList.add("active");
+        document.addEventListener("click", function (event) {
+    if (!notificationModule.contains(event.target) && !notificationIcon.contains(event.target)) {
+        notificationModule.classList.remove("active");
+    }
+});
+    }
+});
 
         document.getElementById("close-button").addEventListener("click", function() {
 
@@ -281,4 +359,193 @@
 
 
         </script>
+
+<script>
+function deleteNotification(event, id) {
+    // Створюємо новий об'єкт XMLHttpRequest для AJAX запиту
+
+    event.preventDefault();
+
+    var xhr = new XMLHttpRequest();
+
+    // Встановлюємо метод та URL для запиту
+    xhr.open('POST', '/notifications/delete/' + id, true);
+
+    // Встановлюємо заголовки запиту, включаючи CSRF токен
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="${_csrf.parameterName}"]').value);  // Інжектуємо CSRF токен через Thymeleaf
+
+    // Коли запит завершиться
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Якщо успішно, видаляємо елемент з DOM
+            var element = document.getElementById('notification-' + id);
+            if (element) {
+                element.remove();  // Видаляємо елемент з DOM
+            }
+            console.log('Сповіщення успішно видалене!');
+        } else {
+            console.error('Не вдалося видалити сповіщення');
+        }
+    };
+
+    // Якщо сталася помилка при запиті
+    xhr.onerror = function() {
+        console.error('Помилка при виконанні запиту');
+    };
+
+    // Відправляємо запит
+    xhr.send();
+}
+</script>
+
+<script>
+const toggleMenu = document.getElementById("toggleMenu");
+const menu = document.getElementById("menu");
+let hideTimeout;
+
+
+    toggleMenu.addEventListener("click", function () {
+        if(menu.classList.contains("active")){
+        menu.classList.remove("active");
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+            menu.style.visibility = "hidden";
+        }, 300);
+        } else {
+        clearTimeout(hideTimeout);
+        menu.style.visibility = "visible";
+        menu.classList.add("active");
+        document.addEventListener("click", function (event) {
+    if (!menu.contains(event.target) && !toggleMenu.contains(event.target)) {
+        menu.classList.remove("active");
+    }
+});
+
+        }
+    });
+
+const notificationIcon = document.getElementById("notificationIcon");
+const notificationModule = document.getElementById("notificationMenu");
+
+
+notificationIcon.addEventListener("click", function () {
+    // Якщо вже активне — приховуємо з затримкою
+    if (notificationMenu.classList.contains("active")) {
+        notificationMenu.classList.remove("active");
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+            notificationMenu.style.visibility = "hidden";
+        }, 300);
+    } else {
+        clearTimeout(hideTimeout);
+        notificationMenu.style.visibility = "visible";
+        notificationMenu.classList.add("active");
+        document.addEventListener("click", function (event) {
+    if (!notificationModule.contains(event.target) && !notificationIcon.contains(event.target)) {
+        notificationModule.classList.remove("active");
+    }
+});
+    }
+});
+
+
+</script>
+
+<script>
+// Дані користувача
+<!--const plasticSaved = ${user.plasticSaved};-->
+<!--const metalSaved = ${user.metalSaved};-->
+<!--const glassSaved = ${user.glassSaved};-->
+<!--const CO2Saved = ${user.CO2Saved};-->
+
+const plasticSaved = 12;
+const metalSaved = 24;
+const glassSaved = 24;
+const CO2Saved = 40;
+
+const totalSaved = plasticSaved + metalSaved + glassSaved + CO2Saved;
+
+// Розрахунок відсотків
+const percent = (val) => Math.round((val / totalSaved) * 100);
+
+const data = {
+    labels: [''],
+    datasets: [{
+        label: 'Plastic',
+        data: [percent(plasticSaved)],
+        backgroundColor: 'rgba(255, 99, 132, 0.8)'
+    }, {
+        label: 'Metal',
+        data: [percent(metalSaved)],
+        backgroundColor: 'rgba(54, 162, 235, 0.8)'
+    }, {
+        label: 'Glass',
+        data: [percent(glassSaved)],
+        backgroundColor: 'rgba(255, 206, 86, 0.8)'
+    }, {
+        label: 'CO₂',
+        data: [percent(CO2Saved)],
+        backgroundColor: 'rgba(75, 192, 192, 0.8)'
+    }]
+};
+
+const config = {
+    type: 'bar',
+    data: data,
+    options: {
+        indexAxis: 'y',
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return `
+                        <#noparse>
+                        ${context.dataset.label}: ${context.raw}%`;
+                        </#noparse>
+                    }
+                },
+                bodyFont: {
+                    size: 10
+                },
+                 padding: 10,
+                 maxWidth: 20,
+                 backgroundColor: 'rgba(0, 0, 0, 0.8)'
+
+            },
+            legend: {
+                position: 'none'
+            },
+<!--            title: {-->
+<!--                display: true,-->
+<!--                text: 'Відсоток збережених матеріалів'-->
+<!--            }-->
+        },
+        responsive: true,
+        scales: {
+            x: {
+                stacked: true,
+                max: 100,
+                ticks: {
+                    callback: function(value) {
+                        return value + '%';
+                    }
+                }
+            },
+            y: {
+                stacked: true,
+                grid: {
+                    display: false
+                }
+            }
+        }
+    }
+};
+
+new Chart(
+    document.getElementById('userMaterialsChart'),
+    config
+);
+
+</script>
         </html>

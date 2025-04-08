@@ -4,7 +4,8 @@
     <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
 </head>
 
 <body>
@@ -77,27 +78,35 @@
 
 <div id="notificationMenu" class="notifications-container">
     <#list notifications as notification>
-    <div class="notification-container">
-        <div class="notification-time-container">
+    <div id="notification-${notification.id}" class="notification-container">
+        <div class="notification-date-container">
             ${notification.shortDateOfOperation}
 
         </div>
 
-        You've got +${notification.rewardAmount}
+        <div class="notification-text-container">You've got +${notification.rewardAmount}
         <img class="coins-image-notifications" src="coins_logo.png">
    for ${notification.rewardType.getOperationType()}: ${notification.productTitle}!
+        </div>
 
+        <div class="notification-time-container">
+            ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
 
-    <div class="notification-time-container">
-        ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
+        </div>
+
+        <form action="/notifications/delete/${notification.id}" method="post">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+            <button type="submit" onclick="deleteNotification(${notification.id})" class="delete-notification-button">
+                <img class="cancel-image-notification" src="cancel_logo.png">
+            </button>
+
+        </form>
 
     </div>
 
 
-
-    </div>
     <#else>
-    <div>No notifications</div>
+    <div class="no-notifications-text">No notifications</div>
     </#list>
 </div>
 
@@ -212,8 +221,6 @@
         </div>
     </footer>
 
-<script src="/script.js"></script>
-
         </body>
 
                 <style>
@@ -273,6 +280,82 @@
 
 
                 </style>
+
+<script>
+const toggleMenu = document.getElementById("toggleMenu");
+const menu = document.getElementById("menu");
+let hideTimeout;
+
+
+    toggleMenu.addEventListener("click", function () {
+        if(menu.classList.contains("active")){
+        menu.classList.remove("active");
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+            menu.style.visibility = "hidden";
+        }, 300);
+        } else {
+        clearTimeout(hideTimeout);
+        menu.style.visibility = "visible";
+        menu.classList.add("active");
+        document.addEventListener("click", function (event) {
+    if (!menu.contains(event.target) && !toggleMenu.contains(event.target)) {
+        menu.classList.remove("active");
+    }
+});
+
+        }
+    });
+
+const notificationIcon = document.getElementById("notificationIcon");
+const notificationModule = document.getElementById("notificationMenu");
+
+
+notificationIcon.addEventListener("click", function () {
+    // Якщо вже активне — приховуємо з затримкою
+    if (notificationMenu.classList.contains("active")) {
+        notificationMenu.classList.remove("active");
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+            notificationMenu.style.visibility = "hidden";
+        }, 300);
+    } else {
+        clearTimeout(hideTimeout);
+        notificationMenu.style.visibility = "visible";
+        notificationMenu.classList.add("active");
+        document.addEventListener("click", function (event) {
+    if (!notificationModule.contains(event.target) && !notificationIcon.contains(event.target)) {
+        notificationModule.classList.remove("active");
+    }
+});
+    }
+});
+
+
+</script>
+
+<script>
+function deleteNotification(id) {
+    fetch(`/notifications/delete/<#noparse>${notification.id}</#noparse>`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': <#noparse>'${_csrf.token}'</#noparse>
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Видаляємо повідомлення з DOM
+            const element = document.getElementById(`notification-<#noparse>${id}</#noparse>`);
+            if (element) element.remove();
+        } else {
+            console.error('Не вдалося видалити сповіщення');
+        }
+    })
+    .catch(error => console.error('Помилка:', error));
+}
+</script>
+
 <script>
 // Дані користувача
 <!--const plasticSaved = ${user.plasticSaved};-->
@@ -367,43 +450,6 @@ new Chart(
     document.getElementById('userMaterialsChart'),
     config
 );
-</script>
-
-
-
-<script>
-
-const toggleMenu = document.getElementById("toggleMenu");
-
-    toggleMenu.addEventListener("click", function () {
-        const menu = document.getElementById("menu");
-        menu.classList.toggle("active");
-    });
-
-const notificationIcon = document.getElementById("notificationIcon");
-const notificationModule = document.getElementById("notificationMenu");
-
-let hideTimeout;
-
-notificationIcon.addEventListener("click", function () {
-    // Якщо вже активне — приховуємо з затримкою
-    if (notificationMenu.classList.contains("active")) {
-        notificationMenu.classList.remove("active");
-        clearTimeout(hideTimeout);
-        hideTimeout = setTimeout(() => {
-            notificationMenu.style.visibility = "hidden";
-        }, 300);
-    } else {
-        clearTimeout(hideTimeout);
-        notificationMenu.style.visibility = "visible";
-        notificationMenu.classList.add("active");
-        document.addEventListener("click", function (event) {
-    if (!notificationModule.contains(event.target) && !notificationIcon.contains(event.target)) {
-        notificationModule.classList.remove("active");
-    }
-});
-    }
-});
 
 </script>
 

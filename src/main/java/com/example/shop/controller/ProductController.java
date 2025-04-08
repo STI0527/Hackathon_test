@@ -19,10 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -158,6 +155,13 @@ public class ProductController {
         else if (authentication instanceof OAuth2AuthenticationToken token)
             model.addAttribute("user_id", userService.getUserByEmail(token.getPrincipal().getAttribute("email")).getId());
         return "product_info";
+    }
+
+    @PostMapping("/notifications/delete/{id}")
+    public String deleteNotification(@PathVariable String id) {
+        Long iD = Long.parseLong(id.replace("\u00A0", ""));
+        notificationService.deleteNotification(iD);
+        return "redirect:/";
     }
     
     @PostMapping("/buy/virtual/{id}")

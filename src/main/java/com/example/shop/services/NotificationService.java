@@ -66,4 +66,8 @@ public class NotificationService {
         System.out.println("\u001b[32mNotifications for user with id = " + id + " available: " + sortedList.size() + "\u001b[0m");
         return sortedList;
     }
+
+    public void deleteNotification(Long id){
+        notificationRepository.deleteById(id);
+    }
 }

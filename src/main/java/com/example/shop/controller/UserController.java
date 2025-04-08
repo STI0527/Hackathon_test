@@ -157,11 +157,25 @@ public class UserController {
     @GetMapping("/marketplace")
     public String toMarketplace(Model model, Principal principal, Authentication authentication, User user){
 
+
         if (authentication != null) {
             if (authentication instanceof OAuth2AuthenticationToken token) {
-                model.addAttribute("user", userService.getUserByEmail(token.getPrincipal().getAttribute("email")));
+                user = userService.getUserByEmail(token.getPrincipal().getAttribute("email"));
+                user.setCoins(BigDecimal.valueOf(user.getCoins())
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .doubleValue());
+
+                model.addAttribute("user", user);
+
             } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
-                model.addAttribute("user", userService.findUserByPrincipal(principal.getName()));
+                user = userService.findUserByPrincipal(principal.getName());
+
+            user.setCoins(BigDecimal.valueOf(user.getCoins())
+                        .setScale(1, RoundingMode.HALF_UP)
+                        .doubleValue());
+
+                model.addAttribute("user", user);
+
             }
 
         }
@@ -169,6 +183,7 @@ public class UserController {
         model.addAttribute("products", productService.findSELL());
         model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
         model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
+
         return "marketplace";
     }
 
