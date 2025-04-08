@@ -453,15 +453,19 @@ background-color: rgb(255, 255, 255) !important;
 
 position: fixed;
 z-index: 4;
-top: 100px;
+top: 120px;
 
 border: 2px solid rgba(255, 255, 255, 0.9);
 box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.9);
 max-width: 450px;
 padding: 20px;
 
+max-height: 80%;  /* Встановлюємо максимальну висоту для контейнера */
+    overflow-y: auto;  /* Додаємо вертикальну прокрутку, якщо вміст перевищує висоту */
+    padding-right: 15px;
+
 border-radius: 16px;
-background-color: rgba(235, 154, 169, 1);
+background-color: #b0d49b;
  opacity: 0;
             transform: translateY(-20px);
             transition: opacity 0.3s ease, transform 0.3s ease;
@@ -614,7 +618,7 @@ justify-content: center;
 
 .add-button, .statistics-button, .skip-button, .page-button {
     color: white;
-    background-color: rgb(75, 104, 80);
+    background-color: #789c64;
 
     font-weight: 500;
     font-size: 20px;
@@ -779,12 +783,12 @@ padding-top: 8px;
 }
 
 .add-button:hover, .statistics-button:hover,  .skip-button:hover, .page-button:hover{
-background-color: pink;
+background-color: #b0d49b;
 color: rgb(255, 255, 255);
 }
 
 .add-button:active, .statistics-button:active {
-background-color:  pink;
+background-color:  #b0d49b;
 color: rgb(255, 255, 255);
 padding-left: 20px;
 padding-right: 20px;
@@ -792,7 +796,7 @@ margin-left: 10px;
 }
 
 .page-button:active {
-background-color:  pink;
+background-color:  #b0d49b;
 color: rgb(255, 255, 255);
 }
 
@@ -804,7 +808,7 @@ color: rgb(255, 255, 255);
         padding-right: 18px;
 }
 .skip-button:active {
-background-color:  pink;
+background-color:  #b0d49b;
 color: rgb(255, 255, 255);
 padding-left: 14px;
 padding-right: 14px;
@@ -1225,43 +1229,43 @@ padding-bottom: 6px;
 }
 
 .buy-button:hover {
-    border-color: rgb(255, 0, 225); /* Помаранчева рамка */
-    background-color: rgba(255, 0, 170, 0.2); /* Легка заливка */
-    color: rgb(0, 0, 0); /* Помаранчевий текст */
-    box-shadow: 0px 0px 15px rgba(255, 0, 208, 0.6),
-                0px 0px 30px rgba(255, 0, 153, 0.4);
+    border-color: #789c64; /* Оливкова рамка */
+    background-color: rgba(176, 212, 155, 0.2); /* Легка оливкова заливка */
+    color: rgb(0, 0, 0); /* Чорний текст */
+    box-shadow: 0px 0px 15px rgba(176, 212, 155, 0.6),
+                0px 0px 30px rgba(120, 156, 100, 0.4); /* Тінь з оливковим відтінком */
     animation: glow 1.5s infinite alternate; /* Ефект світіння */
 }
 
 /* Анімація світіння */
 @keyframes glow {
     0% {
-        box-shadow: 0px 0px 15px rgba(255, 0, 208, 0.6),
-                    0px 0px 30px rgba(255, 0, 153, 0.4);
+        box-shadow: 0px 0px 15px rgba(176, 212, 155, 0.6),
+                    0px 0px 30px rgba(120, 156, 100, 0.4);
         transform: scale(1); /* Початковий розмір */
     }
     100% {
-        box-shadow: 0px 0px 30px rgba(255, 0, 208, 0.6),
-                    0px 0px 60px rgba(2255, 0, 153, 0.4);
+        box-shadow: 0px 0px 30px rgba(176, 212, 155, 0.6),
+                    0px 0px 60px rgba(120, 156, 100, 0.4); /* Збільшення тіні */
         transform: scale(1.05); /* Легке збільшення */
     }
 }
 
 @keyframes glowMore {
     0% {
-        box-shadow: 0px 0px 15px rgba(255, 0, 208, 0.6),
-                    0px 0px 30px rgba(255, 0, 153, 0.4);
+        box-shadow: 0px 0px 15px rgba(176, 212, 155, 0.6),
+                    0px 0px 30px rgba(120, 156, 100, 0.4);
         transform: scale(1.05); /* Початковий розмір */
     }
     100% {
-        box-shadow: 0px 0px 30px rgba(255, 0, 208, 0.6),
-                    0px 0px 60px rgba(2255, 0, 153, 0.4);
+        box-shadow: 0px 0px 30px rgba(176, 212, 155, 0.6),
+                    0px 0px 60px rgba(120, 156, 100, 0.4); /* Збільшення тіні */
         transform: scale(1.5); /* Легке збільшення */
     }
 }
 
 .buy-button:active {
-    animation: glowMore 1.5s ease-in-out;
+    animation: glowMore 1.5s ease-in-out; /* Активний ефект при натискан*/
 }
 
 .search-container {
@@ -1289,7 +1293,7 @@ flex: 1;
     width: 0;
     position: relative;
     z-index: 0;
-    background-color: rgb(83, 116, 89);
+    background-color: #789c64;
     padding-top: 4px;
     padding-left: 12px;
     padding-right: 12px;
@@ -1733,7 +1737,7 @@ padding: 8px 28px 7px 28px;
 
 .home-button, .history-button, .statistics-button {
     color: white;
-    background-color: rgb(75, 104, 80);
+    background-color: #789c64;
 
     font-weight: 400;
     font-size: 14px;
@@ -1741,7 +1745,7 @@ padding: 8px 28px 7px 28px;
 
     border-style: solid;
     border-width: 1.6px;
-    border-color: rgb(64, 64, 64);
+    border-color: #5f8a48;
 
     padding: 8px;
     padding-left: 40px;
@@ -1756,12 +1760,12 @@ padding: 8px 28px 7px 28px;
 }
 
 .home-button:hover, .history-button:hover, .statistics-button:hover {
-background-color:  pink;
+background-color:  #b0d49b;
 color:  white;
 }
 
 .home-button:active, .history-button:active, .statistics-button:active {
-background-color:  pink;
+background-color:  #b0d49b;
 color: rgb(255, 255, 2555);
 padding-left: 30px;
 padding-right: 30px;
@@ -1822,7 +1826,8 @@ padding-bottom: 8px;
 height: 100%;
 padding: 16px;
 border-radius: 16px;
-background-color: rgba(235, 154, 169, 0.6);
+background-color: #b0d49b;
+opacity: 0.9;
 }
 
 .user-info-product-container a {
@@ -2161,7 +2166,7 @@ background-color: rgb(255, 255, 255);
 }
 
 .btn btn-success dropdown-toggle {
-background-color: rgba(235, 154, 169, 1); color: white;
+background-color: #b0d49b; color: white;
 
 }
 
@@ -2253,7 +2258,7 @@ background-color: rgba(235, 154, 169, 0.6) !important;
 }
 
 .btn-check:checked + .btn-role {
-    background-color: rgb(235, 154, 169) !important;
+    background-color: #789c64 !important;
     color: white !important;
 }
 
@@ -2340,8 +2345,8 @@ background-color: lightpink !important;
                     margin-bottom: 1em;
                 }
                 .form-control:focus {
-                    box-shadow: 0 0 8px rgba(255, 105, 180, 0.7) !important; /* Рожева тінь */
-                    border-color: #ff69b4 !important; /* Рожевий контур */
+                    box-shadow: 0 0 8px rgba(176, 212, 155, 0.7) !important; /* Світло-зелена тінь */
+                    border-color: #789c64 !important; /* Оливково-зелений контур */
                 }
 
                 .registration_form_submit,
@@ -2362,7 +2367,7 @@ background-color: lightpink !important;
 
                 .file-upload-btn {
                     display: inline-block;
-                    background-color: rgba(235, 154, 169, 1);
+                    background-color: #789c64;
                     color: white;
                     padding: 10px 15px;
                     cursor: pointer;
@@ -2375,7 +2380,7 @@ background-color: lightpink !important;
                 }
 
                 .file-upload-btn:hover {
-                    background-color: rgba(235, 154, 169, 0.6);
+                    opacity: 0.6;
                 }
 
                 .file-upload-btn:active{
@@ -2470,37 +2475,37 @@ background-color: lightpink !important;
                 }
 
                 .registration_form_submit:hover {
-                    border-color: rgb(235, 154, 169); /* Помаранчева рамка */
-                    background-color: rgba(235, 154, 169, 0.2); /* Легка заливка */
+                    border-color: #789c64; /* Оливково-зелена рамка */
+                    background-color: rgba(176, 212, 155, 0.2); /* Легка світло-зелена заливка */
                     color: rgb(0, 0, 0);
-                    box-shadow: 0px 0px 15px rgba(235, 154, 169, 0.6),
-                                0px 0px 30px rgba(235, 154, 169, 0.4);
+                    box-shadow: 0px 0px 15px rgba(176, 212, 155, 0.6),
+                                0px 0px 30px rgba(176, 212, 155, 0.4); /* Світло-зелена тінь */
                     animation: glow 1.5s infinite alternate; /* Ефект світіння */
                 }
 
                 /* Анімація світіння */
                 @keyframes glow {
                     0% {
-                        box-shadow: 0px 0px 15px rgba(235, 154, 169, 0.6),
-                                    0px 0px 30px rgba(235, 154, 169, 0.4);
+                        box-shadow: 0px 0px 15px rgba(176, 212, 155, 0.6),
+                                    0px 0px 30px rgba(176, 212, 155, 0.4);
                         transform: scale(1); /* Початковий розмір */
                     }
                     100% {
-                        box-shadow: 0px 0px 30px rgba(235, 154, 169, 0.6),
-                                    0px 0px 60px rgba(235, 154, 169, 0.4);
+                        box-shadow: 0px 0px 30px rgba(176, 212, 155, 0.6),
+                                    0px 0px 60px rgba(176, 212, 155, 0.4);
                         transform: scale(1.05); /* Легке збільшення */
                     }
                 }
 
                 @keyframes glowMore {
                     0% {
-                        box-shadow: 0px 0px 15px rgba(235, 154, 169, 0.6),
-                                    0px 0px 30px rgba(235, 154, 169, 0.4);
+                        box-shadow: 0px 0px 15px rgba(176, 212, 155, 0.6),
+                                    0px 0px 30px rgba(176, 212, 155, 0.4);
                         transform: scale(1.05); /* Початковий розмір */
                     }
                     100% {
-                        box-shadow: 0px 0px 30px rgba(235, 154, 169, 0.6),
-                                    0px 0px 60px rgba(235, 154, 169, 0.4);
+                        box-shadow: 0px 0px 30px rgba(176, 212, 155, 0.6),
+                                    0px 0px 60px rgba(176, 212, 155, 0.4);
                         transform: scale(1.5); /* Легке збільшення */
                     }
                 }
@@ -2508,6 +2513,7 @@ background-color: lightpink !important;
                 .registration_form_submit:active {
                     animation: glowMore 1.5s ease-in-out;
                 }
+
 
 
 /*______________________________________________________*/
@@ -2737,17 +2743,17 @@ border-bottom: 1px solid rgb(202, 202, 202);
     }
 
     .dropdown-submit:hover, .add-dropdown-submit:hover {
-        background-color: rgb(235, 154, 169);
+        background-color: #b0d49b;
         color: white;
     }
 
     .dropdown-toggle:hover{
-        background-color: rgba(235, 154, 169, 1) !important;
+        background-color: #b0d49b !important;
     color: white !important;
     }
 
     .dropdown-toggle{
-        background-color: rgb(75, 104, 80) !important;
+        background-color: #789c64 !important;
     color: white !important;
     font-size:22px !important;
   margin-right: 20px;
@@ -3072,3 +3078,120 @@ height: 196px;
 
 }
 
+/*____________________________________________________________________________________________________________*/
+/*__________________________REUSE*/
+/*____________________________________________________________________________________________________________*/
+
+#map {
+    width: 80vw;
+    height: 80vh;
+    border: 2px solid #333;
+    border-radius: 16px;
+  }
+        .map{
+            display: flex;
+            justify-content: center;
+    align-items: center;
+        }
+        #menu{
+            z-index: 999;
+        }
+
+        .add-place-window {
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: row;
+overflow: auto;
+}
+
+
+.add-place-container {
+
+position: fixed;
+z-index: 999;
+        max-height: 80%;  /* Встановлюємо максимальну висоту для контейнера */
+    overflow-y: auto;  /* Додаємо вертикальну прокрутку, якщо вміст перевищує висоту */
+    padding-right: 15px;
+top: 120px;
+
+border: 2px solid rgba(255, 255, 255, 0.9);
+box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.9);
+max-width: 450px;
+padding: 20px;
+
+border-radius: 16px;
+background-color: #b0d49b;
+ opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            visibility: hidden;
+}
+
+.add-place-container.active {
+         opacity: 1;
+            transform: translateY(10px);
+            visibility: visible;
+
+         }
+
+
+
+        .icon-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.icon {
+    width: 80px;
+    height: 80px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    opacity: 0.5;  /* Іконки замутнені, якщо не вибрані */
+    transition: opacity 0.3s ease, border 0.3s ease;
+}
+
+.icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.icon.selected {
+    opacity: 1;  /* Якщо вибрано, іконка стає чіткою */
+    border-color: green;  /* Зелені кордони для вибраної іконки */
+}
+
+.icon:hover {
+    opacity: 0.8;  /* Коли наводять курсор, іконки стають трохи чіткішими */
+}
+
+.icon.selected:hover {
+    opacity: 1;  /* Якщо вибрана, не буде змінюватися при наведенні */
+}
+
+
+        .tooltip-icon {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    opacity: 0.5;  /* Іконки замутнені, якщо не вибрані */
+    transition: opacity 0.3s ease, border 0.3s ease;
+}
+
+.tooltip-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.tooltip-icon.selected {
+    opacity: 1;  /* Якщо вибрано, іконка стає чіткою */
+    border-color: green;  /* Зелені кордони для вибраної іконки */
+}

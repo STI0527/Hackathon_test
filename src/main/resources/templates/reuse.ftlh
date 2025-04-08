@@ -34,10 +34,38 @@ display: flex;
 justify-content: center;
 align-items: center;
 flex-direction: row;
+overflow: auto;
 }
-        .add-product-container{
-        z-index: 999;
-        }
+
+
+.add-place-container {
+
+position: fixed;
+z-index: 999;
+        max-height: 80%;  /* Встановлюємо максимальну висоту для контейнера */
+    overflow-y: auto;  /* Додаємо вертикальну прокрутку, якщо вміст перевищує висоту */
+    padding-right: 15px;
+top: 120px;
+
+border: 2px solid rgba(255, 255, 255, 0.9);
+box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.9);
+max-width: 450px;
+padding: 20px;
+
+border-radius: 16px;
+background-color: #b0d49b;
+ opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            visibility: hidden;
+}
+
+.add-place-container.active {
+         opacity: 1;
+            transform: translateY(10px);
+            visibility: visible;
+
+         }
 
 
 
@@ -77,21 +105,55 @@ flex-direction: row;
     opacity: 1;  /* Якщо вибрана, не буде змінюватися при наведенні */
 }
 
+
+        .tooltip-icon {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    opacity: 0.5;  /* Іконки замутнені, якщо не вибрані */
+    transition: opacity 0.3s ease, border 0.3s ease;
+}
+
+.tooltip-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.tooltip-icon.selected {
+    opacity: 1;  /* Якщо вибрано, іконка стає чіткою */
+    border-color: green;  /* Зелені кордони для вибраної іконки */
+}
+
+
+
     </style>
 </head>
 <body>
 
 <header>
-    <div class="header-left"></div>
+    <div class="header-left">
+        <#if user.email??>
+        <img id="notificationIcon" class="notification-image" src="/notification_icon.png">
+        </#if>
+    </div>
     <a href="/">ReUse Hub</a>
     <div id="toggleMenu" class="account-logo-container">
         <#if user.email??>
+
+        <img class="coins-image" src="/coins_logo.png">
+        <div class="coins-container">${user.getCoins()}</div>
+
         <img class="account-logo-image" src="/avatars/${user.avatar.id}">
         <#else>
         <img class="account-logo-image" src="/default_avatar.png">
         </#if>
 
         <img class="dropdown-icon" src="/dropdown-logo.png">
+
     </div>
     <div class="header-right"></div>
 
@@ -147,7 +209,7 @@ flex-direction: row;
 
 <div class="add-place-window">
 
-    <div id="addPlaceForm" class="add-product-container">
+    <div id="addPlaceForm" class="add-place-container">
 
         <div class="add-product-top-container">
 
@@ -216,9 +278,21 @@ flex-direction: row;
                 </div>
 
 
+                <div class="add-subtitle">Add photos to the place</div>
 
+                <div class="add-files-container">
+                    <label for="file1" class="file-upload-btn">Select file</label>
+                    <input type="file" name="file1" id="file1" required>
+
+                    <label for="file2" class="file-upload-btn">Select file</label>
+                    <input type="file" name="file2" id="file2">
+
+                    <label for="file3" class="file-upload-btn">Select file</label>
+                    <input type="file" name="file3" id="file3">
+                </div>
 
                 <div class="confirm-adding-container">
+                    <p id="file-error" style="color: red; display: none;">Please select a file!</p>
                     <input  class="add-button-confirm" type="submit" onsubmit="submitForm(event)" value="Add">
                 </div>
 
@@ -284,9 +358,36 @@ flex-direction: row;
         <#list places as place>
         <#assign latitude = place.latitude?string?replace(",", ".") />
         <#assign longitude = place.longitude?string?replace(",", ".") />
-                console.log('Invalid [${latitude}, ${longitude}] "<b>${place.name}</b>"');
-                L.marker([${latitude}, ${longitude}]).addTo(map)
-                    .bindPopup("<b>${place.name}</b>");
+
+        var popupContent = "<b>${place.name}</b><br>${place.description}<br><b>City:</b> ${place.city}<br><b>Address:</b> ${place.address}<br><b>Recycling Materials:</b><br>";
+<#if place.paper == true>
+        popupContent += '<img src="/paper1.png" alt="Paper" class="tooltip-icon selected" title="Paper (Recyclable)"> ';
+    <#else>
+        popupContent += '<img src="/paper1.png" alt="Paper" class="tooltip-icon" title="Paper (Not Recyclable)"> ';
+    </#if>
+
+    <#if place.plastic == true>
+        popupContent += '<img src="/plastic.png" alt="Plastic" class="tooltip-icon selected" title="Plastic (Recyclable)"> ';
+    <#else>
+        popupContent += '<img src="/plastic.png" alt="Plastic" class="tooltip-icon" title="Plastic (Not Recyclable)"> ';
+    </#if>
+
+    <#if place.glass == true>
+        popupContent += '<img src="/glass1.png" alt="Glass" class="tooltip-icon selected" title="Glass (Recyclable)"> ';
+    <#else>
+        popupContent += '<img src="/glass1.png" alt="Glass" class="tooltip-icon" title="Glass (Not Recyclable)"> ';
+    </#if>
+
+    <#if place.metal == true>
+        popupContent += '<img src="/metal1.png" alt="Metal" class="tooltip-icon selected" title="Metal (Recyclable)"> ';
+    <#else>
+        popupContent += '<img src="/metal1.png" alt="Metal" class="tooltip-icon" title="Metal (Not Recyclable)"> ';
+    </#if>
+
+var marker = L.marker([${latitude}, ${longitude}]).addTo(map);
+marker.bindPopup(popupContent);
+console.log(popupContent);
+
         </#list>
     </#if>
 </script>

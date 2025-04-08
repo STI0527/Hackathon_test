@@ -39,7 +39,7 @@
                 <label class="btn-role" for="${role}"
                        style="background-color: white; color: black;
                 padding: 12px 25px;
-                border: 1px solid rgb(245, 170, 175);
+                border: 1px solid #5f8a48;
                 border-radius: 12px;
                 transition: background-color 0.3s ease, color 0.3s ease;
                 ">

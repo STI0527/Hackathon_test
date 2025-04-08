@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -60,6 +63,11 @@ public class Place {
     @Setter
     @Column(name = "metal")
     private boolean metal;
+
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "place")
+    private List<Image> images = new ArrayList<>();
+    private Long previewImageId;
 
 
     public Place(String name, double latitude, double longitude, String city, String address, String description,

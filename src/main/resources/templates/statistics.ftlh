@@ -11,16 +11,25 @@
 <body>
 
 <header>
-    <div class="header-left"></div>
+    <div class="header-left">
+        <#if user.email??>
+        <img id="notificationIcon" class="notification-image" src="/notification_icon.png">
+        </#if>
+    </div>
     <a href="/">ReUse Hub</a>
     <div id="toggleMenu" class="account-logo-container">
         <#if user.email??>
+
+        <img class="coins-image" src="/coins_logo.png">
+        <div class="coins-container">${user.getCoins()}</div>
+
         <img class="account-logo-image" src="/avatars/${user.avatar.id}">
         <#else>
         <img class="account-logo-image" src="/default_avatar.png">
         </#if>
 
         <img class="dropdown-icon" src="/dropdown-logo.png">
+
     </div>
     <div class="header-right"></div>
 

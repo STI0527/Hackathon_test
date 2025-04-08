@@ -44,6 +44,9 @@ public class Image {
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)//фотографії -> товар;
     private Product product;
 
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)//фотографії -> товар;
+    private Place place;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
