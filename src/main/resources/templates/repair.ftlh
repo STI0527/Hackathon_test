@@ -90,7 +90,7 @@
 
         <form action="/notifications/delete/${notification.id}" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-            <button type="submit" onclick="deleteNotification(${notification.id})" class="delete-notification-button">
+            <button type="submit" onclick="deleteNotification(event, ${notification.id})" class="delete-notification-button">
                 <img class="cancel-image-notification" src="cancel_logo.png">
             </button>
 
@@ -358,24 +358,41 @@ notificationIcon.addEventListener("click", function () {
 </script>
 
 <script>
-function deleteNotification(id) {
-    fetch(`/notifications/delete/<#noparse>${notification.id}</#noparse>`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': <#noparse>'${_csrf.token}'</#noparse>
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            // Видаляємо повідомлення з DOM
-            const element = document.getElementById(`notification-<#noparse>${id}</#noparse>`);
-            if (element) element.remove();
+function deleteNotification(event, id) {
+    // Створюємо новий об'єкт XMLHttpRequest для AJAX запиту
+
+    event.preventDefault();
+
+    var xhr = new XMLHttpRequest();
+
+    // Встановлюємо метод та URL для запиту
+    xhr.open('POST', '/notifications/delete/' + id, true);
+
+    // Встановлюємо заголовки запиту, включаючи CSRF токен
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="${_csrf.parameterName}"]').value);  // Інжектуємо CSRF токен через Thymeleaf
+
+    // Коли запит завершиться
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Якщо успішно, видаляємо елемент з DOM
+            var element = document.getElementById('notification-' + id);
+            if (element) {
+                element.remove();  // Видаляємо елемент з DOM
+            }
+            console.log('Сповіщення успішно видалене!');
         } else {
             console.error('Не вдалося видалити сповіщення');
         }
-    })
-    .catch(error => console.error('Помилка:', error));
+    };
+
+    // Якщо сталася помилка при запиті
+    xhr.onerror = function() {
+        console.error('Помилка при виконанні запиту');
+    };
+
+    // Відправляємо запит
+    xhr.send();
 }
 </script>
 

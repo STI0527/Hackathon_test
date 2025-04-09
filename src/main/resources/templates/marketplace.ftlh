@@ -351,11 +351,16 @@ notificationIcon.addEventListener("click", function () {
     }
 });
 
-        document.getElementById("close-button").addEventListener("click", function() {
+  document.getElementById("addButton").addEventListener("click", function () {
+const addForm = document.getElementById("addForm");
+addForm.classList.toggle("active");
+});
 
-        const addForm = document.getElementById("addForm");
-        addForm.classList.toggle("active");
-        });
+document.getElementById("close-button").addEventListener("click", function() {
+
+const addForm = document.getElementById("addForm");
+addForm.classList.toggle("active");
+});
 
 
         </script>
