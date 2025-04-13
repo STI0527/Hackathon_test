@@ -112,7 +112,6 @@ public class ProductController {
                 .doubleValue());
 
 
-
         if (authentication != null) {
             User user = null;
             if (authentication instanceof OAuth2AuthenticationToken token) {
@@ -138,7 +137,7 @@ public class ProductController {
 
         }
         if(product == null){
-            model.addAttribute("productNotFound", "The item was removed by the administrator");
+            model.addAttribute("productNotFound", "The item was removed by the user who added it.");
             return "product_info";
         }
 

@@ -828,12 +828,14 @@ justify-content: center;
 color: rgb(0, 0, 0);
 background-color: rgba(255, 255, 255, 0.7);
 font-size: 20px;
+font-style: italic;
 border-radius: 16px;
 width: 960px;
 padding: 24px;
 margin-top: 24px;
 margin-bottom: 24px;
 }
+
 
 .pagination-info {
 color: rgb(255, 255,255);
@@ -1309,6 +1311,73 @@ padding-bottom: 6px;
                 0px 0px 30px rgba(120, 156, 100, 0.4); /* Тінь з оливковим відтінком */
     animation: glow 1.5s infinite alternate; /* Ефект світіння */
 }
+
+.exchange-offer-image {
+width: 126px;
+height: 60%;
+object-fit: cover;
+border-radius: 6px;
+
+
+}
+
+.exchange-offer-container {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin: 18px 4px;
+}
+
+.offer-product-container {
+display: flex;
+align-items: center;
+justify-content: left;
+}
+
+.exchange-offer-title {
+font-size: 18px;
+font-weight: 500;
+margin-left: 12px;
+
+}
+
+.exchange-offer-title a {
+color: rgb(0, 0, 0);
+}
+
+
+.exchange-offer-button {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.exchange-button {
+font-size: 16px;
+ font-family: 'Open Sans', sans-serif;
+ font-weight: 700;
+ border: 1.6px solid rgb(0, 0, 0);
+ letter-spacing: 2px;
+
+ padding: 10px 16px 10px 16px;
+ cursor: pointer;
+
+ transition: color 0.1s,
+ background-color 0.1s,
+ opacity 0.15s;
+ }
+
+
+ .exchange-button:hover {
+ color: rgb(255, 255, 255);
+ background-color: rgb(0, 0, 0);
+
+ }
+
+ .exchange-button:active {
+ opacity: 0.4;
+
+ }
 
 /* Анімація світіння */
 @keyframes glow {

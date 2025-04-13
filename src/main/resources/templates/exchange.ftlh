@@ -108,7 +108,7 @@
     <div class="marketplace-title">
         Welcome to the ReUse Hub exchange! Here you can swap items with others to give them a second life and reduce waste!
     </div>
-    </div>
+
 </section>
 
 <div class="search-container">
@@ -165,10 +165,9 @@
                     <label for="floatingDescription">Description:</label>
 
                 </div>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingPrice" name="price" placeholder="Price..." required>
-                    <label for="floatingPrice">Price:</label>
-                </div>
+
+                    <input type="hidden" class="form-control" id="floatingPrice" name="price" placeholder="Price..." value="0" required>
+
 
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="floatingCity" name="city" placeholder="City..." required>

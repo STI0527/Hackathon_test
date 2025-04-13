@@ -162,10 +162,13 @@
 
 
     <div class="product-info-title">${product.title}</div>
-        <div class="product-info-price">${product.price} ₴</div>
-        <div class="product-info-virtual-price">${product.virtualPrice}
-        <img class="coins-image-product-info" src="/coins_logo.png">
-        </div>
+        <#if product.type == 'SELL'>
+            <div class="product-info-price">${product.price} ₴</div>
+            <div class="product-info-virtual-price">${product.virtualPrice}
+                <img class="coins-image-product-info" src="/coins_logo.png">
+            </div>
+        </#if>
+
         <div class="product-info-description"> ${product.description}</div>
         <div class="pink-container">
             <div class="product-info-city"> ${product.city}</div>
@@ -174,7 +177,13 @@
             <div class="product-info-buy">
 
                     <button class="liqpay-button" onclick="showTypesOfPayment();">
+                        <#if product.type == 'SELL'>
                         BUY NOW
+                        <#else>
+                            <#if product.type == 'EXCHANGE'>
+                                OFFER AN EXCHANGE
+                            </#if>
+                        </#if>
                     </button>
 
             </div>
@@ -198,6 +207,7 @@ onclick="onModalBackgroundClick(event)">
 
     <div id="modalContent" style="background-color: white;">
 
+      <#if product.type == 'SELL'>
     <h3>Choose a payment method</h3>
 
     <form method="post" accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
@@ -218,8 +228,31 @@ onclick="onModalBackgroundClick(event)">
     </button>
         </form>
         <br><br>
+        <#else>
+            <#if product.type == 'EXCHANGE'>
+                <h3>Choose your product for exchange</h3>
 
-    <button onclick="closeModal()">❌ Скасувати</button>
+                <#list user.products as myProduct>
+                <div class="exchange-offer-container">
+                   <div class="offer-product-container">
+                        <img  class="exchange-offer-image" src="/images/${myProduct.id}" alt="Фото ${myProduct.id}">
+                        <div class="exchange-offer-title">
+                            <a href="/products/${myProduct.id}">
+                            ${myProduct.title}
+                            </a>
+                        </div>
+                   </div>
+
+                    <div class="exchange-offer-button">
+                        <button class="exchange-button">Offer</button>
+                    </div>
+                </div>
+                </#list>
+            </#if>
+        </#if>
+
+    <button onclick="closeModal()">❌ Cancel</button>
+
 </div>
 </div>
 

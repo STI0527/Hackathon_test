@@ -17,7 +17,7 @@
 
         <div class="user-info-container">
             <#if user.isAdmin()>
-            <div class="user-info-title">Administrator's ${user.name} products</div>
+            <div class="user-info-title">User's ${user.name} products</div>
 
 
             <div class="user-info-list">
