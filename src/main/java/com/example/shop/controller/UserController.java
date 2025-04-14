@@ -2,6 +2,7 @@ package com.example.shop.controller;
 
 
 import com.example.shop.email.EmailSender;
+import com.example.shop.enums.UAOblasts;
 import com.example.shop.models.*;
 import com.example.shop.repositories.AvatarRepository;
 import com.example.shop.repositories.UserRepository;
@@ -284,6 +285,7 @@ public class UserController {
 
         }
 
+        model.addAttribute("oblasts", UAOblasts.values());
         model.addAttribute("places", placeService.getAllPlaces());
         model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
         model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));

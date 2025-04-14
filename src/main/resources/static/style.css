@@ -2306,6 +2306,8 @@ background-color: red !important;
 .dropdown-menu {
 /*background-color: rgba(235, 154, 169, 1) !important;*/
 background-color: rgb(255, 255, 255);
+max-height: 300px; /* Максимальна висота для меню */
+    overflow-y: auto;
 }
 
 .btn btn-success dropdown-toggle {

@@ -123,6 +123,21 @@
 <button id="addPlaceButton" class="add-button" onclick="showPlaceAddingForm()">Add Place</button>
 </#if>
 
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        Display mode
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <#list oblasts as oblast>
+        <li>
+            <button class="dropdown-item" onclick="selectModeView('${oblast.getEnglishName()}')">
+                ${oblast.getEnglishName()}
+            </button>
+        </li>
+    </#list>
+</ul>
+</div>
+
 
 
 <div class="add-place-window">
@@ -260,54 +275,109 @@
     </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
 <script>
-    const map = L.map('map', {zoomControl: false}).setView([49.0, 31.0], 8); // Центр України
+const allMarkers = [];
+ const map = L.map('map', {zoomControl: false}).setView([49.0, 31.0], 6); // Центр України
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; Carto & OpenStreetMap',
-        subdomains: 'abcd',
-        maxZoom: 20
-    }).addTo(map);
+ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+     attribution: '&copy; Carto & OpenStreetMap',
+     subdomains: 'abcd',
+     maxZoom: 20
+ }).addTo(map);
 
-    // Тестовий маркер для перевірки
-    L.marker([50.4501, 30.5234]).addTo(map).bindPopup("<b>Kyiv</b>");
+ // Тестовий маркер для перевірки
+ L.marker([50.4501, 30.5234]).addTo(map).bindPopup("<b>Kyiv</b>");
 
-    <#if places??>
-        <#list places as place>
-        <#assign latitude = place.latitude?string?replace(",", ".") />
-        <#assign longitude = place.longitude?string?replace(",", ".") />
+ <#if places??>
+     <#list places as place>
+     <#assign latitude = place.latitude?string?replace(",", ".") />
+     <#assign longitude = place.longitude?string?replace(",", ".") />
 
-        var popupContent = "<b>${place.name}</b><br>${place.description}<br><b>City:</b> ${place.city}<br><b>Address:</b> ${place.address}<br><b>Recycling Materials:</b><br>";
+     var popupContent = "<b>${place.name}</b><br>${place.description}<br><b>City:</b> ${place.city}<br><b>Address:</b> ${place.address}<br><b>Recycling Materials:</b><br>";
 <#if place.paper == true>
-        popupContent += '<img src="/paper1.png" alt="Paper" class="tooltip-icon selected" title="Paper (Recyclable)"> ';
-    <#else>
-        popupContent += '<img src="/paper1.png" alt="Paper" class="tooltip-icon" title="Paper (Not Recyclable)"> ';
-    </#if>
+     popupContent += '<img src="/paper1.png" alt="Paper" class="tooltip-icon selected" title="Paper (Recyclable)"> ';
+ <#else>
+     popupContent += '<img src="/paper1.png" alt="Paper" class="tooltip-icon" title="Paper (Not Recyclable)"> ';
+ </#if>
 
-    <#if place.plastic == true>
-        popupContent += '<img src="/plastic.png" alt="Plastic" class="tooltip-icon selected" title="Plastic (Recyclable)"> ';
-    <#else>
-        popupContent += '<img src="/plastic.png" alt="Plastic" class="tooltip-icon" title="Plastic (Not Recyclable)"> ';
-    </#if>
+ <#if place.plastic == true>
+     popupContent += '<img src="/plastic.png" alt="Plastic" class="tooltip-icon selected" title="Plastic (Recyclable)"> ';
+ <#else>
+     popupContent += '<img src="/plastic.png" alt="Plastic" class="tooltip-icon" title="Plastic (Not Recyclable)"> ';
+ </#if>
 
-    <#if place.glass == true>
-        popupContent += '<img src="/glass1.png" alt="Glass" class="tooltip-icon selected" title="Glass (Recyclable)"> ';
-    <#else>
-        popupContent += '<img src="/glass1.png" alt="Glass" class="tooltip-icon" title="Glass (Not Recyclable)"> ';
-    </#if>
+ <#if place.glass == true>
+     popupContent += '<img src="/glass1.png" alt="Glass" class="tooltip-icon selected" title="Glass (Recyclable)"> ';
+ <#else>
+     popupContent += '<img src="/glass1.png" alt="Glass" class="tooltip-icon" title="Glass (Not Recyclable)"> ';
+ </#if>
 
-    <#if place.metal == true>
-        popupContent += '<img src="/metal1.png" alt="Metal" class="tooltip-icon selected" title="Metal (Recyclable)"> ';
-    <#else>
-        popupContent += '<img src="/metal1.png" alt="Metal" class="tooltip-icon" title="Metal (Not Recyclable)"> ';
-    </#if>
+ <#if place.metal == true>
+     popupContent += '<img src="/metal1.png" alt="Metal" class="tooltip-icon selected" title="Metal (Recyclable)"> ';
+ <#else>
+     popupContent += '<img src="/metal1.png" alt="Metal" class="tooltip-icon" title="Metal (Not Recyclable)"> ';
+ </#if>
 
 var marker = L.marker([${latitude}, ${longitude}]).addTo(map);
 marker.bindPopup(popupContent);
 console.log(popupContent);
+allMarkers.push(marker);
 
-        </#list>
-    </#if>
+     </#list>
+ </#if>
+
+
+function selectModeView(oblastName) {
+
+event.preventDefault();
+
+// Оновлюємо текст кнопки
+document.getElementById('dropdownMenuButton').textContent = oblastName;
+     console.log("Selected mode:", oblastName);
+     updateMapDisplayMode(oblastName);
+ }
+ const oblastCoordinates = {
+    "Cherkasy Oblast": [49.4444, 32.0590],
+    "Chernihiv Oblast": [51.9794, 31.8697],
+    "Chernivtsi Oblast": [48.2972, 25.9352],
+    "Dnipropetrovsk Oblast": [48.4647, 35.0462],
+    "Donetsk Oblast": [48.0159, 37.8028],
+    "Ivano-Frankivsk Oblast": [48.9220, 24.7105],
+    "Kharkiv Oblast": [49.9935, 36.2304],
+    "Kherson Oblast": [46.6356, 32.6167],
+    "Khmelnytskyi Oblast": [49.4191, 27.0290],
+    "Kirovohrad Oblast": [48.5074, 32.2597],
+    "Kyiv Oblast": [50.4501, 30.5234],
+    "Luhansk Oblast": [48.5678, 39.2986],
+    "Lviv Oblast": [49.8397, 24.0297],
+    "Mykolaiv Oblast": [46.9750, 32.0010],
+    "Odesa Oblast": [46.4825, 30.7343],
+    "Poltava Oblast": [49.5893, 34.5517],
+    "Rivne Oblast": [50.6194, 26.2516],
+    "Sumy Oblast": [50.9077, 34.7986],
+    "Ternopil Oblast": [49.5531, 25.5948],
+    "Vinnytsia Oblast": [49.2331, 28.4680],
+    "Volyn Oblast": [50.7385, 25.3943],
+    "Zakarpattia Oblast": [48.5792, 22.3133],
+    "Zaporizhzhia Oblast": [47.8388, 35.1396],
+    "Zhytomyr Oblast": [50.4500, 28.1132],
+    "Crimea": [44.9522, 34.1025],
+    "Kyiv": [50.4501, 30.5234]
+};
+// Фільтруємо точки на мапі за областю
+ function updateMapDisplayMode(oblastName) {
+     // Центруємо карту залежно від вибраної області
+    if (oblastName === "Kyiv") {
+        map.setView([50.4501, 30.5234], 12);
+    }else if (oblastCoordinates[oblastName]) {
+        map.setView(oblastCoordinates[oblastName], 8); // Центр на вибрану область
+    } else {
+        map.setView([49.0, 31.0], 6); // Центр України (за замовчуванням)
+    }
+ }
 </script>
 
 </body>
@@ -540,4 +610,3 @@ new Chart(
 );
 
 </script>
-
