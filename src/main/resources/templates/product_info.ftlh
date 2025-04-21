@@ -245,7 +245,7 @@ onclick="onModalBackgroundClick(event)">
 
                     <div class="exchange-offer-button">
                         <form action="/exchange/make-offer/${product.id}" method="post">
-                            <inpu type="hidden" name="product" value="${product.}"/>
+                            <input type="hidden" name="product" value="${product.id}"/>
                             <button type="submit" class="exchange-button" >Offer</button>
                         </form>
                     </div>
