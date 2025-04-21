@@ -244,7 +244,10 @@ onclick="onModalBackgroundClick(event)">
                    </div>
 
                     <div class="exchange-offer-button">
-                        <button class="exchange-button">Offer</button>
+                        <form action="/exchange/make-offer/${product.id}" method="post">
+                            <inpu type="hidden" name="product" value="${product.}"/>
+                            <button type="submit" class="exchange-button" >Offer</button>
+                        </form>
                     </div>
                 </div>
                 </#list>
