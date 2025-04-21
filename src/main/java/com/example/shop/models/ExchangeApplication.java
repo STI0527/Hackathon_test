@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 @Table(name="EXCHANGE_APPLICATION")
@@ -24,6 +26,27 @@ public class ExchangeApplication {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "offer_id")
     private Product offer;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
+
+    @Column(name = "owner_name")
+    private String ownerName;
+
+    @Column(name = "proposer_name")
+    private String proposerName;
+
+    @Column(name = "offer_product_name")
+    private String offerTitle;
+
+    @Column(name = "desire_product_name")
+    private String desireProductTitle;
+
+    @Column(name = "date_of_offer")
+    private LocalDateTime dateOfOffer;
+
+    @Column(name = "short_date")
+    private String shortDateOfOffer;
 
 
 }

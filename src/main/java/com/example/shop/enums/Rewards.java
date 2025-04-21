@@ -5,8 +5,9 @@ public enum Rewards {
     BUY(0.05, "buying"),
     SELL(0.03, "selling"),
     EXCHANGE(0.1, "exchanging"),
-    REPAIR(0.7, "repairing");
-
+    REPAIR(0.7, "repairing"),
+    INFO_USER(0, "You offered an exchange to "),
+    INFO_SELLER(0, "You received an exchange offer! ");
 
     private final double rewardPercentage;
 

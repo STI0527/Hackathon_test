@@ -20,16 +20,16 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
 
-    public void saveNotification(User customer, User user, Rewards rewards, Product product, double rewardAmount){
+    public void saveNotification(User customer, User seller, Rewards rewards, Product product, double rewardAmount){
         Notification notification = new Notification();
         notification.setCustomerId(customer.getId());
         notification.setCustomerName(customer.getName());
-        notification.setSellerId(user.getId());
+        notification.setSellerId(seller.getId());
         notification.setRewardType(rewards);
         notification.setRewardAmount(rewardAmount);
-        notification.setSellerName(user.getName());
+        notification.setSellerName(seller.getName());
         notification.setCustomerEmail(customer.getEmail());
-        notification.setSellerEmail(user.getEmail());
+        notification.setSellerEmail(seller.getEmail());
         notification.setDateOfOperation(LocalDateTime.now());
         notification.setProductId(product.getId());
         notification.setProductTitle(product.getTitle());
@@ -52,12 +52,12 @@ public class NotificationService {
 
     public List<Notification> getNotificationsList(Long id) {
         List<Notification> list1 = finByCustomerId(id);
-        List<Notification> list2 = finBySellerId(id);
+        //List<Notification> list2 = finBySellerId(id);
 
         //To get rid of duplicates;
         Set<Notification> set = new LinkedHashSet<>();
         set.addAll(list1);
-        set.addAll(list2);
+        //set.addAll(list2);
 
 
         List<Notification> sortedList = new ArrayList<>(set);

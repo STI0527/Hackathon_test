@@ -187,6 +187,16 @@
                     </button>
 
             </div>
+
+                <#if exchange_offers??>
+                    <#list exchange_offers as offer>
+                        <div>
+                            ${offer.offer.getTitle()}
+                        </div>
+                    </#list>
+                <#else>
+                        <div>No exchange offers found</div>
+                </#if>
         </div>
         <!--<b>Номер телефона:</b>${product.user.phoneNumber}<br>-->
         <hr>
@@ -244,8 +254,10 @@ onclick="onModalBackgroundClick(event)">
                    </div>
 
                     <div class="exchange-offer-button">
-                        <form action="/exchange/make-offer/${product.id}" method="post">
+                        <form action="/exchange/offer/${product.id}" method="post">
                             <input type="hidden" name="product" value="${product.id}"/>
+                            <input type="hidden" name="offer_id" value="${myProduct.id}">
+                            <input type="hidden" name="_csrf" value="${_csrf.token}" />
                             <button type="submit" class="exchange-button" >Offer</button>
                         </form>
                     </div>

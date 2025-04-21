@@ -39,6 +39,7 @@ public class ProductController {
     private final OrderService orderService;
     private final CurrencyExchangeService currencyExchangeService;
     private final NotificationService notificationService;
+    private final ExchangeApplicationService exchangeApplicationService;
 
 //Через анотацію @RequiredArgsConstructor ці рядки не потрібні;
     //____________________________________________________________
@@ -139,6 +140,10 @@ public class ProductController {
         if(product == null){
             model.addAttribute("productNotFound", "The item was removed by the user who added it.");
             return "product_info";
+        }
+
+        if(product.getType() == AdvertType.EXCHANGE && product.getUser().equals(productService.getUserByPrincipal(principal))){
+            model.addAttribute("exchange_offers", exchangeApplicationService.myProductExchangeOffersList(product.getId()));
         }
 
         model.addAttribute("product", product);

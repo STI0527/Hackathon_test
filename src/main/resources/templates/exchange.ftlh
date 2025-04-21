@@ -77,12 +77,24 @@
 
         </div>
 
-        <div class="notification-text-container">You've got +${notification.rewardAmount}
-            <img class="coins-image-notifications" src="coins_logo.png">
-            for ${notification.rewardType.getOperationType()}: ${notification.productTitle}!
+        <#if notification.rewardType == "INFO_SELLER">
+        <div class="notification-text-container">
+            Exchange offer received! ${notification.sellerName} wants to trade for your <a href="/products/${notification.productId}">${notification.productTitle}</a>.
         </div>
+        <#elseif notification.rewardType == "INFO_USER">
+        <div class="notification-text-container">
+            Exchange offer sent for <a href="/products/${notification.productId}">${notification.productTitle}</a>!
+        </div>
+        <#else>
+        <div class="notification-text-container">
+            You've got +${notification.rewardAmount}
+            <img class="coins-image-notifications" src="/coins_logo.png">
+            for ${notification.rewardType.operationType}: ${notification.productTitle}!
+        </div>
+    </#if>
 
-        <div class="notification-time-container">
+
+    <div class="notification-time-container">
             ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
 
         </div>
@@ -90,7 +102,7 @@
         <form action="/notifications/delete/${notification.id}" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <button type="submit" onclick="deleteNotification(event, ${notification.id})" class="delete-notification-button">
-                <img class="cancel-image-notification" src="cancel_logo.png">
+                <img class="cancel-image-notification" src="/cancel_logo.png">
             </button>
 
         </form>

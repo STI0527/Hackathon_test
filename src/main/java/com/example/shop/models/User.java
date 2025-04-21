@@ -62,19 +62,6 @@ public class User implements UserDetails {
     private List<Product> products = new ArrayList<>();
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return isActive() == user.isActive() && getCoins() == user.getCoins() && Objects.equals(getId(), user.getId()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPhoneNumber(), user.getPhoneNumber()) && Objects.equals(getName(), user.getName()) && Objects.equals(getAvatar(), user.getAvatar()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getRoles(), user.getRoles()) && Objects.equals(getDateOfRegistration(), user.getDateOfRegistration()) && Objects.equals(getProducts(), user.getProducts());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getEmail(), getPhoneNumber(), getName(), isActive(), getPassword(), getCoins(), getRoles(), getDateOfRegistration(), getProducts());
-    }
-
-    @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
@@ -134,6 +121,18 @@ public class User implements UserDetails {
         return true;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return isActive() == user.isActive() && Double.compare(getCoins(), user.getCoins()) == 0 && Double.compare(getPlasticSaved(), user.getPlasticSaved()) == 0 && Double.compare(getMetalSaved(), user.getMetalSaved()) == 0 && Double.compare(getGlassSaved(), user.getGlassSaved()) == 0 && Double.compare(getCO2Saved(), user.getCO2Saved()) == 0 && Objects.equals(getId(), user.getId()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPhoneNumber(), user.getPhoneNumber()) && Objects.equals(getName(), user.getName()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getRoles(), user.getRoles()) && Objects.equals(getDateOfRegistration(), user.getDateOfRegistration()) && Objects.equals(getProducts(), user.getProducts());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getEmail(), getPhoneNumber(), getName(), isActive(), getPassword(), getCoins(), getPlasticSaved(), getMetalSaved(), getGlassSaved(), getCO2Saved(), getRoles(), getDateOfRegistration(), getProducts());
+    }
 
     //Цей метод відповідає за можливість банити користувача;
     @Override
