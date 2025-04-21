@@ -125,7 +125,7 @@
 
 <div class="dropdown">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-        Display mode
+        Ukraine oblasts
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <#list oblasts as oblast>
@@ -137,6 +137,22 @@
     </#list>
 </ul>
 </div>
+
+<div class="dropdown">
+<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownCountyButton" data-bs-toggle="dropdown" aria-expanded="false">
+    Romania counties
+</button>
+<ul class="dropdown-menu" aria-labelledby="dropdownCountyButton">
+    <#list counties as county>
+    <li>
+        <button class="dropdown-item" onclick="selectCountyView('${county.getEnglishName()}')">
+            ${county.getEnglishName()}
+        </button>
+    </li>
+</#list>
+</ul>
+        </div>
+
 
 
 
@@ -378,6 +394,72 @@ document.getElementById('dropdownMenuButton').textContent = oblastName;
         map.setView([49.0, 31.0], 6); // Центр України (за замовчуванням)
     }
  }
+
+function selectCountyView(countyName) {
+    event.preventDefault();
+
+    // Оновлюємо текст кнопки
+    document.getElementById('dropdownCountyButton').textContent = countyName;
+    console.log("Selected county:", countyName);
+    updateCountyMapDisplay(countyName);
+}
+
+const countyCoordinates = {
+    "Alba": [46.0667, 23.5833],
+    "Arad": [46.1833, 21.3167],
+    "Argeș": [44.8667, 24.8667],
+    "Bacău": [46.5667, 26.9167],
+    "Bihor": [47.0667, 21.9333],
+    "Bistrița-Năsăud": [47.1333, 24.5000],
+    "Botoșani": [47.7500, 26.6667],
+    "Brașov": [45.6667, 25.6167],
+    "Brăila": [45.2667, 27.9667],
+    "București": [44.4328, 26.1043],
+    "Buzău": [45.1500, 26.8333],
+    "Caraș-Severin": [45.2667, 21.8833],
+    "Călărași": [44.2000, 27.3333],
+    "Cluj": [46.7667, 23.5833],
+    "Constanța": [44.1833, 28.6500],
+    "Covasna": [45.8500, 26.1833],
+    "Dâmbovița": [44.9333, 25.4500],
+    "Dolj": [44.3167, 23.8000],
+    "Galați": [45.4500, 28.0500],
+    "Giurgiu": [43.9000, 25.9667],
+    "Gorj": [45.0333, 23.2667],
+    "Harghita": [46.3667, 25.6667],
+    "Hunedoara": [45.7500, 22.9000],
+    "Ialomița": [44.6000, 27.3667],
+    "Iași": [47.1667, 27.5833],
+    "Ilfov": [44.5000, 26.2000],
+    "Maramureș": [47.6667, 23.5833],
+    "Mehedinți": [44.6167, 22.6667],
+    "Mureș": [46.5500, 24.5667],
+    "Neamț": [46.9500, 26.3333],
+    "Olt": [44.4167, 24.3667],
+    "Prahova": [45.0000, 26.0000],
+    "Satu Mare": [47.7833, 22.8667],
+    "Sălaj": [47.2000, 23.0500],
+    "Sibiu": [45.8000, 24.1500],
+    "Suceava": [47.6333, 26.2500],
+    "Teleorman": [43.9500, 25.3333],
+    "Timiș": [45.7500, 21.2500],
+    "Tulcea": [45.1833, 28.8000],
+    "Vaslui": [46.6333, 27.7333],
+    "Vâlcea": [45.1167, 24.3667],
+    "Vrancea": [45.9500, 27.0000]
+};
+
+// Центруємо карту залежно від вибраного повіту
+function updateCountyMapDisplay(countyName) {
+    if (countyName === "București") {
+        map.setView([44.4328, 26.1043], 12);
+    } else if (countyCoordinates[countyName]) {
+        map.setView(countyCoordinates[countyName], 9);
+    } else {
+        map.setView([45.9432, 24.9668], 6); // Центр Румунії
+    }
+}
+
 </script>
 
 </body>
