@@ -188,15 +188,23 @@
 
             </div>
 
+
                 <#if exchange_offers??>
-                    <#list exchange_offers as offer>
-                        <div>
-                            ${offer.offer.getTitle()}
-                        </div>
-                    </#list>
-                <#else>
-                        <div>No exchange offers found</div>
+                <div class="exchange-offers-container">
+                    <div class="exchange-offers-title">Incoming exchange offers</div>
+
+                    <div class="offers-container">
+                        <#list exchange_offers as offer>
+                                <div>
+                                    ${offer.offer.getTitle()}
+                                </div>
+                            <#else>
+                                <div>No exchange offers found</div>
+                            </#list>
+                    </div>
                 </#if>
+        </div>
+
         </div>
         <!--<b>Номер телефона:</b>${product.user.phoneNumber}<br>-->
         <hr>
