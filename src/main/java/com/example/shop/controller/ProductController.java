@@ -136,15 +136,16 @@ public class ProductController {
             model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
             model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
 
+
+            if(product.getType() == AdvertType.EXCHANGE && product.getUser().getEmail().equals(user.getEmail())){
+                model.addAttribute("exchange_offers", exchangeApplicationService.myProductExchangeOffersList(product.getId()));
+            }
         }
         if(product == null){
             model.addAttribute("productNotFound", "The item was removed by the user who added it.");
             return "product_info";
         }
 
-        if(product.getType() == AdvertType.EXCHANGE && product.getUser().equals(productService.getUserByPrincipal(principal))){
-            model.addAttribute("exchange_offers", exchangeApplicationService.myProductExchangeOffersList(product.getId()));
-        }
 
         model.addAttribute("product", product);
         model.addAttribute("images", product.getImages());
