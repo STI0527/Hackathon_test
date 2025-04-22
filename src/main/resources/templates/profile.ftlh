@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <html>
+
 <head>
     <title>ReUse Hub</title>
     <link rel="stylesheet" href="/style.css">
@@ -36,9 +37,6 @@
 </header>
 
 <div class="body-flex">
-
-    <main class="main-flex">
-
     <div id="menu" class="user-menu-container">
         <div class="user-menu-inner">
             <#if user.email??>
@@ -48,8 +46,8 @@
                 <div class="user_menu-name">${user.name}</div>
 
                 <form action="/profile/${user.id}" method="post">
-                    <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
-                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                    <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile" />
+                    <input type="hidden" name="_csrf" value="${_csrf.token}" />
                 </form>
 
 
@@ -59,8 +57,8 @@
 
 
             <form action="/logout" method="post">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input class="user-menu-quit-text" type="submit" value="Log out"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                <input class="user-menu-quit-text" type="submit" value="Log out" />
             </form>
             <#else>
             <img class="user-avatar" src="/default_avatar.png" alt="avatar">
@@ -84,13 +82,15 @@
         </div>
 
         <div class="notification-time-container">
-            ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
+            ${notification.dateOfOperation.getHour()?string("00")} :
+            ${notification.dateOfOperation.getMinute()?string("00")}
 
         </div>
 
         <form action="/notifications/delete/${notification.id}" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-            <button type="submit" onclick="deleteNotification(event, ${notification.id})" class="delete-notification-button">
+            <button type="submit" onclick="deleteNotification(event, ${notification.id})"
+                    class="delete-notification-button">
                 <img class="cancel-image-notification" src="/static/cancel_logo.png">
             </button>
 
@@ -108,32 +108,35 @@
     <div class="profile-card">
 
         <div class="profile-card-left-container">
-        <div class="profile-title">Profile</div>
+            <div class="profile-title">Profile</div>
 
 
-        <div class="profile-subtitle">${user.name}</div>
+            <div class="profile-subtitle">${user.name}</div>
 
-        <#if user.avatar??>
-        <img class="profile-page-avatar" src="/avatars/${user.avatar.id}" alt="Profile image" width="230px" height="216px"/>
-        <#else>
-        <img class="profile-page-avatar" src="/default_avatar.png" alt="Profile image"/>
-    </#if>
+            <#if user.avatar??>
+            <img class="profile-page-avatar" src="/avatars/${user.avatar.id}" alt="Profile image"
+                 width="230px" height="216px" />
+            <#else>
+            <img class="profile-page-avatar" src="/default_avatar.png" alt="Profile image" />
+        </#if>
 
-    <div class="change-avatar-container">
-        <form id="uploadForm" action="/changeAvatar/${user.id}" method="post" enctype="multipart/form-data">
-            <input id="file-upload" type="file" name="file" onchange="document.getElementById('uploadForm').submit();"/>
-            <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-            <label for="file-upload" class="file-upload-btn">Change photo</label>
-        </form>
-    </div>
+        <div class="change-avatar-container">
+            <form id="uploadForm" action="/changeAvatar/${user.id}" method="post"
+                  enctype="multipart/form-data">
+                <input id="file-upload" type="file" name="file"
+                       onchange="document.getElementById('uploadForm').submit();" />
+                <input type="hidden" name="_csrf" value="${_csrf.token}" required />
+                <label for="file-upload" class="file-upload-btn">Change photo</label>
+            </form>
+        </div>
 
-    <div>
-        Balance: ${user.coins}
-        <img class="coins-image" src="/coins_logo.png">
-    </div>
+        <div>
+            Balance: ${user.coins}
+            <img class="coins-image" src="/coins_logo.png">
+        </div>
 
-    <#if euro_exchange_rate??>
-    <div>Euro exchange rate: ${euro_exchange_rate}</div>
+        <#if euro_exchange_rate??>
+        <div>Euro exchange rate: ${euro_exchange_rate}</div>
     </#if>
 
     <div class="profile-information-container">
@@ -145,58 +148,67 @@
     <#if user.isAdmin()>
     <h3>
         <button onclick="toggleMyProducts()" style="background-color: rgba(202, 202, 202, 0.6);
-border-radius: 16px;
-padding: 6px 12px;">
+                                            border-radius: 16px;
+                                            padding: 6px 12px;">
             My products
-            <img class="dropdown-icon"  style="margin:0;" src="/dropdown-logo.png"></img>
+            <img class="dropdown-icon" style="margin:0;" src="/dropdown-logo.png"></img>
         </button>
 
     </h3>
 
     <div id="myProducts" style="display: none;">
         <#list products as product>
-        <p>${product.title} ${product.price} USD| <a href="/products/${product.id}">Details</a></p>
-        <form action="/products/delete/${product.id}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-            <input type="submit" value="Delete"/>
+        <p>${product.title} ${product.price} USD| <a href="/products/${product.id}">Details</a>
+        </p>
+        <form action="/products/delete/${product.id}" method="post"
+              enctype="multipart/form-data">
+            <input type="hidden" name="_csrf" value="${_csrf.token}" required />
+            <input type="submit" value="Delete" />
         </form>
 
         <button onclick="toggleForm()">Edit</button>
         <div id="productForm" style="display: none; margin-top: 20px;">
-            <form action="/products/edit/${product.id}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="newTitle" id="newDrinkName" placeholder="..." required>
-        <br><br>
-        Description: <input type="text" name="newDescription" placeholder="..."  value="${product.description}" style="width: 200px; height: 50px;"
-                     required><br><br>
-        Price: <input type="number" name="newPrice" step="100" min="0" placeholder="..."  value="${product.price}" required><br><br>
-        City: <input type="text" name="newCity" placeholder="..." value="${product.city}" required><br><br>
+            <form action="/products/edit/${product.id}" method="post"
+                  enctype="multipart/form-data">
+                <input type="hidden" name="newTitle" id="newDrinkName" placeholder="..."
+                       required>
+                <br><br>
+                Description: <input type="text" name="newDescription" placeholder="..."
+                                    value="${product.description}" style="width: 200px; height: 50px;"
+                                    required><br><br>
+                Price: <input type="number" name="newPrice" step="100" min="0" placeholder="..."
+                              value="${product.price}" required><br><br>
+                City: <input type="text" name="newCity" placeholder="..."
+                             value="${product.city}" required><br><br>
                 Change the advertisement photos<br><br>
-        <#if product.images??>
-        <#list product.images as image>
-        <img src="/images/${image.id}" width="180px" height="180px"/>
+                <#if product.images??>
+                <#list product.images as image>
+                <img src="/images/${image.id}" width="180px" height="180px" />
 
 
 
-    </#list>
+            </#list>
 
-        <#else>
+                <#else>
                 No photos available
 
-    </#if>
-        <br><br>
+            </#if>
+                <br><br>
 
-        <input type="file" name="newFile1"/><br><>
-        <input type="file" name="newFile2"/><><br>
-        <input type="file" name="newFile3"/><br><br>
+                <input type="file" name="newFile1" /><br>
+                <>
+                <input type="file" name="newFile2" />
+                <><br>
+                <input type="file" name="newFile3" /><br><br>
 
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
-            <input type="submit" value="Edit Product"/>
-        </form>
-    </div>
-    <#else>
-    Оголошень немає!
-</#list>
-<br><br>
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <input type="submit" value="Edit Product" />
+            </form>
+        </div>
+        <#else>
+        Оголошень немає!
+    </#list>
+    <br><br>
 
 </#if>
 
@@ -214,69 +226,76 @@ padding: 6px 12px;">
 
 <div class="add-product-window">
 
-    <div id="addForm" class="add-product-container">
+<div id="addForm" class="add-product-container">
 
-        <div class="add-product-top-container">
+    <div class="add-product-top-container">
 
-            <div class="add-title">
-                Add Product
+        <div class="add-title">
+            Add Product
+        </div>
+
+        <div class="close-button-container">
+            <button id="close-button" type="button" class="close-button" data-bs-dismiss="toast"
+                    aria-label="Close">X</button>
+        </div>
+
+    </div>
+
+    <div class="form-add-container">
+        <form id="productFormToast" action="/products/create" method="post"
+              enctype="multipart/form-data">
+            <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <input type="hidden" name="type" value="SELL" required />
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingTitle" name="title"
+                       placeholder="Title..." required>
+                <label for="floatingDescription">Title:</label>
             </div>
 
-            <div class="close-button-container">
-                <button id="close-button" type="button" class="close-button" data-bs-dismiss="toast" aria-label="Close">X</button>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingDescription"
+                       name="description" placeholder="Description..." required>
+                <label for="floatingDescription">Description:</label>
+
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingPrice" name="price"
+                       placeholder="Price..." required>
+                <label for="floatingPrice">Price:</label>
             </div>
 
-        </div>
-
-        <div class="form-add-container">
-            <form id="productFormToast" action="/products/create" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="_csrf" value="${_csrf.token}">
-                <input type="hidden" name="type" value="SELL" required/>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control"  id="floatingTitle" name="title" placeholder="Title..." required>
-                    <label for="floatingDescription">Title:</label>
-                </div>
-
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control"  id="floatingDescription" name="description" placeholder="Description..." required>
-                    <label for="floatingDescription">Description:</label>
-
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingPrice" name="price" placeholder="Price..." required>
-                    <label for="floatingPrice">Price:</label>
-                </div>
-
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingCity" name="city" placeholder="City..." required>
-                    <label for="floatingCity">City:</label>
-                </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingCity" name="city"
+                       placeholder="City..." required>
+                <label for="floatingCity">City:</label>
+            </div>
 
 
 
-                <div class="add-subtitle">Add photos to the product</div>
+            <div class="add-subtitle">Add photos to the product</div>
 
-                <div class="add-files-container">
-                    <label for="file1" class="file-upload-btn">Select file</label>
-                    <input type="file" name="file1" id="file1" required>
+            <div class="add-files-container">
+                <label for="file1" class="file-upload-btn">Select file</label>
+                <input type="file" name="file1" id="file1" required>
 
-                    <label for="file2" class="file-upload-btn">Select file</label>
-                    <input type="file" name="file2" id="file2">
+                <label for="file2" class="file-upload-btn">Select file</label>
+                <input type="file" name="file2" id="file2">
 
-                    <label for="file3" class="file-upload-btn">Select file</label>
-                    <input type="file" name="file3" id="file3">
-                </div>
+                <label for="file3" class="file-upload-btn">Select file</label>
+                <input type="file" name="file3" id="file3">
+            </div>
 
-                <div class="confirm-adding-container">
-                    <p id="file-error" style="color: red; display: none;">Please select a file!</p>
-            <input  class="add-button-confirm" type="submit" onsubmit="submitForm(event)" value="Add">
-        </div>
+            <div class="confirm-adding-container">
+                <p id="file-error" style="color: red; display: none;">Please select a file!</p>
+                <input class="add-button-confirm" type="submit" onsubmit="submitForm(event)"
+                       value="Add">
+            </div>
 
-    </form>
-</div>
+        </form>
+    </div>
 </div>
 
-        </div>
+</div>
 
         </#if>
 
@@ -291,7 +310,7 @@ padding: 6px 12px;">
 <table class="table">
 
     <tbody>
-    <#if orders?? && (orders?size > 0)>
+    <#if orders?? && (orders?size> 0)>
     <#list orders as order>
     <tr>
         <th>${order.orderName}</th>
@@ -304,7 +323,7 @@ padding: 6px 12px;">
         </div>
 
     </#list>
-        <#else>
+    <#else>
     <div>No purchases found</div>
     </#if>
 </tbody>
@@ -314,69 +333,21 @@ padding: 6px 12px;">
         </div>
 
 <div class="profile-card-right-container">
-    <canvas id="myPieChart" width="100%" height="20"></canvas>
+<canvas id="myPieChart" width="100%" height="20"></canvas>
 
-    <h4 id="totalSaved"></h4>
+<h4 id="totalSaved"></h4>
 
-    <div>Plastic — ${user.plasticSaved} kg</div>
-    <div>Metal — ${user.metalSaved} kg</div>
-    <div>Glass — ${user.glassSaved} kg</div>
-    <div>CO2 — ${user.CO2Saved} kg</div>
+<div>Plastic — ${user.plasticSaved} kg</div>
+<div>Metal — ${user.metalSaved} kg</div>
+<div>Glass — ${user.glassSaved} kg</div>
+<div>CO2 — ${user.CO2Saved} kg</div>
 
 </div>
 
         </div>
-
-<script>
-const user = {
-  plasticSaved: ${user.plasticSaved},
-  metalSaved: ${user.metalSaved},
-  glassSaved: ${user.glassSaved},
-  CO2Saved: ${user.CO2Saved}
-};
-
-const total = user.plasticSaved + user.metalSaved + user.glassSaved + user.CO2Saved;
-
-document.getElementById('totalSaved').innerHTML = `Total saved: <#noparse>${total.toFixed(2)}</#noparse> kg`;
-</script>
+        </div>
 
 
-
-<script>
-const ctx = document.getElementById('myPieChart').getContext('2d');
-const myPieChart = new Chart(ctx, {
-  type: 'pie',
-  data: {
-    labels: ['Plastic', 'Metal', 'Glass', 'CO2'],
-    datasets: [{
-      label: 'Saved (kg): ',
-      data: [${user.plasticSaved}, ${user.metalSaved}, ${user.glassSaved}, ${user.CO2Saved}],
-      backgroundColor: [
-        '#4CAF50',
-        '#2196F3',
-        '#FFC107',
-        '#FF5722'
-      ],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'bottom'
-      },
-      title: {
-        display: false,
-        text: 'Saved materials by you'
-      }
-    }
-  }
-});
-</script>
-
-    </div>
-</main>
 
 <footer>
 <div class="empty-container">
@@ -400,7 +371,7 @@ const myPieChart = new Chart(ctx, {
         </a>
     </div>
     <div class="footer-element">
-        <a  href="/#carousel_acb2" data-page-id="65053303">
+        <a href="/#carousel_acb2" data-page-id="65053303">
             Feedback
         </a>
     </div>
@@ -419,6 +390,55 @@ const myPieChart = new Chart(ctx, {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
+
+<script>
+const user = {
+    plasticSaved: ${ user.plasticSaved },
+    metalSaved: ${ user.metalSaved },
+    glassSaved: ${ user.glassSaved },
+    CO2Saved: ${ user.CO2Saved }
+};
+
+const total = user.plasticSaved + user.metalSaved + user.glassSaved + user.CO2Saved;
+
+document.getElementById('totalSaved').innerHTML = `Total saved: <#noparse>${total.toFixed(2)}</#noparse> kg`;
+</script>
+
+
+
+<script>
+const ctx = document.getElementById('myPieChart').getContext('2d');
+const myPieChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ['Plastic', 'Metal', 'Glass', 'CO2'],
+        datasets: [{
+            label: 'Saved (kg): ',
+            data: [${ user.plasticSaved }, ${ user.metalSaved }, ${ user.glassSaved }, ${ user.CO2Saved }],
+            backgroundColor: [
+                '#4CAF50',
+                '#2196F3',
+                '#FFC107',
+                '#FF5722'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            },
+            title: {
+                display: false,
+                text: 'Saved materials by you'
+            }
+        }
+    }
+});
+</script>
+
 <script>
 // Показати форму в Toast
 function showHistory() {
@@ -432,7 +452,7 @@ function showForm() {
     const toastElement = document.getElementById('productToast');
     const toast = new bootstrap.Toast(toastElement);
     toast.show();
-    }
+}
 
 // Обробка відправки форми в Toast
 function submitForm(event) {
@@ -455,14 +475,14 @@ function submitForm(event) {
 
 <script>
 document.getElementById("addButton").addEventListener("click", function () {
-const addForm = document.getElementById("addForm");
-addForm.classList.toggle("active");
+    const addForm = document.getElementById("addForm");
+    addForm.classList.toggle("active");
 });
 
-document.getElementById("close-button").addEventListener("click", function() {
+document.getElementById("close-button").addEventListener("click", function () {
 
-const addForm = document.getElementById("addForm");
-addForm.classList.toggle("active");
+    const addForm = document.getElementById("addForm");
+    addForm.classList.toggle("active");
 });
 
 
@@ -474,25 +494,25 @@ const menu = document.getElementById("menu");
 let hideTimeout;
 
 
-    toggleMenu.addEventListener("click", function () {
-        if(menu.classList.contains("active")){
+toggleMenu.addEventListener("click", function () {
+    if (menu.classList.contains("active")) {
         menu.classList.remove("active");
         clearTimeout(hideTimeout);
         hideTimeout = setTimeout(() => {
             menu.style.visibility = "hidden";
         }, 300);
-        } else {
+    } else {
         clearTimeout(hideTimeout);
         menu.style.visibility = "visible";
         menu.classList.add("active");
         document.addEventListener("click", function (event) {
-    if (!menu.contains(event.target) && !toggleMenu.contains(event.target)) {
-        menu.classList.remove("active");
+            if (!menu.contains(event.target) && !toggleMenu.contains(event.target)) {
+                menu.classList.remove("active");
+            }
+        });
+
     }
 });
-
-        }
-    });
 
 const notificationIcon = document.getElementById("notificationIcon");
 const notificationModule = document.getElementById("notificationMenu");
@@ -511,10 +531,10 @@ notificationIcon.addEventListener("click", function () {
         notificationMenu.style.visibility = "visible";
         notificationMenu.classList.add("active");
         document.addEventListener("click", function (event) {
-    if (!notificationModule.contains(event.target) && !notificationIcon.contains(event.target)) {
-        notificationModule.classList.remove("active");
-    }
-});
+            if (!notificationModule.contains(event.target) && !notificationIcon.contains(event.target)) {
+                notificationModule.classList.remove("active");
+            }
+        });
     }
 });
 
@@ -537,7 +557,7 @@ function deleteNotification(event, id) {
     xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="${_csrf.parameterName}"]').value);  // Інжектуємо CSRF токен через Thymeleaf
 
     // Коли запит завершиться
-    xhr.onload = function() {
+    xhr.onload = function () {
         if (xhr.status === 200) {
             // Якщо успішно, видаляємо елемент з DOM
             var element = document.getElementById('notification-' + id);
@@ -551,7 +571,7 @@ function deleteNotification(event, id) {
     };
 
     // Якщо сталася помилка при запиті
-    xhr.onerror = function() {
+    xhr.onerror = function () {
         console.error('Помилка при виконанні запиту');
     };
 
@@ -563,78 +583,79 @@ function deleteNotification(event, id) {
 <script>
 // Дані користувача
 <!--const plasticSaved = ${user.plasticSaved};-->
-<!--const metalSaved = ${user.metalSaved};-->
-<!--const glassSaved = ${user.glassSaved};-->
-<!--const CO2Saved = ${user.CO2Saved};-->
+< !--const metalSaved = ${ user.metalSaved }; -->
+< !--const glassSaved = ${ user.glassSaved }; -->
+< !--const CO2Saved = ${ user.CO2Saved }; -->
 
 const plasticSaved = 12;
-const metalSaved = 24;
-const glassSaved = 24;
-const CO2Saved = 40;
+        const metalSaved = 24;
+        const glassSaved = 24;
+        const CO2Saved = 40;
 
-const totalSaved = plasticSaved + metalSaved + glassSaved + CO2Saved;
+        const totalSaved = plasticSaved + metalSaved + glassSaved + CO2Saved;
 
-// Розрахунок відсотків
-const percent = (val) => Math.round((val / totalSaved) * 100);
+        // Розрахунок відсотків
+        const percent = (val) => Math.round((val / totalSaved) * 100);
 
-const data = {
-    labels: [''],
-    datasets: [{
-        label: 'Plastic',
-        data: [percent(plasticSaved)],
-        backgroundColor: 'rgba(255, 99, 132, 0.8)'
-    }, {
-        label: 'Metal',
-        data: [percent(metalSaved)],
-        backgroundColor: 'rgba(54, 162, 235, 0.8)'
-    }, {
-        label: 'Glass',
-        data: [percent(glassSaved)],
-        backgroundColor: 'rgba(255, 206, 86, 0.8)'
-    }, {
-        label: 'CO₂',
-        data: [percent(CO2Saved)],
-        backgroundColor: 'rgba(75, 192, 192, 0.8)'
-    }]
-};
+        const data = {
+            labels: [''],
+            datasets: [{
+                label: 'Plastic',
+                data: [percent(plasticSaved)],
+                backgroundColor: 'rgba(255, 99, 132, 0.8)'
+            }, {
+                label: 'Metal',
+                data: [percent(metalSaved)],
+                backgroundColor: 'rgba(54, 162, 235, 0.8)'
+            }, {
+                label: 'Glass',
+                data: [percent(glassSaved)],
+                backgroundColor: 'rgba(255, 206, 86, 0.8)'
+            }, {
+                label: 'CO₂',
+                data: [percent(CO2Saved)],
+                backgroundColor: 'rgba(75, 192, 192, 0.8)'
+            }]
+        };
 
-const config = {
-    type: 'bar',
-    data: data,
-    options: {
-        indexAxis: 'y',
-        plugins: {
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        return `
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                indexAxis: 'y',
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return `
                         <#noparse>
                         ${context.dataset.label}: ${context.raw}%`;
-                        </#noparse>
+                        </#noparse >
                     }
                 },
-                bodyFont: {
-                    size: 10
-                },
-                 padding: 10,
-                 maxWidth: 20,
-                 backgroundColor: 'rgba(0, 0, 0, 0.8)'
+        bodyFont: {
+            size: 10
+        },
+        padding: 10,
+            maxWidth: 20,
+                backgroundColor: 'rgba(0, 0, 0, 0.8)'
 
             },
-            legend: {
-                position: 'none'
-            },
-<!--            title: {-->
-<!--                display: true,-->
-<!--                text: 'Відсоток збережених матеріалів'-->
-<!--            }-->
+        legend: {
+            position: 'none'
+        },
+< !--title: {
+            -->
+< !--display: true, -->
+< !--text: 'Відсоток збережених матеріалів'-- >
+< !--            } -->
         },
         responsive: true,
-        scales: {
+            scales: {
             x: {
                 stacked: true,
-                max: 100,
-                ticks: {
+                    max: 100,
+                        ticks: {
                     callback: function(value) {
                         return value + '%';
                     }
@@ -642,7 +663,7 @@ const config = {
             },
             y: {
                 stacked: true,
-                grid: {
+                    grid: {
                     display: false
                 }
             }
@@ -650,12 +671,13 @@ const config = {
     }
 };
 
-new Chart(
-    document.getElementById('userMaterialsChart'),
-    config
-);
+        new Chart(
+            document.getElementById('userMaterialsChart'),
+            config
+        );
 
 </script>
 
-</body>
+        </body>
+
         </html>

@@ -58,5 +58,10 @@ public class Notification {
     @Column(name="short_date_of_operation")
     private String shortDateOfOperation;
 
+    @Column(name="is_read")
+    private boolean isRead = false;
 
+    public void setRead(boolean read) {
+        isRead = read;
+    }
 }

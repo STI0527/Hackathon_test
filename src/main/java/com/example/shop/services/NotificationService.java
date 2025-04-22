@@ -42,6 +42,15 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
+    public void markAsRead(long notificationId) {
+        Optional<Notification> notificationOpt = notificationRepository.findById(notificationId);
+        if (notificationOpt.isPresent()) {
+            Notification notification = notificationOpt.get();
+            notification.setRead(true); // Оновлюємо поле isRead на true
+            notificationRepository.save(notification); // Зберігаємо зміни в базі
+        }
+    }
+
     private List<Notification> finByCustomerId(Long id){
         return notificationRepository.findAllByCustomerId(id);
     }
