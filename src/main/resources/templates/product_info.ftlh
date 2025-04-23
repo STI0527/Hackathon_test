@@ -84,7 +84,7 @@
 
         <div class="notification-text-container">
             You've got +${notification.rewardAmount}
-            <img class="coins-image-notifications" src="coins_logo.png">
+            <img class="coins-image-notifications" src="/coins_logo.png">
             for ${notification.rewardType.getOperationType()}: ${notification.productTitle}!
         </div>
 
@@ -95,7 +95,7 @@
         <form action="/notifications/delete/${notification.id}" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <button type="submit" onclick="deleteNotification(event, ${notification.id})" class="delete-notification-button">
-                <img class="cancel-image-notification" src="cancel_logo.png">
+                <img class="cancel-image-notification" src="/cancel_logo.png">
             </button>
         </form>
     </div>
@@ -217,10 +217,10 @@
                                 </div>
 
                                 <div>
-                                    <form action="/offer/decline/${offer.id}" method="post">
-                                        <input type="hidden" name="_csrf" value="${_csrf.token}">
-                                    <button type="submit" class="exchange-button"><img src="/decline_offer_logo.png" class="offer-logo-image"></button>
-                                    </form>
+
+                                    <button class="exchange-button" onclick="showConfirmWindow()">
+                                        <img src="/decline_offer_logo.png" class="offer-logo-image">
+                                    </button>
                                 </div>
                                 <div class="offer-date-container">${offer.shortDateOfOffer}</div>
 
@@ -309,33 +309,76 @@ onclick="onModalBackgroundClick(event)">
 </div>
 </div>
 
+
+<#if product.type == 'EXCHANGE'>
+<div id="confirmOfferWindow" style="display: none; position: fixed; top: 0; left: 0;
+width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999;"
+     onclick="onConfirmBackgroundClick(event)">
+
+<div style="background-color: white; padding: 20px; border-radius: 10px;
+        width: 450px; margin: 100px auto; text-align: center;">
+
+    <div id="modalOfferContent" style="background-color: white;">
+
+            <h3>Are you sure you want to reject this exchange offer?</h3>
+            <form action="/offer/decline/" method="post">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <button type="submit" class="exchange-button"><img src="/decline_offer_logo.png" class="offer-logo-image"></button>
+            </form>
+
+
+    <button onclick="closeOfferModal()">❌ Cancel</button>
+
+</div>
+</div>
+</#if>
+
 <script>
-    function showTypesOfPayment() {
-            document.getElementById("paymentModal").style.display = "block";
+    function showConfirmWindow() {
+            console.log("Confirm window showed");
+            document.getElementById("modalOfferContent").style.display = "block";
         }
 
-        function closeModal() {
-            document.getElementById("paymentModal").style.display = "none";
+        function closeOfferModal() {
+            document.getElementById("modalOfferContent").style.display = "none";
         }
 
-        function payWithMoney() {
-            closeModal();
-            alert("Оплата реальними грошима вибрана ✅");
-            // Тут можна редіректити або викликати API
-        }
-
-        function payWithVirtual() {
-            closeModal();
-            alert("Оплата віртуальною валютою вибрана ✅");
-            // Тут також обробити оплату віртуальною
-        }
-
-        function onModalBackgroundClick(event) {
-        const modalContent = document.getElementById("modalContent");
+        function onConfirmBackgroundClick(event) {
+        const modalContent = document.getElementById("modalOfferContent");
         if (!modalContent.contains(event.target)) {
             closeModal();
         }
     }
+
+</script>
+
+<script>
+function showTypesOfPayment() {
+        document.getElementById("paymentModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("paymentModal").style.display = "none";
+    }
+
+    function payWithMoney() {
+        closeModal();
+        alert("Оплата реальними грошима вибрана ✅");
+        // Тут можна редіректити або викликати API
+    }
+
+    function payWithVirtual() {
+        closeModal();
+        alert("Оплата віртуальною валютою вибрана ✅");
+        // Тут також обробити оплату віртуальною
+    }
+
+    function onModalBackgroundClick(event) {
+    const modalContent = document.getElementById("modalContent");
+    if (!modalContent.contains(event.target)) {
+        closeModal();
+    }
+}
 
 </script>
 
@@ -512,7 +555,7 @@ function markAsRead(notificationId) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/notifications/markAsRead/'+notificationId, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="${_csrf.parameterName}"]').value);
+    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="<#noparse>${_csrf.parameterName}</#noparse>"]').value);
     xhr.send();
 }
 </script>

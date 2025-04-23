@@ -1484,7 +1484,7 @@ border-radius: 50%;
 
  .exchange-button:hover {
  color: rgb(255, 255, 255);
-
+   background: #fff;
  }
 
  .exchange-button:active {

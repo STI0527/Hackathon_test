@@ -43,11 +43,10 @@ public class NotificationService {
     }
 
     public void markAsRead(long notificationId) {
-        Optional<Notification> notificationOpt = notificationRepository.findById(notificationId);
-        if (notificationOpt.isPresent()) {
-            Notification notification = notificationOpt.get();
-            notification.setRead(true); // Оновлюємо поле isRead на true
-            notificationRepository.save(notification); // Зберігаємо зміни в базі
+        Notification notificationOpt = notificationRepository.findById(notificationId).orElse(null);
+        if (notificationOpt != null) {
+            notificationOpt.setRead(true); // Оновлюємо поле isRead на true
+            notificationRepository.save(notificationOpt); // Зберігаємо зміни в базі
         }
     }
 

@@ -82,7 +82,7 @@
 
         <div class="notification-text-container">
             You've got +${notification.rewardAmount}
-            <img class="coins-image-notifications" src="coins_logo.png">
+            <img class="coins-image-notifications" src="/coins_logo.png">
             for ${notification.rewardType.getOperationType()}: ${notification.productTitle}!
         </div>
 
@@ -93,7 +93,7 @@
         <form action="/notifications/delete/${notification.id}" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <button type="submit" onclick="deleteNotification(event, ${notification.id})" class="delete-notification-button">
-                <img class="cancel-image-notification" src="cancel_logo.png">
+                <img class="cancel-image-notification" src="/cancel_logo.png">
             </button>
         </form>
     </div>
@@ -417,7 +417,7 @@ function markAsRead(notificationId) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/notifications/markAsRead/'+notificationId, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="${_csrf.parameterName}"]').value);
+    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="<#noparse>${_csrf.parameterName}</#noparse>"]').value);
     xhr.send();
 }
 </script>

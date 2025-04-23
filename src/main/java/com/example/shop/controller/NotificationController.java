@@ -16,7 +16,8 @@ public class NotificationController {
     private NotificationService notificationService;
 
     @PostMapping("/notifications/markAsRead/{id}")
-    public void markAsRead(@PathVariable("id") long notificationId) {
+    public void markAsRead(@PathVariable("id") String notificationIdLine) {
+        long notificationId = Long.parseLong(notificationIdLine.replace("\u00A0", ""));
         notificationService.markAsRead(notificationId);
     }
 

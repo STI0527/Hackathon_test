@@ -145,7 +145,6 @@
     </div>
 
 
-    <#if user.isAdmin()>
     <h3>
         <button onclick="toggleMyProducts()" style="background-color: rgba(202, 202, 202, 0.6);
                                             border-radius: 16px;
@@ -210,19 +209,43 @@
     </#list>
     <br><br>
 
-</#if>
 
 </div>
 
-<#if user.isAdmin()>
 <button id="addButton" class="add-button" onclick="showForm()">
     Add Product
 </button>
-</#if>
 
+<div class="history-container">
+    <button class="add-button" onclick="toggleHistory()">Order History
+        <img class="dropdown-icon" src="/dropdown-logo.png"></img>
+    </button>
+</div>
 
+<div id="historyTable" style="display: none; margin-top: 20px;">
+    <table class="table">
 
-<#if user.isAdmin()>
+        <tbody>
+        <#if orders?? && (orders?size> 0)>
+        <#list orders as order>
+        <tr>
+            <th>${order.orderName}</th>
+            <th>${order.orderPrice} UAH</th>
+            <th>${order.dateOfPurchase}</th>
+            <th><a href="/products/${order.productId}">Order Again</th>
+            <#else>
+            <div style="background-color: white;">
+                <h3>No Orders</h3>
+            </div>
+
+        </#list>
+        <#else>
+        <div>No purchases found</div>
+        </#if>
+    </tbody>
+</table>
+</div>
+
 
 <div class="add-product-window">
 
@@ -292,45 +315,13 @@
             </div>
 
         </form>
+
     </div>
+
+
 </div>
-
 </div>
-
-        </#if>
-
-
-<div class="history-container">
-<button class="add-button" onclick="toggleHistory()">Order History
-    <img class="dropdown-icon" src="/dropdown-logo.png"></img>
-</button>
 </div>
-
-<div id="historyTable" style="display: none; margin-top: 20px;">
-<table class="table">
-
-    <tbody>
-    <#if orders?? && (orders?size> 0)>
-    <#list orders as order>
-    <tr>
-        <th>${order.orderName}</th>
-        <th>${order.orderPrice} UAH</th>
-        <th>${order.dateOfPurchase}</th>
-        <th><a href="/products/${order.productId}">Order Again</th>
-        <#else>
-        <div style="background-color: white;">
-            <h3>No Orders</h3>
-        </div>
-
-    </#list>
-    <#else>
-    <div>No purchases found</div>
-    </#if>
-</tbody>
-</table>
-        </div>
-
-        </div>
 
 <div class="profile-card-right-container">
 <canvas id="myPieChart" width="100%" height="20"></canvas>
@@ -346,6 +337,12 @@
 
         </div>
         </div>
+
+        </div>
+
+        </div>
+
+
 
 
 

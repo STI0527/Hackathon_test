@@ -385,7 +385,7 @@ function markAsRead(notificationId) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/notifications/markAsRead/'+notificationId, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="${_csrf.parameterName}"]').value);
+    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="<#noparse>${_csrf.parameterName}</#noparse>"]').value);
     xhr.send();
 }
 </script>
