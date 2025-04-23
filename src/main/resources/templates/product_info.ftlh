@@ -310,45 +310,44 @@ onclick="onModalBackgroundClick(event)">
 </div>
 
 
-<#if product.type == 'EXCHANGE'>
 <div id="confirmOfferWindow" style="display: none; position: fixed; top: 0; left: 0;
 width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999;"
      onclick="onConfirmBackgroundClick(event)">
 
-<div style="background-color: white; padding: 20px; border-radius: 10px;
+<div id="modalOfferContent" style="background-color: white; padding: 20px; border-radius: 10px;
         width: 450px; margin: 100px auto; text-align: center;">
 
-    <div id="modalOfferContent" style="background-color: white;">
+    <h3>Are you sure you want to reject this exchange offer?</h3>
 
-            <h3>Are you sure you want to reject this exchange offer?</h3>
-            <form action="/offer/decline/" method="post">
-                <input type="hidden" name="_csrf" value="${_csrf.token}">
-                <button type="submit" class="exchange-button"><img src="/decline_offer_logo.png" class="offer-logo-image"></button>
-            </form>
-
+    <form action="/offer/decline/" method="post">
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <button type="submit" class="exchange-button">
+            <img src="/decline_offer_logo.png" class="offer-logo-image">
+        </button>
+    </form>
 
     <button onclick="closeOfferModal()">❌ Cancel</button>
+</div>
+</div>
 
-</div>
-</div>
-</#if>
+
 
 <script>
     function showConfirmWindow() {
-            console.log("Confirm window showed");
-            document.getElementById("modalOfferContent").style.display = "block";
-        }
+    console.log("Confirm window showed");
+    document.getElementById("confirmOfferWindow").style.display = "block";
+}
 
-        function closeOfferModal() {
-            document.getElementById("modalOfferContent").style.display = "none";
-        }
+function closeOfferModal() {
+    document.getElementById("confirmOfferWindow").style.display = "none";
+}
 
-        function onConfirmBackgroundClick(event) {
-        const modalContent = document.getElementById("modalOfferContent");
-        if (!modalContent.contains(event.target)) {
-            closeModal();
-        }
+function onConfirmBackgroundClick(event) {
+    const modalContent = document.getElementById("modalOfferContent");
+    if (!modalContent.contains(event.target)) {
+        closeOfferModal();
     }
+}
 
 </script>
 
@@ -555,7 +554,7 @@ function markAsRead(notificationId) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/notifications/markAsRead/'+notificationId, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="<#noparse>${_csrf.parameterName}</#noparse>"]').value);
+    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="${_csrf.parameterName}"]').value);
     xhr.send();
 }
 </script>

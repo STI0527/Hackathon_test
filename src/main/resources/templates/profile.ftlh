@@ -70,39 +70,33 @@
 
 <div id="notificationMenu" class="notifications-container">
     <#list notifications as notification>
-    <div id="notification-${notification.id}" class="notification-container">
+    <div id="notification-${notification.id}" class="notification-container <#if !notification.read>unread</#if>" onclick="markAsRead(${notification.id})">
         <div class="notification-date-container">
             ${notification.shortDateOfOperation}
-
         </div>
 
-        <div class="notification-text-container">You've got +${notification.rewardAmount}
+        <div class="notification-text-container">
+            You've got +${notification.rewardAmount}
             <img class="coins-image-notifications" src="/coins_logo.png">
             for ${notification.rewardType.getOperationType()}: ${notification.productTitle}!
         </div>
 
         <div class="notification-time-container">
-            ${notification.dateOfOperation.getHour()?string("00")} :
-            ${notification.dateOfOperation.getMinute()?string("00")}
-
+            ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
         </div>
 
         <form action="/notifications/delete/${notification.id}" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-            <button type="submit" onclick="deleteNotification(event, ${notification.id})"
-                    class="delete-notification-button">
-                <img class="cancel-image-notification" src="/static/cancel_logo.png">
+            <button type="submit" onclick="deleteNotification(event, ${notification.id})" class="delete-notification-button">
+                <img class="cancel-image-notification" src="/cancel_logo.png">
             </button>
-
         </form>
-
     </div>
-
-
     <#else>
     <div class="no-notifications-text">No notifications</div>
 </#list>
 </div>
+
 
 <div class="profile-container">
     <div class="profile-card">
@@ -573,6 +567,43 @@ function deleteNotification(event, id) {
     };
 
     // Відправляємо запит
+    xhr.send();
+}
+</script>
+
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+    const unreadNotifications = document.querySelectorAll('.notification-container.unread');
+    const notificationBadge = document.getElementById('notificationBadge');
+
+    if (unreadNotifications.length > 0) {
+        notificationBadge.style.display = 'block';
+    } else {
+        notificationBadge.style.display = 'none';
+    }
+});
+
+function markAsRead(notificationId) {
+    // Знаходимо сповіщення за ID
+    const notificationElement = document.getElementById('notification-'+notificationId);
+    const notificationBadge = document.getElementById('notificationBadge');
+
+    // Оновлюємо клас, позначаючи як прочитане
+    notificationElement.classList.remove('unread');  // Видаляємо клас unread
+
+    // Перевіряємо наявність непрочитаних сповіщень
+    const unreadNotifications = document.querySelectorAll('.notification-container.unread');
+
+    if (unreadNotifications.length === 0) {
+        notificationBadge.style.display = 'none';  // Ховаємо бейдж, якщо немає непрочитаних
+    }
+
+    // AJAX запит для оновлення статусу повідомлення на сервері
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/notifications/markAsRead/'+notificationId, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="${_csrf.parameterName}"]').value);
     xhr.send();
 }
 </script>
