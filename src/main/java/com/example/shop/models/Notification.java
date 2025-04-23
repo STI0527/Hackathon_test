@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -58,10 +59,8 @@ public class Notification {
     @Column(name="short_date_of_operation")
     private String shortDateOfOperation;
 
+    @Setter
     @Column(name="is_read")
-    private boolean isRead = false;
+    private boolean read = false;
 
-    public void setRead(boolean read) {
-        isRead = read;
-    }
 }

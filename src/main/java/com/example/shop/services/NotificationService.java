@@ -6,6 +6,7 @@ import com.example.shop.models.Notification;
 import com.example.shop.models.Product;
 import com.example.shop.models.User;
 import com.example.shop.repositories.NotificationRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,7 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
+    @Transactional
     public void markAsRead(long notificationId) {
         Notification notificationOpt = notificationRepository.findById(notificationId).orElse(null);
         if (notificationOpt != null) {
