@@ -169,6 +169,8 @@
         </#if>
 
         <div class="product-info-description"> ${product.description}</div>
+
+    <#if !exchange_offers??>
         <div class="pink-container">
             <div class="product-info-city"> ${product.city}</div>
             <div class="product-info-author"> Author: <a href="/user/${product.user.id}">${product.user.name}</a></div
@@ -186,22 +188,51 @@
                     </button>
 
             </div>
-
+</#if>
 
                 <#if exchange_offers??>
-                <div class="exchange-offers-container">
-                    <div class="exchange-offers-title">Incoming exchange offers</div>
 
-                    <div class="offers-container">
-                        <#list exchange_offers as offer>
+
+                <div class="exchange-offers-container">
+                    <div class="exchange-offers-container">
+                        <div class="exchange-offers-title">My incoming exchange offers</div>
+                        <div class="offers-container">
+                            <#list exchange_offers as offer>
+                            <div class="exchange-offer-card">
+
+                                    <div class="offer-image-container">
+                                        <a href="/products/${offer.offer.id}">
+                                        <img class="offer-image" src="/images/${offer.offer.id}">
+                                        </a>
+                                    </div>
+
+                                    <div class="offer-title"><a href="/products/${offer.offer.id}">${offer.offer.getTitle()}</a></div>
+
                                 <div>
-                                    ${offer.offer.getTitle()}
+
+                                    <form action="/offer/accept/${offer.id}" method="post">
+                                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                    <button type="submit" class="exchange-button"><img src="/accept_offer_logo.png" class="offer-logo-image"></button>
+                                    </form>
                                 </div>
+
+                                <div>
+                                    <form action="/offer/decline/${offer.id}" method="post">
+                                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                    <button type="submit" class="exchange-button"><img src="/decline_offer_logo.png" class="offer-logo-image"></button>
+                                    </form>
+                                </div>
+                                <div class="offer-date-container">${offer.shortDateOfOffer}</div>
+
+                            </div>
                             <#else>
-                                <div>No exchange offers found</div>
-                            </#list>
+                            <div class="no-offers-text">No exchange offers found</div>
+                        </#list>
                     </div>
-                </#if>
+                </div>
+
+</#if>
+
         </div>
 
         </div>

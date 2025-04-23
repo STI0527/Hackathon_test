@@ -71,4 +71,22 @@ public class OfferController {
         return "exchange";
     }
 
+    @PostMapping("/offer/accept/{id}")
+    public String acceptOffer(@PathVariable String id) {
+        Long iD = Long.parseLong(id.replace("\u00A0", ""));
+        Long desireProductId = exchangeApplicationService.getOfferById(iD).getProduct().getId();
+
+        return "redirect:/products/" + desireProductId;
+    }
+
+    @PostMapping("/offer/decline/{id}")
+    public String declineOffer(@PathVariable String id) {
+        Long iD = Long.parseLong(id.replace("\u00A0", ""));
+        Long desireProductId = exchangeApplicationService.getOfferById(iD).getProduct().getId();
+
+        exchangeApplicationService.deleteOffer(iD);
+
+        return "redirect:/products/" + desireProductId;
+    }
+
 }

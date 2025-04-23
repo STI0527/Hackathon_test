@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -44,4 +45,11 @@ public class ExchangeApplicationService {
         return exchangeApplicationRepository.findAll();
     }
 
+    public void deleteOffer(Long id) {
+        exchangeApplicationRepository.deleteById(id);
+    }
+
+    public ExchangeApplication getOfferById(Long id) {
+        return exchangeApplicationRepository.findById(id).orElse(null);
+    }
 }

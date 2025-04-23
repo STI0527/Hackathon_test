@@ -698,23 +698,114 @@ font-weight: 700;
 }
 
 .exchange-offers-container {
-background-color: #e2e6ea;
-height: 100%;
-border-radius: 16px;
-text-align: center;
-}
-
-.offers-container {
-height: 120px;
-overflow-y: auto;
-scrollbar-position: left;
+    background-color: #a9d192;
+    border-radius: 16px;
+    height: 350px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 
 .exchange-offers-title {
-color: rgb(0, 0, 0);
-font-size: 18px;
-font-weight: 700;
-margin: 12px;
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    padding: 12px;
+    padding-bottom: 4px;
+    background-color: none;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+}
+
+.offers-container {
+    overflow-y: auto;
+    padding: 0px;
+    flex: 1;
+    margin-top: -6px;
+
+}
+
+.exchange-offer-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 8px 4px;
+    padding: 20px 8px 6px 8px;
+    border: none;
+    position: relative;
+    background-color: #b0d49b;
+    transition: box-shadow 0.3s ease;
+}
+
+.exchange-offer-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.offer-image-container {
+    flex-shrink: 0;
+    margin-right: 12px;
+}
+
+.offer-image {
+    width: 106px;
+    height: 86px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+}
+
+.offer-title {
+    flex-grow: 1;
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+    text-align: left;
+}
+
+.offer-title a {
+    text-decoration: none;
+    color: #000;
+}
+
+.offer-title a:hover {
+    color: #007bff;
+}
+
+.offer-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: 12px;
+}
+
+.offer-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    transition: transform 0.2s ease;
+}
+
+.offer-actions button:hover {
+    transform: scale(1.1);
+}
+
+.offer-actions img {
+    width: 24px;
+    height: 24px;
+}
+
+.offer-date-container {
+    font-size: 13px;
+    color: rgba(120, 120, 120, 0.9);
+    position: absolute;
+    top: 8px;
+    right: 12px;
 }
 
 .title-text-section {
@@ -1378,13 +1469,11 @@ justify-content: center;
 }
 
 .exchange-button {
-font-size: 16px;
- font-family: 'Open Sans', sans-serif;
- font-weight: 700;
+ background-color: rgba(0, 0, 0, 0);
  border: 1.6px solid rgb(0, 0, 0);
- letter-spacing: 2px;
-
- padding: 10px 16px 10px 16px;
+border-radius: 50%;
+ padding: 7px 6px 6px 6px;
+ margin-right: 4px;
  cursor: pointer;
 
  transition: color 0.1s,
@@ -1395,13 +1484,28 @@ font-size: 16px;
 
  .exchange-button:hover {
  color: rgb(255, 255, 255);
- background-color: rgb(0, 0, 0);
 
  }
 
  .exchange-button:active {
  opacity: 0.4;
+ }
 
+ .offer-logo-image {
+width: 16px;
+height: 100%;
+ }
+
+
+ .no-offers-text {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+
+ color: rgb(141, 141, 141);
+ font-style: italic;
+ font-size: 18px;
+ height: 100%;
  }
 
 /* Анімація світіння */
@@ -1613,7 +1717,7 @@ height: 100%;
 
 
 .right-container {
-padding-left: 48px;
+padding-left: 36px;
 flex: 1;
 display: flex;
 flex-direction: column;
