@@ -43,6 +43,31 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
+    public void saveNotification(User customer, User seller, Rewards rewards, Product product, double rewardAmount, Long offeredProductId, String offeredProductTitle){
+        Notification notification = new Notification();
+        notification.setCustomerId(customer.getId());
+        notification.setCustomerName(customer.getName());
+        notification.setSellerId(seller.getId());
+        notification.setRewardType(rewards);
+        notification.setRewardAmount(rewardAmount);
+        notification.setSellerName(seller.getName());
+        notification.setCustomerEmail(customer.getEmail());
+        notification.setSellerEmail(seller.getEmail());
+        notification.setDateOfOperation(LocalDateTime.now());
+        notification.setProductId(product.getId());
+        notification.setProductTitle(product.getTitle());
+
+        notification.setOfferedProductId(offeredProductId);
+        notification.setOfferedProductTitle(offeredProductTitle);
+
+        String shortDateOfOperation = String.format("%02d", notification.getDateOfOperation().getDayOfMonth()) + " " +
+                notification.getDateOfOperation().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+
+        notification.setShortDateOfOperation(shortDateOfOperation);
+
+        notificationRepository.save(notification);
+    }
+
     @Transactional
     public void markAsRead(long notificationId) {
         Notification notificationOpt = notificationRepository.findById(notificationId).orElse(null);

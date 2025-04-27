@@ -16,7 +16,6 @@
     <main class="main-flex">
 
         <div class="user-info-container">
-            <#if user.isAdmin()>
             <div class="user-info-title">User's ${user.name} products</div>
 
 
@@ -26,7 +25,7 @@
                 <#list products as product>
                 <div class="user-info-product-container">
 
-                    <a href="/products/${product.id}">
+                    <a href="/products/${product.id?string('0')}">
                         <div class="user-info-product-title"> ${product.title}</div>
 
                     </a><div class="user-info-product-price"><span class="user-info-span"> — </span> ${product.price} &#8372;
@@ -36,11 +35,11 @@
             </#list>
 
         </div>
-    </#if>
 
     <#if viewer.isAdmin()>
     <div class="user-info-additional-container">
         <div class="user-info-admin-title">Detailed user information (for admins only)</div>
+        <div class="user-info-admin-name">${user.name}</div>
         <div class="user-info-admin-number">Phone number: <span class="user-info-admin-number-span">${user.phoneNumber}</span> </div>
         <div class="user-info-admin-email">Email: <span class="user-info-admin-email-span">${user.email}</span></div>
     </div>

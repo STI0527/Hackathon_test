@@ -27,7 +27,7 @@
         <img class="coins-image" src="/coins_logo.png">
         <div class="coins-container">${user.getCoins()}</div>
 
-        <img class="account-logo-image" src="/avatars/${user.avatar.id}">
+        <img class="account-logo-image" src="/avatars/${user.avatar.id?string('0')}">
         <#else>
         <img class="account-logo-image" src="/default_avatar.png">
         </#if>
@@ -47,11 +47,41 @@
         <div class="user-menu-inner">
             <#if user.email??>
 
-            <img class="user-avatar" src="/avatars/${user.avatar.id}" alt="avatar">
+            <img class="user-avatar" src="/avatars/${user.avatar.id?string('0')}" alt="avatar">
 
                 <div class="user_menu-name">${user.name}</div>
 
-                <form action="/profile/${user.id}" method="post">
+                <div class="euro_exchange_rate_container">
+                    1 EUR — ${euro_exchange_rate} UAH
+                </div>
+
+                <div class="material-statistics-container">
+                    <canvas id="userMaterialsChart" width="100%" height="20"></canvas>
+                    <div class="legend-container">
+                        <div class="legend-item">
+                            <div class="legend-item-color-plastic"></div>
+                            <div class="legend-item-title">Plastic</div>
+
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-color-metal"></div>
+                            <div class="legend-item-title">Metal</div>
+
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-color-glass"></div>
+                            <div class="legend-item-title">Glass</div>
+
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-color-co2"></div>
+                            <div class="legend-item-title">CO<sub>2</sub></div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <form action="/profile/${user.id?string('0')}" method="post">
                     <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                 </form>
@@ -77,24 +107,34 @@
 
 <div id="notificationMenu" class="notifications-container">
     <#list notifications as notification>
-    <div id="notification-${notification.id}" class="notification-container <#if !notification.read>unread</#if>" onclick="markAsRead(${notification.id})">
+    <div id="notification-${notification.id?string('0')}" class="notification-container <#if !notification.read>unread</#if>" onclick="markAsRead(${notification.id?string('0')})">
         <div class="notification-date-container">
             ${notification.shortDateOfOperation}
         </div>
 
+        <#if notification.rewardType == "INFO_SELLER">
+        <div class="notification-text-container">
+            Exchange offer received! ${notification.sellerName} wants to trade for your <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>.
+        </div>
+        <#elseif notification.rewardType == "INFO_USER">
+        <div class="notification-text-container">
+            Exchange offer sent for <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>!
+        </div>
+        <#else>
         <div class="notification-text-container">
             You've got +${notification.rewardAmount}
             <img class="coins-image-notifications" src="/coins_logo.png">
-            for ${notification.rewardType.getOperationType()}: ${notification.productTitle}!
+            for ${notification.rewardType.operationType}: ${notification.productTitle}!
         </div>
+    </#if>
 
         <div class="notification-time-container">
             ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
         </div>
 
-        <form action="/notifications/delete/${notification.id}" method="post">
+        <form action="/notifications/delete/${notification.id?string('0')}" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-            <button type="submit" onclick="deleteNotification(event, ${notification.id})" class="delete-notification-button">
+            <button type="submit" onclick="deleteNotification(event, ${notification.id?string('0')})" class="delete-notification-button">
                 <img class="cancel-image-notification" src="/cancel_logo.png">
             </button>
         </form>
@@ -125,7 +165,7 @@
                 <div class="swiper-wrapper">
                     <#list images as img>
                     <div class="swiper-slide">
-                        <img class="product-info-image" src="/images/${img.id}" alt="Фото ${img.id}">
+                        <img class="product-info-image" src="/images/${img.id?string('0')}" alt="Фото ${img.id?string('0')}">
                     </div>
                 </#list>
 
@@ -173,7 +213,7 @@
     <#if !exchange_offers??>
         <div class="pink-container">
             <div class="product-info-city"> ${product.city}</div>
-            <div class="product-info-author"> Author: <a href="/user/${product.user.id}">${product.user.name}</a></div
+            <div class="product-info-author"> Author: <a href="/user/${product.user.id?string('0')}">${product.user.name}</a></div
 
             <div class="product-info-buy">
 
@@ -201,24 +241,25 @@
                             <div class="exchange-offer-card">
 
                                     <div class="offer-image-container">
-                                        <a href="/products/${offer.offer.id}">
-                                        <img class="offer-image" src="/images/${offer.offer.id}">
+                                        <a href="/products/${offer.offer.id?string('0')}">
+                                        <img class="offer-image" src="/images/${offer.offer.id?string('0')}">
                                         </a>
                                     </div>
 
-                                    <div class="offer-title"><a href="/products/${offer.offer.id}">${offer.offer.getTitle()}</a></div>
+                                    <div class="offer-title"><a href="/products/${offer.offer.id?string('0')}">${offer.offer.getTitle()}</a></div>
 
                                 <div>
 
-                                    <form action="/offer/accept/${offer.id}" method="post">
-                                        <input type="hidden" name="_csrf" value="${_csrf.token}">
-                                    <button type="submit" class="exchange-button"><img src="/accept_offer_logo.png" class="offer-logo-image"></button>
-                                    </form>
+
+                                    <button class="exchange-button" onclick="showConfirmWindow(${offer.id?string('0')})">
+                                        <img src="/accept_offer_logo.png" class="offer-logo-image">
+                                    </button>
+
                                 </div>
 
                                 <div>
 
-                                    <button class="exchange-button" onclick="showConfirmWindow()">
+                                    <button class="exchange-button" onclick="showDeclineWindow(${offer.id?string('0')})">
                                         <img src="/decline_offer_logo.png" class="offer-logo-image">
                                     </button>
                                 </div>
@@ -256,7 +297,7 @@ onclick="onModalBackgroundClick(event)">
     <div id="modalContent" style="background-color: white;">
 
       <#if product.type == 'SELL'>
-    <h3>Choose a payment method</h3>
+    <h2>Choose a payment method</h2>
 
     <form method="post" accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
         <input type="hidden" name="data" value="${liqPayData}" />
@@ -267,7 +308,7 @@ onclick="onModalBackgroundClick(event)">
         </button>
     </form>
 
-        <form action="/buy/virtual/${product.id}" method="post">
+        <form action="/buy/virtual/${product.id?string('0')}" method="post">
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
             <input type="hidden" name="virtualPrice" value="${product.virtualPrice}">
     <button class="liqpay-button">
@@ -283,18 +324,18 @@ onclick="onModalBackgroundClick(event)">
                 <#list user.products as myProduct>
                 <div class="exchange-offer-container">
                    <div class="offer-product-container">
-                        <img  class="exchange-offer-image" src="/images/${myProduct.id}" alt="Фото ${myProduct.id}">
+                        <img  class="exchange-offer-image" src="/images/${myProduct.id?string('0')}" alt="Фото ${myProduct.id?string('0')}">
                         <div class="exchange-offer-title">
-                            <a href="/products/${myProduct.id}">
+                            <a href="/products/${myProduct.id?string('0')}">
                             ${myProduct.title}
                             </a>
                         </div>
                    </div>
 
                     <div class="exchange-offer-button">
-                        <form action="/exchange/offer/${product.id}" method="post">
-                            <input type="hidden" name="product" value="${product.id}"/>
-                            <input type="hidden" name="offer_id" value="${myProduct.id}">
+                        <form action="/exchange/offer/${product.id?string('0')}" method="post">
+                            <input type="hidden" name="product" value="${product.id?string('0')}"/>
+                            <input type="hidden" name="offer_id" value="${myProduct.id?string('0')}">
                             <input type="hidden" name="_csrf" value="${_csrf.token}" />
                             <button type="submit" class="exchange-button" >Offer</button>
                         </form>
@@ -304,52 +345,128 @@ onclick="onModalBackgroundClick(event)">
             </#if>
         </#if>
 
-    <button onclick="closeModal()">❌ Cancel</button>
-
+    <button class="cancel-button" onclick="closeModal()">
+        <img class="cancel-image-notification" src="/cancel_logo.png">
+    </button>
+</div>
 </div>
 </div>
 
 
 <div id="confirmOfferWindow" style="display: none; position: fixed; top: 0; left: 0;
-width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999;"
+width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9998;"
+     onclick="onConfirmAcceptBackgroundClick(event)">
+
+<div id="modalConfirmOfferContent" style="background-color: white; padding: 20px; border-radius: 10px;
+        position: relative;
+        width: 450px; margin: 200px auto; text-align: center;">
+
+    <h3>Are you sure you want to accept this exchange offer?</h3>
+
+    <div class="accept-offer-options-container">
+<!--    <form action="/offer/decline" method="post">-->
+<!--        <input type="hidden" name="_csrf" value="${_csrf.token}">-->
+<!--        <input type="hidden" id="offerIdInput" name="offerId" required/>-->
+<!--        <button type="submit" class="exchange-button">-->
+<!--            Yes-->
+<!--        </button>-->
+<!--    </form>-->
+
+       <button class="modal-button">
+           Yes
+       </button>
+
+    <button class="modal-button" onclick="closeOfferConfirmModal()">
+        No
+    </button>
+
+    </div>
+
+    <button class="cancel-button-offer-window" onclick="closeOfferConfirmModal()">
+        <img class="cancel-image-notification" src="/cancel_logo.png">
+    </button>
+
+</div>
+</div>
+
+
+<div id="declineOfferWindow" style="display: none; position: fixed; top: 0; left: 0;
+width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9998;"
      onclick="onConfirmBackgroundClick(event)">
 
-<div id="modalOfferContent" style="background-color: white; padding: 20px; border-radius: 10px;
-        width: 450px; margin: 100px auto; text-align: center;">
+<div id="modalOfferContent" style="background-color: white; padding: 20px 24px;
+        padding-top: 24px; border-radius: 10px;
+        position: relative;
+        width: 450px; margin: 200px auto; text-align: center;">
 
     <h3>Are you sure you want to reject this exchange offer?</h3>
 
-    <form action="/offer/decline/" method="post">
+    <div class="decline-offer-options-container">
+    <form action="/offer/decline" method="post">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <button type="submit" class="exchange-button">
-            <img src="/decline_offer_logo.png" class="offer-logo-image">
+        <input type="hidden" id="offerIdInput" name="offerId" required/>
+        <button type="submit" class="modal-button">
+          Yes
         </button>
     </form>
 
-    <button onclick="closeOfferModal()">❌ Cancel</button>
+        <button class="modal-button" onclick="closeOfferModal()">
+            No
+        </button>
+
+    </div>
+
+    <button class="cancel-button-offer-window" onclick="closeOfferModal()">
+        <img class="cancel-image-notification" src="/cancel_logo.png">
+    </button>
 </div>
 </div>
 
 
 
 <script>
-    function showConfirmWindow() {
-    console.log("Confirm window showed");
-    document.getElementById("confirmOfferWindow").style.display = "block";
+
+
+    function showDeclineWindow(id) {
+    console.log("Decline offer window showed");
+    document.getElementById("declineOfferWindow").style.display = "block";
+    document.getElementById("offerIdInput").value = id;
 }
 
 function closeOfferModal() {
-    document.getElementById("confirmOfferWindow").style.display = "none";
+    document.getElementById("declineOfferWindow").style.display = "none";
 }
 
-function onConfirmBackgroundClick(event) {
-    const modalContent = document.getElementById("modalOfferContent");
-    if (!modalContent.contains(event.target)) {
+ function onConfirmBackgroundClick(event) {
+        const modalContent = document.getElementById("modalOfferContent");
+        if (!modalContent.contains(event.target)) {
         closeOfferModal();
+        }
+        }
+
+
+
+</script>
+
+<script>
+        function showConfirmWindow(id) {
+        console.log("Confirm window showed");
+        document.getElementById("confirmOfferWindow").style.display = "block";
+        document.getElementById("offerConfirmIdInput").value = id;
+        }
+
+        function closeOfferConfirmModal() {
+        document.getElementById("confirmOfferWindow").style.display = "none";
+        }
+
+       function onConfirmAcceptBackgroundClick(event) {
+    const modalContent = document.getElementById("modalConfirmOfferContent");
+    if (!modalContent.contains(event.target)) {
+        closeOfferConfirmModal();
     }
 }
 
-</script>
+        </script>
 
 <script>
 function showTypesOfPayment() {
@@ -559,81 +676,79 @@ function markAsRead(notificationId) {
 }
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 // Дані користувача
-<!--const plasticSaved = ${user.plasticSaved};-->
-<!--const metalSaved = ${user.metalSaved};-->
-<!--const glassSaved = ${user.glassSaved};-->
-<!--const CO2Saved = ${user.CO2Saved};-->
+const plasticSaved = ${user.plasticSaved?string("0")};
+const metalSaved = ${user.metalSaved?string("0")};
+const glassSaved = ${user.glassSaved?string("0")};
+const CO2Saved = ${user.CO2Saved?string("0")};
 
-const plasticSaved = 12;
-const metalSaved = 24;
-const glassSaved = 24;
-const CO2Saved = 40;
+<!--const plasticSaved = 12;-->
+<!--        const metalSaved = 24;-->
+<!--        const glassSaved = 24;-->
+<!--        const CO2Saved = 40;-->
 
-const totalSaved = plasticSaved + metalSaved + glassSaved + CO2Saved;
+        const totalSaved = plasticSaved + metalSaved + glassSaved + CO2Saved;
 
-// Розрахунок відсотків
-const percent = (val) => Math.round((val / totalSaved) * 100);
+        // Розрахунок відсотків
+        const percent = (val) => Math.round((val / totalSaved) * 100);
 
-const data = {
-    labels: [''],
-    datasets: [{
-        label: 'Plastic',
-        data: [percent(plasticSaved)],
-        backgroundColor: 'rgba(255, 99, 132, 0.8)'
-    }, {
-        label: 'Metal',
-        data: [percent(metalSaved)],
-        backgroundColor: 'rgba(54, 162, 235, 0.8)'
-    }, {
-        label: 'Glass',
-        data: [percent(glassSaved)],
-        backgroundColor: 'rgba(255, 206, 86, 0.8)'
-    }, {
-        label: 'CO₂',
-        data: [percent(CO2Saved)],
-        backgroundColor: 'rgba(75, 192, 192, 0.8)'
-    }]
-};
+        const data = {
+            labels: [''],
+            datasets: [{
+                label: 'Plastic',
+                data: [percent(plasticSaved)],
+                backgroundColor: 'rgba(255, 99, 132, 0.8)'
+            }, {
+                label: 'Metal',
+                data: [percent(metalSaved)],
+                backgroundColor: 'rgba(54, 162, 235, 0.8)'
+            }, {
+                label: 'Glass',
+                data: [percent(glassSaved)],
+                backgroundColor: 'rgba(255, 206, 86, 0.8)'
+            }, {
+                label: 'CO₂',
+                data: [percent(CO2Saved)],
+                backgroundColor: 'rgba(75, 192, 192, 0.8)'
+            }]
+        };
 
-const config = {
-    type: 'bar',
-    data: data,
-    options: {
-        indexAxis: 'y',
-        plugins: {
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        return `
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                indexAxis: 'y',
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return `
                         <#noparse>
                         ${context.dataset.label}: ${context.raw}%`;
-                        </#noparse>
+                        </#noparse >
                     }
                 },
-                bodyFont: {
-                    size: 10
-                },
-                 padding: 10,
-                 maxWidth: 20,
-                 backgroundColor: 'rgba(0, 0, 0, 0.8)'
+        bodyFont: {
+            size: 10
+        },
+        padding: 10,
+            maxWidth: 20,
+                backgroundColor: 'rgba(0, 0, 0, 0.8)'
 
             },
-            legend: {
-                position: 'none'
-            },
-<!--            title: {-->
-<!--                display: true,-->
-<!--                text: 'Відсоток збережених матеріалів'-->
-<!--            }-->
+        legend: {
+            position: 'none'
+        },
         },
         responsive: true,
-        scales: {
+            scales: {
             x: {
                 stacked: true,
-                max: 100,
-                ticks: {
+                    max: 100,
+                        ticks: {
                     callback: function(value) {
                         return value + '%';
                     }
@@ -641,7 +756,7 @@ const config = {
             },
             y: {
                 stacked: true,
-                grid: {
+                    grid: {
                     display: false
                 }
             }
@@ -649,9 +764,9 @@ const config = {
     }
 };
 
-new Chart(
-    document.getElementById('userMaterialsChart'),
-    config
-);
+        new Chart(
+            document.getElementById('userMaterialsChart'),
+            config
+        );
 
 </script>

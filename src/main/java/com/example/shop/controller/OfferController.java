@@ -79,10 +79,17 @@ public class OfferController {
         return "redirect:/products/" + desireProductId;
     }
 
-    @PostMapping("/offer/decline/{id}")
-    public String declineOffer(@PathVariable String id) {
+    @PostMapping("/offer/decline")
+    public String declineOffer(@RequestParam(name = "offerId") String id) {
         Long iD = Long.parseLong(id.replace("\u00A0", ""));
         Long desireProductId = exchangeApplicationService.getOfferById(iD).getProduct().getId();
+
+
+        notificationService.saveNotification(exchangeApplicationService.getOfferById(iD).getOffer().getUser(), exchangeApplicationService.getOfferById(iD).getProduct().getUser(),
+                Rewards.DECLINE_EXCHANGE_OFFER, exchangeApplicationService.getOfferById(iD).getProduct(), 0,
+                exchangeApplicationService.getOfferById(iD).getOffer().getId(),
+                exchangeApplicationService.getOfferById(iD).getOffer().getTitle());
+
 
         exchangeApplicationService.deleteOffer(iD);
 

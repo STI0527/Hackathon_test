@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +51,8 @@ public class ProductController {
 
     @GetMapping("/")
     public String main(@RequestParam(name = "title", required = false) String title, Model model, Principal principal,
-                           Authentication authentication, User user) throws IOException {
+                           Authentication authentication, User user,
+                       HttpServletRequest httpServletRequest) throws IOException {
 
         if (authentication instanceof OAuth2AuthenticationToken token) {
             // Якщо аутентифікація через OAuth2
@@ -74,6 +76,9 @@ public class ProductController {
         model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
         model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
 
+        CsrfToken token = (CsrfToken) httpServletRequest.getAttribute("_csrf");
+        model.addAttribute("csrfParameterName", token.getParameterName());
+        model.addAttribute("csrfToken", token.getToken());
         return "main";
     }
 
@@ -138,7 +143,7 @@ public class ProductController {
 
 
             if(product.getType() == AdvertType.EXCHANGE && product.getUser().getEmail().equals(user.getEmail())){
-                model.addAttribute("exchange_offers", exchangeApplicationService.myProductExchangeOffersList(product.getId()));
+                model.addAttribute("exchange_offers", exchangeApplicationService.myProductExchangeOffersList(user.getId(), product.getId()));
             }
         }
         if(product == null){

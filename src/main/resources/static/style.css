@@ -117,7 +117,7 @@ width: 320px;
 background-color: white;
 z-index: 5;
 
-padding-bottom: 24px;
+padding-bottom: 12px;
 
 
 }
@@ -128,14 +128,15 @@ display: flex;
 justify-content: center;
 align-items: center;
 flex-direction: column;
+width: 236px;
 }
 
 .user_menu-name {
-font-size: 32px;
+font-size: 28px;
 font-weight: 700;
 
-margin-top: 24px;
-margin-bottom: 24px;
+margin-top: 16px;
+margin-bottom: 12px;
 }
 
 .euro_exchange_rate_container {
@@ -143,10 +144,58 @@ margin-bottom: 12px;
 }
 
 .material-statistics-container {
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+
 width: 100%;
-height: 80px;
+height: 120px;
 background-color: rgba(31, 31, 31, 0.7);
 margin-bottom: 12px;
+border-radius: 16px;
+padding-bottom: 6px;
+}
+
+.legend-container {
+display: grid;
+grid-template-columns: 1fr 1fr;
+column-gap: 48px;
+row-gap: 2px;
+}
+
+.legend-item {
+display: flex;
+align-items: center;
+justify-content: left;
+
+}
+
+.legend-item-title {
+color: rgb(255, 255, 255);
+}
+
+.legend-item-color-plastic, .legend-item-color-metal, .legend-item-color-glass, .legend-item-color-co2 {
+border-radius: 50%;
+width: 12px;
+height: 12px;
+margin-right: 6px;
+}
+
+.legend-item-color-plastic {
+background-color: rgba(255, 99, 132, 0.8);
+}
+
+.legend-item-color-metal {
+background-color: rgba(54, 162, 235, 0.8);
+}
+
+.legend-item-color-glass {
+background-color: rgba(255, 206, 86, 0.8);
+}
+
+.legend-item-color-co2 {
+background-color: rgba(75, 192, 192, 0.8);
 }
 
 .user-menu-private-page-text, .user-menu-quit-text {
@@ -192,7 +241,7 @@ scale: 0.95;
 color: rgb(0, 0, 0);
 font-size: 18px;
 font-weight: 500;
-margin-bottom: 24px;
+margin-bottom: 16px;
 
 }
 
@@ -200,8 +249,8 @@ margin-bottom: 24px;
 
 .user-avatar {
 display: block;
-width: 196px;
-height: 196px;
+width: 176px;
+height: 176px;
 border-radius: 50%;
 object-fit: cover;
 
@@ -699,6 +748,7 @@ font-weight: 700;
 
 .exchange-offers-container {
     background-color: #a9d192;
+    opacity: 0.9;
     border-radius: 16px;
     height: 350px;
     overflow: hidden;
@@ -808,6 +858,13 @@ font-weight: 700;
     right: 12px;
 }
 
+.decline-offer-options-container, .accept-offer-options-container {
+display: flex;
+align-items: center;
+justify-content: space-around;
+margin: 16px 0px;
+}
+
 .title-text-section {
 display: flex;
 align-items: center;
@@ -909,6 +966,7 @@ left: 18px;
 width: 12px;
 height: 100%;
 object-fit: cover;
+background-color: rgba(0, 0, 0, 0);
 }
 
 .delete-notification-button {
@@ -1792,7 +1850,7 @@ margin-bottom: 8px;
 margin: 20px;
  }
 
- .liqpay-button {
+ .liqpay-button, .modal-button {
  font-size: 16px;
  font-family: 'Open Sans', sans-serif;
  font-weight: 700;
@@ -1808,17 +1866,41 @@ margin: 20px;
  opacity 0.15s;
  }
 
+.modal-button {
+font-family: 'Montserrat', sans-serif;
+margin-top: 4px;
+}
 
- .liqpay-button:hover {
+ .liqpay-button:hover, .modal-button:hover {
  color: rgb(255, 255, 255);
  background-color: rgb(0, 0, 0);
 
  }
 
- .liqpay-button:active {
+ .liqpay-button:active, .modal-button:active {
  opacity: 0.4;
 
  }
+
+ #modalContent {
+ position: relative;
+ }
+
+ .cancel-button {
+ position: absolute;
+ top: -10px;
+ right: -8px;
+background-color: rgba(0, 0, 0, 0);
+cursor: pointer;
+ }
+
+  .cancel-button-offer-window {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+ background-color: rgba(0, 0, 0, 0);
+ cursor: pointer;
+  }
 
 @media (max-width: 988px) {
 
@@ -1898,7 +1980,7 @@ font-size: 14px;
 
 }
 
-.liqpay-button {
+.liqpay-button, .modal-button {
 font-size: 14px;
 letter-spacing: 2px;
 
@@ -1969,7 +2051,7 @@ font-size: 16px;
 margin-bottom: 16px;
 }
 
-.liqpay-button {
+.liqpay-button, .modal-button {
 font-size: 14px;
 letter-spacing: 2px;
 
@@ -2132,6 +2214,12 @@ font-weight: 700;
 text-align: center;
 padding-bottom: 12px;
 margin-bottom:30px;
+}
+
+.user-info-admin-name {
+color: rgb(0, 0, 0);
+font-size: 16px;
+text-align: center;
 }
 
 .user-info-admin-number, .user-info-admin-email {
@@ -3275,6 +3363,20 @@ font-size: 20px;
 font-weight: 400;
 
 }
+
+.no-data-for-chart-container {
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+color: rgb(141, 141, 141);
+font-size: 24px;
+font-style: italic;
+width: 400px;
+height: 400px;
+
+}
+
 
 @media(max-width: 988px) {
 .profile-card {

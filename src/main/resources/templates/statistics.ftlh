@@ -27,7 +27,7 @@
         <img class="coins-image" src="/coins_logo.png">
         <div class="coins-container">${user.getCoins()}</div>
 
-        <img class="account-logo-image" src="/avatars/${user.avatar.id}">
+        <img class="account-logo-image" src="/avatars/${user.avatar.id?string('0')}">
         <#else>
         <img class="account-logo-image" src="/default_avatar.png">
         </#if>
@@ -49,11 +49,41 @@
         <div class="user-menu-inner">
             <#if user.email??>
 
-            <img class="user-avatar" src="/avatars/${user.avatar.id}" alt="avatar">
+            <img class="user-avatar" src="/avatars/${user.avatar.id?string('0')}" alt="avatar">
 
                 <div class="user_menu-name">${user.name}</div>
 
-                <form action="/profile/${user.id}" method="post">
+                <div class="euro_exchange_rate_container">
+                    1 EUR — ${euro_exchange_rate} UAH
+                </div>
+
+                <div class="material-statistics-container">
+                    <canvas id="userMaterialsChart" width="100%" height="20"></canvas>
+                    <div class="legend-container">
+                        <div class="legend-item">
+                            <div class="legend-item-color-plastic"></div>
+                            <div class="legend-item-title">Plastic</div>
+
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-color-metal"></div>
+                            <div class="legend-item-title">Metal</div>
+
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-color-glass"></div>
+                            <div class="legend-item-title">Glass</div>
+
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-color-co2"></div>
+                            <div class="legend-item-title">CO<sub>2</sub></div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <form action="/profile/${user.id?string('0')}" method="post">
                     <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                 </form>
@@ -79,24 +109,34 @@
 
 <div id="notificationMenu" class="notifications-container">
     <#list notifications as notification>
-    <div id="notification-${notification.id}" class="notification-container <#if !notification.read>unread</#if>" onclick="markAsRead(${notification.id})">
+    <div id="notification-${notification.id?string('0')}" class="notification-container <#if !notification.read>unread</#if>" onclick="markAsRead(${notification.id?string('0')})">
         <div class="notification-date-container">
             ${notification.shortDateOfOperation}
         </div>
 
+        <#if notification.rewardType == "INFO_SELLER">
+        <div class="notification-text-container">
+            Exchange offer received! ${notification.sellerName} wants to trade for your <a href="/products/${notification.productId}">${notification.productTitle}</a>.
+        </div>
+        <#elseif notification.rewardType == "INFO_USER">
+        <div class="notification-text-container">
+            Exchange offer sent for <a href="/products/${notification.id?string('0')}">${notification.productTitle}</a>!
+        </div>
+        <#else>
         <div class="notification-text-container">
             You've got +${notification.rewardAmount}
-            <img class="coins-image-notifications" src="coins_logo.png">
-            for ${notification.rewardType.getOperationType()}: ${notification.productTitle}!
+            <img class="coins-image-notifications" src="/coins_logo.png">
+            for ${notification.rewardType.operationType}: ${notification.productTitle}!
         </div>
+    </#if>
 
         <div class="notification-time-container">
             ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
         </div>
 
-        <form action="/notifications/delete/${notification.id}" method="post">
+        <form action="/notifications/delete/${notification.id?string('0')}" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-            <button type="submit" onclick="deleteNotification(event, ${notification.id})" class="delete-notification-button">
+            <button type="submit" onclick="deleteNotification(event, ${notification.id?string('0')})" class="delete-notification-button">
                 <img class="cancel-image-notification" src="cancel_logo.png">
             </button>
         </form>
@@ -224,7 +264,7 @@
         <#if orders?? && (orders?size > 0)>
         <#list orders as order>
         <tr>
-            <td>${order.id}</td>
+            <td>${order.id?string('0')}</td>
             <td>${order.customerName}</td>
             <td>${order.customerEmail}</td>
             <td>${order.customerPhoneNumber}</td>
@@ -441,15 +481,15 @@ function markAsRead(notificationId) {
 
 <script>
 // Дані користувача
-<!--const plasticSaved = ${user.plasticSaved};-->
-<!--const metalSaved = ${user.metalSaved};-->
-<!--const glassSaved = ${user.glassSaved};-->
-<!--const CO2Saved = ${user.CO2Saved};-->
+const plasticSaved = ${user.plasticSaved?string("0")};
+const metalSaved = ${user.metalSaved?string("0")};
+const glassSaved = ${user.glassSaved?string("0")};
+const CO2Saved = ${user.CO2Saved?string("0")};
 
-const plasticSaved = 12;
-const metalSaved = 24;
-const glassSaved = 24;
-const CO2Saved = 40;
+<!--const plasticSaved = 12;-->
+<!--const metalSaved = 24;-->
+<!--const glassSaved = 24;-->
+<!--const CO2Saved = 40;-->
 
 const totalSaved = plasticSaved + metalSaved + glassSaved + CO2Saved;
 
@@ -503,10 +543,7 @@ const config = {
             legend: {
                 position: 'none'
             },
-<!--            title: {-->
-<!--                display: true,-->
-<!--                text: 'Відсоток збережених матеріалів'-->
-<!--            }-->
+
         },
         responsive: true,
         scales: {
