@@ -159,8 +159,12 @@ public class UserController {
 
 
     @GetMapping("/marketplace")
-    public String toMarketplace(Model model, Principal principal, Authentication authentication, User user){
+    public String toMarketplace(Model model, Principal principal, Authentication authentication, User user,
+                                @ModelAttribute("payment_message") String paymentMessage) {
 
+        if (paymentMessage != null && !paymentMessage.isEmpty()) {
+            model.addAttribute("payment_message", paymentMessage);
+        }
 
         if (authentication != null) {
             if (authentication instanceof OAuth2AuthenticationToken token) {

@@ -118,6 +118,10 @@
         <div class="notification-text-container">
             Exchange offer sent for <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>!
         </div>
+        <#elseif notification.rewardType == "USER_EXCHANGE_DATA_RECEIVED">
+        <div class="notification-text-container">
+            ${notification.rewardType.operationType} for <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>!
+        </div>
         <#else>
         <div class="notification-text-container">
             You've got +${notification.rewardAmount}
@@ -126,21 +130,21 @@
         </div>
     </#if>
 
-        <div class="notification-time-container">
-            ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
-        </div>
-
-        <form action="/notifications/delete/${notification.id?string('0')}" method="post">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-            <button type="submit" onclick="deleteNotification(event, ${notification.id?string('0')})" class="delete-notification-button">
-                <img class="cancel-image-notification" src="/cancel_logo.png">
-            </button>
-        </form>
+    <div class="notification-time-container">
+        ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
     </div>
-    <#else>
-    <div class="no-notifications-text">No notifications</div>
-</#list>
+
+    <form action="/notifications/delete/${notification.id?string('0')}" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+        <button type="submit" onclick="deleteNotification(event, ${notification.id?string('0')})" class="delete-notification-button">
+            <img class="cancel-image-notification" src="/cancel_logo.png">
+        </button>
+    </form>
 </div>
+<#else>
+<div class="no-notifications-text">No notifications</div>
+</#list>
+        </div>
 
 
 <section class="title-text-section">
@@ -172,6 +176,7 @@
 </div>
 
 </div>
+
 
 <#if user.email??>
 <div class="add-product-window">
@@ -239,6 +244,12 @@
 
 </div>
 
+</#if>
+
+<#if user.email??>
+<div>
+<a href="/offers/accepted">My acepted offers</a>
+</div>
 </#if>
 
 

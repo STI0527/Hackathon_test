@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -194,9 +195,9 @@ public class ProductController {
     }
     
     @PostMapping("/buy/virtual/{id}")
-    public ResponseEntity<?> buyVirtual(@PathVariable String id, Principal principal,
+    public String buyVirtual(@PathVariable String id, Principal principal,
                                      HttpServletRequest request,
-                                     HttpSession session, Authentication authentication, Model model,
+                                     HttpSession session, Authentication authentication, Model model, RedirectAttributes redirectAttributes,
                                         @RequestParam(name = "virtualPrice") String virtualPriceLine){
         Long iD = Long.parseLong(id.replace("\u00A0", ""));
         Product product = productService.getProductById(iD);
@@ -219,7 +220,8 @@ public class ProductController {
 
         if(customer.getCoins() < virtualPrice) {
             model.addAttribute("payment_message", "You don’t have enough coins!");
-            return ResponseEntity.ok("You don’t have enough coins!");
+            redirectAttributes.addFlashAttribute("payment_message", "You don’t have enough coins!");
+            return "redirect:/marketplace";
         }
         else {
             System.out.println("New customer balance: " + (customer.getCoins() - virtualPrice));
@@ -256,7 +258,8 @@ public class ProductController {
             //productService.deleteProduct(product.getId());
 
             model.addAttribute("payment_message", "Purchase completed successfully!");
-            return ResponseEntity.ok("Purchase completed successfully!");
+            redirectAttributes.addFlashAttribute("payment_message", "Purchase completed successfully!");
+            return "redirect:/marketplace";
         }
 
     }

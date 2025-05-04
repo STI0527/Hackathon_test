@@ -114,6 +114,10 @@
         <div class="notification-text-container">
             Exchange offer sent for <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>!
         </div>
+        <#elseif notification.rewardType == "USER_EXCHANGE_DATA_RECEIVED">
+        <div class="notification-text-container">
+            ${notification.rewardType.operationType} for <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>!
+        </div>
         <#else>
         <div class="notification-text-container">
             You've got +${notification.rewardAmount}
@@ -122,19 +126,19 @@
         </div>
     </#if>
 
-        <div class="notification-time-container">
-            ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
-        </div>
-
-        <form action="/notifications/delete/${notification.id?string('0')}" method="post">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-            <button type="submit" onclick="deleteNotification(event, ${notification.id?string('0')})" class="delete-notification-button">
-                <img class="cancel-image-notification" src="/cancel_logo.png">
-            </button>
-        </form>
+    <div class="notification-time-container">
+        ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
     </div>
-    <#else>
-    <div class="no-notifications-text">No notifications</div>
+
+    <form action="/notifications/delete/${notification.id?string('0')}" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+        <button type="submit" onclick="deleteNotification(event, ${notification.id?string('0')})" class="delete-notification-button">
+            <img class="cancel-image-notification" src="/cancel_logo.png">
+        </button>
+    </form>
+</div>
+<#else>
+<div class="no-notifications-text">No notifications</div>
 </#list>
 </div>
 
@@ -142,9 +146,10 @@
 <div class="profile-container">
     <div class="profile-card">
 
-        <div class="profile-card-left-container">
-            <div class="profile-title">Profile</div>
+        <div class="profile-title">Profile</div>
 
+        <div class="profile-content-container">
+        <div class="profile-card-left-container">
 
             <div class="profile-subtitle">${user.name}</div>
 
@@ -398,6 +403,7 @@
 
         </div>
 
+        </div>
 
 
 
@@ -469,10 +475,11 @@ const myPieChart = new Chart(ctx, {
             label: 'Saved (kg): ',
             data: [${user.plasticSaved?string("0")}, ${user.metalSaved?string("0")}, ${user.glassSaved?string("0")}, ${user.CO2Saved?string("0")}],
             backgroundColor: [
-                '#4CAF50',
+                '#FF5722',
                 '#2196F3',
                 '#FFC107',
-                '#FF5722'
+                '#4CAF50'
+
             ],
             borderWidth: 1
         }]

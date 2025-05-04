@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" type="image/png" href="/icon.png">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.1">
 </head>
 
@@ -120,6 +121,10 @@
         <div class="notification-text-container">
             Exchange offer sent for <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>!
         </div>
+        <#elseif notification.rewardType == "USER_EXCHANGE_DATA_RECEIVED">
+        <div class="notification-text-container">
+            ${notification.rewardType.operationType} for <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>!
+        </div>
         <#else>
         <div class="notification-text-container">
             You've got +${notification.rewardAmount}
@@ -202,17 +207,22 @@
 
     <div class="product-info-title">${product.title}</div>
         <#if product.type == 'SELL'>
+        <div class="price-container">
             <div class="product-info-price">${product.price} ₴</div>
             <div class="product-info-virtual-price">${product.virtualPrice}
                 <img class="coins-image-product-info" src="/coins_logo.png">
             </div>
+        </div>
         </#if>
 
         <div class="product-info-description"> ${product.description}</div>
 
     <#if !exchange_offers??>
         <div class="pink-container">
-            <div class="product-info-city"> ${product.city}</div>
+            <div class="product-info-city">
+                <img class="location-logo" src="/location_logo.png">
+                ${product.city}
+            </div>
             <div class="product-info-author"> Author: <a href="/user/${product.user.id?string('0')}">${product.user.name}</a></div
 
             <div class="product-info-buy">
@@ -292,9 +302,17 @@ width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999;"
 onclick="onModalBackgroundClick(event)">
 
 <div style="background-color: white; padding: 20px; border-radius: 10px;
-        width: 450px; margin: 100px auto; text-align: center;">
-
-    <div id="modalContent" style="background-color: white;">
+position: relative;
+        width: 450px; margin: 100px auto; text-align: center;
+     ">
+    <button class="cancel-button" onclick="closeModal()">
+        <img class="cancel-image-notification" src="/cancel_logo.png">
+    </button>
+    <div id="modalContent" style="background-color: white;
+    max-height: 400px;
+    width: 400px;
+    overflow-y: auto;
+    overflow-x: none;">
 
       <#if product.type == 'SELL'>
     <h2>Choose a payment method</h2>
@@ -322,9 +340,13 @@ onclick="onModalBackgroundClick(event)">
                 <h3>Choose your product for exchange</h3>
 
                 <#list user.products as myProduct>
-                <div class="exchange-offer-container">
-                   <div class="offer-product-container">
+            <#if myProduct.type == 'EXCHANGE'>
+            <div class="exchange-offer-container">
+                    <div class="offer-product-container">
+                        <a href="/products/${myProduct.id?string('0')}">
                         <img  class="exchange-offer-image" src="/images/${myProduct.id?string('0')}" alt="Фото ${myProduct.id?string('0')}">
+                        </a>
+
                         <div class="exchange-offer-title">
                             <a href="/products/${myProduct.id?string('0')}">
                             ${myProduct.title}
@@ -337,17 +359,16 @@ onclick="onModalBackgroundClick(event)">
                             <input type="hidden" name="product" value="${product.id?string('0')}"/>
                             <input type="hidden" name="offer_id" value="${myProduct.id?string('0')}">
                             <input type="hidden" name="_csrf" value="${_csrf.token}" />
-                            <button type="submit" class="exchange-button" >Offer</button>
+                            <button type="submit" class="modal-offer-button" >Offer</button>
                         </form>
                     </div>
                 </div>
+            </#if>
                 </#list>
             </#if>
         </#if>
 
-    <button class="cancel-button" onclick="closeModal()">
-        <img class="cancel-image-notification" src="/cancel_logo.png">
-    </button>
+
 </div>
 </div>
 </div>
@@ -364,15 +385,8 @@ width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9998;"
     <h3>Are you sure you want to accept this exchange offer?</h3>
 
     <div class="accept-offer-options-container">
-<!--    <form action="/offer/decline" method="post">-->
-<!--        <input type="hidden" name="_csrf" value="${_csrf.token}">-->
-<!--        <input type="hidden" id="offerIdInput" name="offerId" required/>-->
-<!--        <button type="submit" class="exchange-button">-->
-<!--            Yes-->
-<!--        </button>-->
-<!--    </form>-->
-
-       <button class="modal-button">
+        
+       <button onclick="acceptOffer()" class="modal-button">
            Yes
        </button>
 
@@ -423,9 +437,75 @@ width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9998;"
 </div>
 
 
+<!--Modal window for filling seller's data form-->
+<div id="dataFormWindow" style="display: none; position: fixed; top: 0; left: 0;
+width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9998;"
+     onclick="onDataFormBackgroundClick(event)">
+
+<div id="formWindowContent" style="background-color: white; padding: 20px 24px;
+        padding-top: 24px; border-radius: 10px;
+        position: relative;
+        width: 450px; margin: 140px auto; text-align: center;">
+
+    <h3>Share your contact info to arrange the exchange</h3>
+
+        <form action="/send/exchangeData/${product.id?string('0')}" method="post">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInputGroup1" name="name" placeholder="Full Name" required>
+                <label for="floatingInputGroup1">Full Name</label>
+                <div class="invalid-feedback">
+                    Please enter your name and surname.
+                </div>
+            </div>
+
+
+            <div class="form-floating mb-3">
+                <input type="tel" class="form-control" id="floatingPhone" name="phone" placeholder="Phone number" required>
+                <label for="floatingPhone">Phone Number</label>
+                <div class="invalid-feedback">
+                    Please enter your phone number.
+                </div>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingCity" name="city"
+                       placeholder="City..." required>
+                <label for="floatingCity">City:</label>
+            </div>
+
+
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" id="floatingWarehouse" name="warehouse" placeholder="Warehouse number" required>
+
+                <label class="post-label" for="floatingWarehouse">Warehouse Number
+                    <img class="nova-post-image" src="/nova_post_logo.png"/>
+                </label>
+
+                <div class="invalid-feedback">
+                    Please enter your Nova Poshta warehouse number.
+                </div>
+            </div>
+
+            <input type="hidden" name="userId" value="${user.id?string('0')}" required>
+            <input type="hidden" name="offerId" id="offerIdFormInput" required>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                <button type="submit" class="modal-button">
+                    Send
+                </button>
+
+
+    </form>
+
+
+    <button class="cancel-button-offer-window" onclick="closeDataForm()">
+        <img class="cancel-image-notification" src="/cancel_logo.png">
+    </button>
+</div>
+</div>
+
 
 <script>
-
 
     function showDeclineWindow(id) {
     console.log("Decline offer window showed");
@@ -449,10 +529,14 @@ function closeOfferModal() {
 </script>
 
 <script>
+
+window.selectedOfferId = 0;
+
         function showConfirmWindow(id) {
         console.log("Confirm window showed");
         document.getElementById("confirmOfferWindow").style.display = "block";
-        document.getElementById("offerConfirmIdInput").value = id;
+        window.selectedOfferId = id;
+
         }
 
         function closeOfferConfirmModal() {
@@ -463,6 +547,29 @@ function closeOfferModal() {
     const modalContent = document.getElementById("modalConfirmOfferContent");
     if (!modalContent.contains(event.target)) {
         closeOfferConfirmModal();
+    }
+}
+
+function acceptOffer() {
+
+const id = window.selectedOfferId;
+
+document.getElementById("confirmOfferWindow").style.display = "none";
+document.getElementById("dataFormWindow").style.display = "block";
+document.getElementById("floatingPhone").value = "${user.phoneNumber}";
+document.getElementById("floatingInputGroup1").value = "${user.name}";
+document.getElementById("offerIdFormInput").value = id;
+
+}
+
+function closeDataForm() {
+document.getElementById("dataFormWindow").style.display = "none";
+}
+
+function onDataFormBackgroundClick(event) {
+ const dataFormContent = document.getElementById("formWindowContent");
+    if (!dataFormContent.contains(event.target)) {
+        closeDataForm();
     }
 }
 

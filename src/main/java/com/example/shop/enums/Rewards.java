@@ -8,7 +8,8 @@ public enum Rewards {
     REPAIR(0.7, "repairing"),
     INFO_USER(0, "You offered an exchange to "),
     INFO_SELLER(0, "You received an exchange offer! "),
-    DECLINE_EXCHANGE_OFFER(0, "Your offer suggestion was declined! ");
+    DECLINE_EXCHANGE_OFFER(0, "Your offer suggestion was declined! "),
+    USER_EXCHANGE_DATA_RECEIVED(0, "You’ve received contact info!");
 
     private final double rewardPercentage;
 
