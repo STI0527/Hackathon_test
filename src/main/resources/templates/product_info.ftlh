@@ -344,7 +344,7 @@ position: relative;
             <div class="exchange-offer-container">
                     <div class="offer-product-container">
                         <a href="/products/${myProduct.id?string('0')}">
-                        <img  class="exchange-offer-image" src="/images/${myProduct.id?string('0')}" alt="Фото ${myProduct.id?string('0')}">
+                        <img  class="exchange-offer-image" src="/images/${myProduct.previewImageId?string('0')}" alt="Фото ${myProduct.previewImageId?string('0')}">
                         </a>
 
                         <div class="exchange-offer-title">

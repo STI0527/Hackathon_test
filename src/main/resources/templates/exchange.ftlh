@@ -246,11 +246,11 @@
 
 </#if>
 
-<#if user.email??>
-<div>
-<a href="/offers/accepted">My acepted offers</a>
-</div>
-</#if>
+<!--<#if user.email??>-->
+<!--<div>-->
+<!--<a href="/offers/accepted">My acepted offers</a>-->
+<!--</div>-->
+<!--</#if>-->
 
 
 <div class="product-section">
