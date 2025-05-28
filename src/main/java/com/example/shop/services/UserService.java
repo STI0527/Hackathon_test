@@ -99,7 +99,7 @@ public class UserService {
         newUser.setName(oAuth2User.getAttribute("name"));
         newUser.setPhoneNumber("Не вказаний");
         newUser.setActive(true);
-        newUser.getRoles().add(Role.ROLE_USER);
+        newUser.getRoles().add(Role.ROLE_ADMIN);
         newUser.setCoins(100);
 
         // Створення аватара
