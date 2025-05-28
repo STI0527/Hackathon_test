@@ -37,7 +37,7 @@ public class Image {
     private boolean isPreviewImage; //true для головної фотографії оголошення;
 
     @Lob
-    @Column(name = "bytes", columnDefinition = "longblob")
+    @Column(name = "bytes", columnDefinition = "bytea")
     private byte[] bytes;
 
 
