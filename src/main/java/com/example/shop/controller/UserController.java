@@ -71,7 +71,8 @@ public class UserController {
         }
         ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationToken(user.getId());
         //String link = "https://robotcoffees.com/confirm?token=" + confirmationToken.getToken();
-        String link = "http://localhost:1799/confirm?token=" + confirmationToken.getToken();
+        //String link = "http://localhost:1799/confirm?token=" + confirmationToken.getToken();
+        String link = "https://hackathon-test-g54r.onrender.com/confirm?token=" + confirmationToken.getToken();
 
 //        if(activationMethod.equals("email")){
 //        emailSender.send(user.getEmail(), buildEmail(user.getName(), link));
