@@ -24,7 +24,7 @@
         <img class="coins-image" src="/coins_logo.png">
         <div class="coins-container">${user.getCoins()}</div>
 
-        <img class="account-logo-image" src="/avatars/${user.avatar.id}">
+        <img class="account-logo-image" src="/avatars/${user.avatar.id?string('0')}">
         <#else>
         <img class="account-logo-image" src="/default_avatar.png">
         </#if>
@@ -41,11 +41,42 @@
         <div class="user-menu-inner">
             <#if user.email??>
 
-            <img class="user-avatar" src="/avatars/${user.avatar.id}" alt="avatar">
+            <img class="user-avatar" src="/avatars/${user.avatar.id?string('0')}" alt="avatar">
 
                 <div class="user_menu-name">${user.name}</div>
 
-                <form action="/profile/${user.id}" method="post">
+                <div class="euro_exchange_rate_container">
+                    1 EUR — ${euro_exchange_rate} UAH
+                </div>
+
+                <div class="material-statistics-container">
+                    <canvas id="userMaterialsChart" width="100%" height="20"></canvas>
+                    <div class="legend-container">
+                        <div class="legend-item">
+                            <div class="legend-item-color-plastic"></div>
+                            <div class="legend-item-title">Plastic</div>
+
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-color-metal"></div>
+                            <div class="legend-item-title">Metal</div>
+
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-color-glass"></div>
+                            <div class="legend-item-title">Glass</div>
+
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-item-color-co2"></div>
+                            <div class="legend-item-title">CO<sub>2</sub></div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <form action="/profile/${user.id?string('0')}" method="post">
                     <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile" />
                     <input type="hidden" name="_csrf" value="${_csrf.token}" />
                 </form>
@@ -70,58 +101,67 @@
 
 <div id="notificationMenu" class="notifications-container">
     <#list notifications as notification>
-    <div id="notification-${notification.id}" class="notification-container">
+    <div id="notification-${notification.id?string('0')}" class="notification-container <#if !notification.read>unread</#if>" onclick="markAsRead(${notification.id?string('0')})">
         <div class="notification-date-container">
             ${notification.shortDateOfOperation}
-
         </div>
 
-        <div class="notification-text-container">You've got +${notification.rewardAmount}
+        <#if notification.rewardType == "INFO_SELLER">
+        <div class="notification-text-container">
+            Exchange offer received! ${notification.sellerName} wants to trade for your <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>.
+        </div>
+        <#elseif notification.rewardType == "INFO_USER">
+        <div class="notification-text-container">
+            Exchange offer sent for <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>!
+        </div>
+        <#elseif notification.rewardType == "USER_EXCHANGE_DATA_RECEIVED">
+        <div class="notification-text-container">
+            ${notification.rewardType.operationType} for <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>!
+        </div>
+        <#else>
+        <div class="notification-text-container">
+            You've got +${notification.rewardAmount}
             <img class="coins-image-notifications" src="/coins_logo.png">
-            for ${notification.rewardType.getOperationType()}: ${notification.productTitle}!
+            for ${notification.rewardType.operationType}: ${notification.productTitle}!
         </div>
+    </#if>
 
-        <div class="notification-time-container">
-            ${notification.dateOfOperation.getHour()?string("00")} :
-            ${notification.dateOfOperation.getMinute()?string("00")}
-
-        </div>
-
-        <form action="/notifications/delete/${notification.id}" method="post">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-            <button type="submit" onclick="deleteNotification(event, ${notification.id})"
-                    class="delete-notification-button">
-                <img class="cancel-image-notification" src="/static/cancel_logo.png">
-            </button>
-
-        </form>
-
+    <div class="notification-time-container">
+        ${notification.dateOfOperation.getHour()?string("00")} : ${notification.dateOfOperation.getMinute()?string("00")}
     </div>
 
-
-    <#else>
-    <div class="no-notifications-text">No notifications</div>
+    <form action="/notifications/delete/${notification.id?string('0')}" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+        <button type="submit" onclick="deleteNotification(event, ${notification.id?string('0')})" class="delete-notification-button">
+            <img class="cancel-image-notification" src="/cancel_logo.png">
+        </button>
+    </form>
+</div>
+<#else>
+<div class="no-notifications-text">No notifications</div>
 </#list>
 </div>
+
 
 <div class="profile-container">
     <div class="profile-card">
 
-        <div class="profile-card-left-container">
-            <div class="profile-title">Profile</div>
+        <div class="profile-title">Profile</div>
 
+        <div class="profile-content-container">
+        <div class="profile-card-left-container">
 
             <div class="profile-subtitle">${user.name}</div>
 
             <#if user.avatar??>
-            <img class="profile-page-avatar" src="/avatars/${user.avatar.id}" alt="Profile image"
+            <img class="profile-page-avatar" src="/avatars/${user.avatar.id?string('0')}" alt="Profile image"
                  width="230px" height="216px" />
             <#else>
             <img class="profile-page-avatar" src="/default_avatar.png" alt="Profile image" />
         </#if>
 
         <div class="change-avatar-container">
-            <form id="uploadForm" action="/changeAvatar/${user.id}" method="post"
+            <form id="uploadForm" action="/changeAvatar/${user.id?string('0')}" method="post"
                   enctype="multipart/form-data">
                 <input id="file-upload" type="file" name="file"
                        onchange="document.getElementById('uploadForm').submit();" />
@@ -157,9 +197,9 @@
 
     <div id="myProducts" style="display: none;">
         <#list products as product>
-        <p>${product.title} ${product.price} USD| <a href="/products/${product.id}">Details</a>
+        <p>${product.title} ${product.price} USD| <a href="/products/${product.id?string('0')}">Details</a>
         </p>
-        <form action="/products/delete/${product.id}" method="post"
+        <form action="/products/delete/${product.id?string('0')}" method="post"
               enctype="multipart/form-data">
             <input type="hidden" name="_csrf" value="${_csrf.token}" required />
             <input type="submit" value="Delete" />
@@ -167,7 +207,7 @@
 
         <button onclick="toggleForm()">Edit</button>
         <div id="productForm" style="display: none; margin-top: 20px;">
-            <form action="/products/edit/${product.id}" method="post"
+            <form action="/products/edit/${product.id?string('0')}" method="post"
                   enctype="multipart/form-data">
                 <input type="hidden" name="newTitle" id="newDrinkName" placeholder="..."
                        required>
@@ -182,7 +222,7 @@
                 Change the advertisement photos<br><br>
                 <#if product.images??>
                 <#list product.images as image>
-                <img src="/images/${image.id}" width="180px" height="180px" />
+                <img src="/images/${image.id?string('0')}" width="180px" height="180px" />
 
 
 
@@ -232,7 +272,7 @@
             <th>${order.orderName}</th>
             <th>${order.orderPrice} UAH</th>
             <th>${order.dateOfPurchase}</th>
-            <th><a href="/products/${order.productId}">Order Again</th>
+            <th><a href="/products/${order.productId?string('0')}">Order Again</th>
             <#else>
             <div style="background-color: white;">
                 <h3>No Orders</h3>
@@ -268,7 +308,20 @@
         <form id="productFormToast" action="/products/create" method="post"
               enctype="multipart/form-data">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
-            <input type="hidden" name="type" value="SELL" required />
+
+            <div>
+                I want to:
+                <select name="type" required>
+                    <#list advertTypes as type>
+                    <option value="${type}">
+                        ${type}
+                    </option>
+                    </#list>
+                </select>
+
+            </div>
+
+
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingTitle" name="title"
                        placeholder="Title..." required>
@@ -324,14 +377,22 @@
 </div>
 
 <div class="profile-card-right-container">
+<#if user.plasticSaved == 0 &amp;&amp; user.metalSaved == 0 &amp;&amp; user.glassSaved == 0 &amp;&amp; user.CO2Saved == 0>
+<div class="no-data-for-chart-container">No data for chart</div>
+<#else>
 <canvas id="myPieChart" width="100%" height="20"></canvas>
+</#if>
 
 <h4 id="totalSaved"></h4>
 
-<div>Plastic — ${user.plasticSaved} kg</div>
-<div>Metal — ${user.metalSaved} kg</div>
-<div>Glass — ${user.glassSaved} kg</div>
-<div>CO2 — ${user.CO2Saved} kg</div>
+<div>Plastic — ${user.plasticSaved?string("0")} kg</div>
+<div>Metal — ${user.metalSaved?string("0")} kg</div>
+<div>Glass — ${user.glassSaved?string("0")} kg</div>
+<div>CO2 — ${user.CO2Saved?string("0")} kg</div>
+
+<div>
+<a href="/leaderboard">Leaderboard...</a>
+</div>
 
 </div>
 
@@ -342,6 +403,7 @@
 
         </div>
 
+        </div>
 
 
 
@@ -390,14 +452,14 @@
 
 <script>
 const user = {
-    plasticSaved: ${ user.plasticSaved },
-    metalSaved: ${ user.metalSaved },
-    glassSaved: ${ user.glassSaved },
-    CO2Saved: ${ user.CO2Saved }
+    plasticSaved: ${user.plasticSaved?string("0")},
+    metalSaved: ${user.metalSaved?string("0")},
+    glassSaved: ${user.glassSaved?string("0")},
+    CO2Saved: ${user.CO2Saved?string("0")}
 };
 
 const total = user.plasticSaved + user.metalSaved + user.glassSaved + user.CO2Saved;
-
+console.log("Total saved by user:" + total);
 document.getElementById('totalSaved').innerHTML = `Total saved: <#noparse>${total.toFixed(2)}</#noparse> kg`;
 </script>
 
@@ -411,12 +473,13 @@ const myPieChart = new Chart(ctx, {
         labels: ['Plastic', 'Metal', 'Glass', 'CO2'],
         datasets: [{
             label: 'Saved (kg): ',
-            data: [${ user.plasticSaved }, ${ user.metalSaved }, ${ user.glassSaved }, ${ user.CO2Saved }],
+            data: [${user.plasticSaved?string("0")}, ${user.metalSaved?string("0")}, ${user.glassSaved?string("0")}, ${user.CO2Saved?string("0")}],
             backgroundColor: [
-                '#4CAF50',
+                '#FF5722',
                 '#2196F3',
                 '#FFC107',
-                '#FF5722'
+                '#4CAF50'
+
             ],
             borderWidth: 1
         }]
@@ -577,17 +640,54 @@ function deleteNotification(event, id) {
 }
 </script>
 
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+    const unreadNotifications = document.querySelectorAll('.notification-container.unread');
+    const notificationBadge = document.getElementById('notificationBadge');
+
+    if (unreadNotifications.length > 0) {
+        notificationBadge.style.display = 'block';
+    } else {
+        notificationBadge.style.display = 'none';
+    }
+});
+
+function markAsRead(notificationId) {
+    // Знаходимо сповіщення за ID
+    const notificationElement = document.getElementById('notification-'+notificationId);
+    const notificationBadge = document.getElementById('notificationBadge');
+
+    // Оновлюємо клас, позначаючи як прочитане
+    notificationElement.classList.remove('unread');  // Видаляємо клас unread
+
+    // Перевіряємо наявність непрочитаних сповіщень
+    const unreadNotifications = document.querySelectorAll('.notification-container.unread');
+
+    if (unreadNotifications.length === 0) {
+        notificationBadge.style.display = 'none';  // Ховаємо бейдж, якщо немає непрочитаних
+    }
+
+    // AJAX запит для оновлення статусу повідомлення на сервері
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/notifications/markAsRead/'+notificationId, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="${_csrf.parameterName}"]').value);
+    xhr.send();
+}
+</script>
+
 <script>
 // Дані користувача
-<!--const plasticSaved = ${user.plasticSaved};-->
-< !--const metalSaved = ${ user.metalSaved }; -->
-< !--const glassSaved = ${ user.glassSaved }; -->
-< !--const CO2Saved = ${ user.CO2Saved }; -->
+const plasticSaved = ${user.plasticSaved?string("0")};
+const metalSaved = ${user.metalSaved?string("0")};
+const glassSaved = ${user.glassSaved?string("0")};
+const CO2Saved = ${user.CO2Saved?string("0")};
 
-const plasticSaved = 12;
-        const metalSaved = 24;
-        const glassSaved = 24;
-        const CO2Saved = 40;
+<!--const plasticSaved = 12;-->
+<!--        const metalSaved = 24;-->
+<!--        const glassSaved = 24;-->
+<!--        const CO2Saved = 40;-->
 
         const totalSaved = plasticSaved + metalSaved + glassSaved + CO2Saved;
 
@@ -641,11 +741,6 @@ const plasticSaved = 12;
         legend: {
             position: 'none'
         },
-< !--title: {
-            -->
-< !--display: true, -->
-< !--text: 'Відсоток збережених матеріалів'-- >
-< !--            } -->
         },
         responsive: true,
             scales: {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -39,10 +40,16 @@ public class ExchangeApplicationService {
 
     }
 
-    public List<ExchangeApplication> myProductExchangeOffersList(Long productId) {
-        //exchangeApplicationRepository.findAllBy
+    public List<ExchangeApplication> myProductExchangeOffersList(Long userId, Long productId) {
+        List<ExchangeApplication> result = new ArrayList<>();
 
-        return exchangeApplicationRepository.findAll();
+        for(ExchangeApplication exchangeApplication: exchangeApplicationRepository.findAll()){
+            if(exchangeApplication.getOwnerId() == userId && exchangeApplication.getProduct().getId() == productId) {
+                result.add(exchangeApplication);
+            }
+        }
+
+        return result;
     }
 
     public void deleteOffer(Long id) {

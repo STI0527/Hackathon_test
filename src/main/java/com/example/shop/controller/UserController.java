@@ -2,6 +2,7 @@ package com.example.shop.controller;
 
 
 import com.example.shop.email.EmailSender;
+import com.example.shop.enums.AdvertType;
 import com.example.shop.enums.ROCounties;
 import com.example.shop.enums.UAOblasts;
 import com.example.shop.models.*;
@@ -152,13 +153,18 @@ public class UserController {
         model.addAttribute("products", user.getProducts());
         model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
         model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
+        model.addAttribute("advertTypes", AdvertType.values());
         return "profile";
     }
 
 
     @GetMapping("/marketplace")
-    public String toMarketplace(Model model, Principal principal, Authentication authentication, User user){
+    public String toMarketplace(Model model, Principal principal, Authentication authentication, User user,
+                                @ModelAttribute("payment_message") String paymentMessage) {
 
+        if (paymentMessage != null && !paymentMessage.isEmpty()) {
+            model.addAttribute("payment_message", paymentMessage);
+        }
 
         if (authentication != null) {
             if (authentication instanceof OAuth2AuthenticationToken token) {
@@ -293,6 +299,12 @@ public class UserController {
         model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
 
         return "reuse";
+    }
+
+    @GetMapping("/leaderboard")
+    public String toLeaderBoard() {
+
+        return "leaderboard";
     }
 
     @PostMapping("/places/create")

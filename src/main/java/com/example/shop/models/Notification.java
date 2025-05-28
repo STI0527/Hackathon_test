@@ -49,6 +49,12 @@ public class Notification {
     @Column(name="product_title")
     private String productTitle;
 
+    @Column(name="offered_product_id")
+    private Long offeredProductId;
+
+    @Column(name="offered_product_title")
+    private String offeredProductTitle;
+
     @Column(name="reward_type", length = 50)
     @Enumerated(EnumType.STRING)
     private Rewards rewardType;

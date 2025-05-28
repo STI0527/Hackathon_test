@@ -18,85 +18,85 @@
         </div>
     </#if>
 </div>
-    <a href="/">ReUse Hub</a>
-    <div id="toggleMenu" class="account-logo-container">
-        <#if user.email??>
+<a href="/">ReUse Hub</a>
+<div id="toggleMenu" class="account-logo-container">
+    <#if user.email??>
 
-        <img class="coins-image" src="/coins_logo.png">
-        <div class="coins-container">${user.getCoins()}</div>
+    <img class="coins-image" src="/coins_logo.png">
+    <div class="coins-container">${user.getCoins()}</div>
 
-        <img class="account-logo-image" src="/avatars/${user.avatar.id?string('0')}">
-        <#else>
-        <img class="account-logo-image" src="/default_avatar.png">
-        </#if>
+    <img class="account-logo-image" src="/avatars/${user.avatar.id?string('0')}">
+    <#else>
+    <img class="account-logo-image" src="/default_avatar.png">
+    </#if>
 
-        <img class="dropdown-icon" src="/dropdown-logo.png">
+    <img class="dropdown-icon" src="/dropdown-logo.png">
 
-    </div>
-    <div class="header-right"></div>
+</div>
+<div class="header-right"></div>
 
 </header>
 
 <div id="menu" class="user-menu-container">
-    <div class="user-menu-inner">
-        <#if user.email??>
+<div class="user-menu-inner">
+    <#if user.email??>
 
-        <img class="user-avatar" src="/avatars/${user.avatar.id?string('0')}" alt="avatar">
+    <img class="user-avatar" src="/avatars/${user.avatar.id?string('0')}" alt="avatar">
 
-            <div class="user_menu-name">${user.name}</div>
+        <div class="user_menu-name">${user.name}</div>
 
-            <div class="euro_exchange_rate_container">
-                1 EUR — ${euro_exchange_rate} UAH
-            </div>
+        <div class="euro_exchange_rate_container">
+            1 EUR — ${euro_exchange_rate} UAH
+        </div>
 
-            <div class="material-statistics-container">
-                <canvas id="userMaterialsChart" width="100%" height="20"></canvas>
-                <div class="legend-container">
-                    <div class="legend-item">
-                        <div class="legend-item-color-plastic"></div>
-                        <div class="legend-item-title">Plastic</div>
+        <div class="material-statistics-container">
+            <canvas id="userMaterialsChart" width="100%" height="20"></canvas>
+            <div class="legend-container">
+                <div class="legend-item">
+                    <div class="legend-item-color-plastic"></div>
+                    <div class="legend-item-title">Plastic</div>
 
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-item-color-metal"></div>
-                        <div class="legend-item-title">Metal</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-item-color-metal"></div>
+                    <div class="legend-item-title">Metal</div>
 
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-item-color-glass"></div>
-                        <div class="legend-item-title">Glass</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-item-color-glass"></div>
+                    <div class="legend-item-title">Glass</div>
 
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-item-color-co2"></div>
-                        <div class="legend-item-title">CO<sub>2</sub></div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-item-color-co2"></div>
+                    <div class="legend-item-title">CO<sub>2</sub></div>
 
-                    </div>
                 </div>
             </div>
+        </div>
 
-            <form action="/profile/${user.id?string('0')}" method="post">
-                <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
-                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            </form>
-
-
-            <#if user.isAdmin()>
-            <a class="user-menu-admin-link" href="/admin">Administration Panel</a>
-        </#if>
-
-
-        <form action="/logout" method="post">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <input class="user-menu-quit-text" type="submit" value="Log out"/>
+        <form action="/profile/${user.id?string('0')}" method="post">
+            <input class="user-menu-private-page-text" type="submit" name="profile" value="Profile"/>
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         </form>
-        <#else>
-        <img class="user-avatar" src="/default_avatar.png" alt="avatar">
-            <a class="burger_menu_authorize burger_btn-base" href="/login">Sign in</h3></a>
+
+
+        <#if user.isAdmin()>
+        <a class="user-menu-admin-link" href="/admin">Administration Panel</a>
     </#if>
 
+
+    <form action="/logout" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input class="user-menu-quit-text" type="submit" value="Log out"/>
+    </form>
+    <#else>
+    <img class="user-avatar" src="/default_avatar.png" alt="avatar">
+        <a class="burger_menu_authorize burger_btn-base" href="/login">Sign in</h3></a>
+</#if>
+
 </div>
-</div>
+        </div>
 
 <div id="notificationMenu" class="notifications-container">
 <#list notifications as notification>
@@ -112,10 +112,6 @@
     <#elseif notification.rewardType == "INFO_USER">
     <div class="notification-text-container">
         Exchange offer sent for <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>!
-    </div>
-    <#elseif notification.rewardType == "USER_EXCHANGE_DATA_RECEIVED">
-    <div class="notification-text-container">
-        ${notification.rewardType.operationType} for <a href="/products/${notification.productId?string('0')}">${notification.productTitle}</a>!
     </div>
     <#else>
     <div class="notification-text-container">
@@ -141,90 +137,14 @@
         </#list>
         </div>
 
-<div class="admin-container">
-<div class="admin-table-title">
-    Administration Panel
 
-    <form action="/statistics" method="post">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <input class="statistics-button" type="submit" value="Order Statistics"/>
-    </form>
+<#if myExchangePairs??>
+<#list myExchangePairs as exchangePair>
+${exchangePair}
+</#list>
 
-</div>
+</#if>
 
-<div class="table-container">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Email</th>
-            <th scope="col">Telephone number</th>
-            <th scope="col">Activeness</th>
-            <th scope="col">Roles</th>
-            <th scope="col">Ban</th>
-            <th scope="col">Detailed information</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete user</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <#list users as user>
-        <tr>
-            <td>${user.email}</td>
-            <td>${user.phoneNumber}</td>
-            <td><#if user.isActive()>
-                <img class="activeness-image" src="/yes_icon.png">
-                <#else>
-                <img class="activeness-image" src="/no_icon.png">
-                </#if>
-            </td>
-
-            <td><#list user.roles as role>
-                ${role}
-            </#list></td>
-        <td>
-            <form action="/admin/user/ban/${user.id?string('0')}" method="post">
-                <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-                <input class="ban_button" type="submit" value="Ban"/>
-            </form>
-        </td>
-        <td>
-            <a class="admin_link" href="/user/${user.id?string('0')}">
-                Details...
-            </a>
-        </td>
-
-        <td>
-            <a class="admin_link" href="/admin/user/edit/${user.id?string('0')}">
-                <img class="edit_button" src="/edit_icon.png">
-            </a>
-        </td>
-        <td>
-
-            <form action="/admin/user/delete/${user.id?string('0')}" method="post">
-                <input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-                <button>
-                    <img class="delete_button" src="/delete_icon.png">
-                    <input type="submit" value=""/>
-                </button>
-            </form>
-
-        </td>
-        </tr>
-        <#else><h3>Users not found</h3>
-
-    </#list>
-</tbody>
-</table>
-
-        </div>
-
-        </div>
-
-<form action="/" method="post">
-<input type="hidden" name="_csrf" value="${_csrf.token}" required/>
-<input class="home_button" type="submit" value="Home"/>
-</form>
         </main>
 
 <footer>

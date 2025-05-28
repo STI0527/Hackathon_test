@@ -17,10 +17,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -50,7 +52,8 @@ public class ProductController {
 
     @GetMapping("/")
     public String main(@RequestParam(name = "title", required = false) String title, Model model, Principal principal,
-                           Authentication authentication, User user) throws IOException {
+                           Authentication authentication, User user,
+                       HttpServletRequest httpServletRequest) throws IOException {
 
         if (authentication instanceof OAuth2AuthenticationToken token) {
             // Якщо аутентифікація через OAuth2
@@ -74,6 +77,9 @@ public class ProductController {
         model.addAttribute("euro_exchange_rate", currencyExchangeService.getEuroToUahRate());
         model.addAttribute("notifications", notificationService.getNotificationsList(user.getId()));
 
+        CsrfToken token = (CsrfToken) httpServletRequest.getAttribute("_csrf");
+        model.addAttribute("csrfParameterName", token.getParameterName());
+        model.addAttribute("csrfToken", token.getToken());
         return "main";
     }
 
@@ -138,7 +144,7 @@ public class ProductController {
 
 
             if(product.getType() == AdvertType.EXCHANGE && product.getUser().getEmail().equals(user.getEmail())){
-                model.addAttribute("exchange_offers", exchangeApplicationService.myProductExchangeOffersList(product.getId()));
+                model.addAttribute("exchange_offers", exchangeApplicationService.myProductExchangeOffersList(user.getId(), product.getId()));
             }
         }
         if(product == null){
@@ -189,9 +195,9 @@ public class ProductController {
     }
     
     @PostMapping("/buy/virtual/{id}")
-    public ResponseEntity<?> buyVirtual(@PathVariable String id, Principal principal,
+    public String buyVirtual(@PathVariable String id, Principal principal,
                                      HttpServletRequest request,
-                                     HttpSession session, Authentication authentication, Model model,
+                                     HttpSession session, Authentication authentication, Model model, RedirectAttributes redirectAttributes,
                                         @RequestParam(name = "virtualPrice") String virtualPriceLine){
         Long iD = Long.parseLong(id.replace("\u00A0", ""));
         Product product = productService.getProductById(iD);
@@ -214,7 +220,8 @@ public class ProductController {
 
         if(customer.getCoins() < virtualPrice) {
             model.addAttribute("payment_message", "You don’t have enough coins!");
-            return ResponseEntity.ok("You don’t have enough coins!");
+            redirectAttributes.addFlashAttribute("payment_message", "You don’t have enough coins!");
+            return "redirect:/marketplace";
         }
         else {
             System.out.println("New customer balance: " + (customer.getCoins() - virtualPrice));
@@ -251,7 +258,8 @@ public class ProductController {
             //productService.deleteProduct(product.getId());
 
             model.addAttribute("payment_message", "Purchase completed successfully!");
-            return ResponseEntity.ok("Purchase completed successfully!");
+            redirectAttributes.addFlashAttribute("payment_message", "Purchase completed successfully!");
+            return "redirect:/marketplace";
         }
 
     }

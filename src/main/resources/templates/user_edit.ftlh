@@ -53,7 +53,7 @@
     </div>
 
 
-    <input type="hidden" name="userId" value="${user.id}"/>
+    <input type="hidden" name="userId" value="${user.id?string('0')}"/>
     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     <button class="save-button" onclick="location.href='/product_info'">Save</button>
 
