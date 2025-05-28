@@ -67,7 +67,7 @@ public class UserService {
 
         user.setActive(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.getRoles().add(Role.ROLE_USER);
+        user.getRoles().add(Role.ROLE_ADMIN);
         log.info("\u001B[31mSaving new User with email {}\u001B[0m", user.getEmail());
         userRepository.save(user);
 
