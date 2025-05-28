@@ -49,7 +49,7 @@ public class Avatar {
                 '}';
     }
 
-    @Lob
+
     @Column(name = "bytes", columnDefinition = "bytea")
     private byte[] bytes;
 
