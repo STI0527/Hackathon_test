@@ -50,7 +50,7 @@ public class Avatar {
     }
 
     @Lob
-    @Column(name = "bytes", columnDefinition = "longblob")
+    @Column(name = "bytes", columnDefinition = "bytea")
     private byte[] bytes;
 
     @OneToOne(mappedBy = "avatar", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
