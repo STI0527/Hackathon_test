@@ -16,12 +16,17 @@ import java.util.Map;
 @Service
 public class AiService {
 
-    private final Dotenv dotenv = Dotenv.load();
+    private final String apiKey;
+    private final String apiUrl;
 
-    private final String apiKey = dotenv.get("HUGGINGFACE_API_KEY");
-    private final String apiUrl = dotenv.get("HUGGINGFACE_MODEL_URL");
-
-
+    public AiService(
+            @Value("${huggingface.api.key}") String apiKey,
+            @Value("${huggingface.model.url}") String apiUrl
+    ) {
+        this.apiKey = apiKey;
+        this.apiUrl = apiUrl;
+        System.out.println(apiKey +" "+ apiUrl);
+    }
     private final RestTemplate restTemplate = new RestTemplate();
 
     public String ask(String question) {
